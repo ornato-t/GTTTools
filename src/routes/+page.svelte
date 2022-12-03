@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { Route } from 'gtttools';
-
 	interface vehicle {
 		id: number;
 		vehicleType: string;
@@ -10,28 +8,30 @@
 		updated: Date;
 	}
 
-	let line: vehicle[];
-	let route: string;
-	const myRoute = new Route();
+	async function getData(route: string) {
+		const line = await fetch(`/api/route/${10}.json`);
+		const data = await line.json();
+		return data as vehicle[];
+	}
 
-	myRoute.poll('10', 1000); //Poll route 4 every 1000 milliseconds
-	myRoute.on('refresh', (vehicleData, route) => {
-		line = vehicleData;
-		route = route;
-	});
+	const data: Promise<vehicle[]> = getData('10');
 </script>
 
 <div class="text-red-600">Tailwind works</div>
 <div class="btn">DaisyUI works</div>
 <div>
 	<span>GTTTools works</span>
-	<span> Line {route} </span>
-	{#if line != undefined}
-		{#each line as vehicle}
-			{vehicle.vehicleType}
-			{vehicle.id}
-			{vehicle.lat}
-			{vehicle.lon}
+	<span> Line {10} </span>
+	<!-- svelte-ignore empty-block -->
+	{#await data}
+	{:then route}
+		{#each route as vehicle}
+			<div>
+				<span>ID: {vehicle.id}</span>
+				<span>Direction: {vehicle.direction}</span>
+				<span>Latitude: {vehicle.lat}</span>
+				<span>Longitude: {vehicle.lon}</span>
+			</div>
 		{/each}
-	{/if}
+	{/await}
 </div>
