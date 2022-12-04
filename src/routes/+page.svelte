@@ -14,38 +14,53 @@
 		return data as stop[];
 	}
 
-	const vehicle: Promise<vehicle[]> = getVehicle('10');
-	const stop: Promise<stop[]> = getStop(25);
+	function printDate(d: Date[]) {
+		const dates = d.map((el) => printLocale(el));
+		return dates;
+	}
+
+	function printLocale(d: Date) {
+		d = new Date(d);
+		return `${d.getHours()}:${d.getMinutes()}`;
+	}
+
+	const pollingRoute = '13';
+	const pollingStop = 25;
+	const vehicle: Promise<vehicle[]> = getVehicle(pollingRoute);
+	const stop: Promise<stop[]> = getStop(pollingStop);
 </script>
 
 <div class="text-red-600">Tailwind works</div>
 <div class="btn">DaisyUI works</div>
 <div>
-	<span>GTTTools works</span>
+	<h1 class="text-xl">GTTTools works</h1>
 	<div>
-		<span> Line 10 </span>
+		<span class="font-bold"> Line {pollingRoute} </span>
 		<!-- svelte-ignore empty-block -->
 		{#await vehicle then route}
 			{#each route as vehicle}
-				<div>
-					<span>ID: {vehicle.id}</span>
-					<span>Direction: {vehicle.direction}</span>
-					<span>Latitude: {vehicle.lat}</span>
-					<span>Longitude: {vehicle.lon}</span>
+				<div class="my-2">
+					<p>ID: {vehicle.id}</p>
+					<p>Direction: {vehicle.direction}</p>
+					<p>Latitude: {vehicle.lat}</p>
+					<p>Longitude: {vehicle.lon}</p>
+					<p>Type: {vehicle.vehicleType}</p>
+					<p>Last update: {printLocale(vehicle.updated)}</p>
 				</div>
 			{/each}
 		{/await}
 	</div>
-	<br>
-	<div>
-		<span>Stop Statuto</span>
+	<div class="mt-6">
+		<span class="font-bold">Stop {pollingStop}</span>
 		<!-- svelte-ignore empty-block -->
 		{#await stop then stop}
 			{#each stop as passage}
-				<div>
-					<span>Line: {passage.line}</span>
-					<span>Destination: {passage.direction}</span>
-					<span>Time: {passage.realTime}</span>
+				<div class="my-2">
+					<p>Route: {passage.line}</p>
+					<p>Route ID: {passage.lineID}</p>
+					<p>Destination: {passage.direction}</p>
+					<p>Time (real time): {printDate(passage.realTime)}</p>
+					<p>Time (programmed): {printDate(passage.programmed)}</p>
 				</div>
 			{/each}
 		{/await}
