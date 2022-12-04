@@ -511,7 +511,7 @@ var init__ = __esm({
     component = async () => (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default;
     file = "_app/immutable/components/pages/_layout.svelte-d0a11b77.js";
     imports = ["_app/immutable/components/pages/_layout.svelte-d0a11b77.js", "_app/immutable/chunks/index-e3728a11.js"];
-    stylesheets = ["_app/immutable/assets/_layout-0345ff4b.css"];
+    stylesheets = ["_app/immutable/assets/_layout-d446d3b0.css"];
     fonts = [];
   }
 });
@@ -610,40 +610,77 @@ var page_svelte_exports = {};
 __export(page_svelte_exports, {
   default: () => Page
 });
-async function getData(route) {
-  const line = await fetch(`/api/route/${10}.json`);
+async function getVehicle(route) {
+  const line = await fetch(`/api/route/${route}.json`);
   const data = await line.json();
   return data;
 }
-var Page;
+async function getStop(stop) {
+  const station = await fetch(`/api/stop/${stop}.json`);
+  const data = await station.json();
+  return data;
+}
+function printDate(d) {
+  const dates = d.map((el) => printLocale(el));
+  return dates;
+}
+function printLocale(d) {
+  d = new Date(d);
+  return `${d.getHours()}:${d.getMinutes()}`;
+}
+var pollingRoute, pollingStop, Page;
 var init_page_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/_page.svelte.js"() {
     init_chunks();
+    pollingRoute = "10";
+    pollingStop = 27;
     Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      const data = getData();
+      const vehicle = getVehicle(pollingRoute);
+      const stop = getStop(pollingStop);
       return `<div class="${"text-red-600"}">Tailwind works</div>
 <div class="${"btn"}">DaisyUI works</div>
-<div><span>GTTTools works</span>
-	<span>Line ${escape(10)}</span>
-	
-	${function(__value) {
+<div><h1 class="${"text-xl"}">GTTTools works</h1>
+	<div><span class="${"font-bold"}">Line ${escape(pollingRoute)}</span>
+		
+		${function(__value) {
         if (is_promise(__value)) {
           __value.then(null, noop);
-          return `
-	`;
+          return ``;
         }
         return function(route) {
           return `
-		${each(route, (vehicle) => {
-            return `<div><span>ID: ${escape(vehicle.id)}</span>
-				<span>Direction: ${escape(vehicle.direction)}</span>
-				<span>Latitude: ${escape(vehicle.lat)}</span>
-				<span>Longitude: ${escape(vehicle.lon)}</span>
-			</div>`;
+			${each(route, (vehicle2) => {
+            return `<div class="${"my-2"}"><p>ID: ${escape(vehicle2.id)}</p>
+					<p>Direction: ${escape(vehicle2.direction)}</p>
+					<p>Latitude: ${escape(vehicle2.lat)}</p>
+					<p>Longitude: ${escape(vehicle2.lon)}</p>
+					<p>Type: ${escape(vehicle2.vehicleType)}</p>
+					<p>Last update: ${escape(printLocale(vehicle2.updated))}</p>
+				</div>`;
           })}
-	`;
+		`;
         }(__value);
-      }(data)}</div>`;
+      }(vehicle)}</div>
+	<div class="${"mt-6"}"><span class="${"font-bold"}">Stop ${escape(pollingStop)}</span>
+		
+		${function(__value) {
+        if (is_promise(__value)) {
+          __value.then(null, noop);
+          return ``;
+        }
+        return function(stop2) {
+          return `
+			${each(stop2, (passage) => {
+            return `<div class="${"my-2"}"><p>Route: ${escape(passage.line)}</p>
+					<p>Route ID: ${escape(passage.lineID)}</p>
+					<p>Destination: ${escape(passage.direction)}</p>
+					<p>Time (real time): ${escape(printDate(passage.realTime))}</p>
+					<p>Time (programmed): ${escape(printDate(passage.programmed))}</p>
+				</div>`;
+          })}
+		`;
+        }(__value);
+      }(stop)}</div></div>`;
     });
   }
 });
@@ -663,8 +700,8 @@ var init__3 = __esm({
   ".svelte-kit/output/server/nodes/2.js"() {
     index3 = 2;
     component3 = async () => (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default;
-    file3 = "_app/immutable/components/pages/_page.svelte-221da74a.js";
-    imports3 = ["_app/immutable/components/pages/_page.svelte-221da74a.js", "_app/immutable/chunks/index-e3728a11.js"];
+    file3 = "_app/immutable/components/pages/_page.svelte-f466d702.js";
+    imports3 = ["_app/immutable/components/pages/_page.svelte-f466d702.js", "_app/immutable/chunks/index-e3728a11.js"];
     stylesheets3 = [];
     fonts3 = [];
   }
@@ -675,10 +712,6 @@ var server_ts_exports = {};
 __export(server_ts_exports, {
   GET: () => GET
 });
-async function GET(req) {
-  const route = req.params.route;
-  return new Response(JSON.stringify(await pollRoute(route)));
-}
 async function pollRoute(route) {
   const url = `https://www.gtt.to.it/cms/components/com_gtt/views/percorsi/tmpl/proxydaslinea.php?serviceName=GetVeicoliPerLineaJson&linea=${route}`;
   const options = {
@@ -714,8 +747,54 @@ function updatedDate(dateStr) {
   const dateStrReconstructed = `${dateFields[2]}-${dateFields[1]}-${dateFields[0]}T${dateFields[3]}:${dateFields[4]}`;
   return new Date(dateStrReconstructed);
 }
+var GET;
 var init_server_ts = __esm({
   ".svelte-kit/output/server/entries/endpoints/api/route/_route_.json/_server.ts.js"() {
+    GET = async ({ params }) => {
+      return new Response(JSON.stringify(await pollRoute(params.route)));
+    };
+  }
+});
+
+// .svelte-kit/output/server/entries/endpoints/api/stop/_stop_.json/_server.ts.js
+var server_ts_exports2 = {};
+__export(server_ts_exports2, {
+  GET: () => GET2,
+  pollStop: () => pollStop
+});
+async function pollStop(stop) {
+  const url = `https://www.gtt.to.it/cms/index.php?option=com_gtt&task=palina.getTransitiOld&palina=${stop}&realtime=true&get_param=value`;
+  const options = {
+    method: "GET"
+  };
+  const response = await fetch(url, options);
+  const stopsWeb = await response.json();
+  const stops = stopsWeb.map((pass) => ({
+    line: parseBusN(pass.LineaAlias),
+    lineID: pass.Linea,
+    direction: pass.Direzione,
+    realTime: pass.PassaggiRT.map((hour) => dateFromHourStr(hour)),
+    programmed: pass.PassaggiPR.map((hour) => dateFromHourStr(hour))
+  }));
+  return stops;
+}
+function dateFromHourStr(str) {
+  const d = new Date();
+  const dateStr = d.toISOString();
+  const ISOStr = `${dateStr.substring(0, dateStr.indexOf("T"))}T${str}`;
+  return new Date(ISOStr);
+}
+function parseBusN(bus) {
+  if (!bus.includes("navetta"))
+    return bus;
+  return bus.replace(" navetta", "N");
+}
+var GET2;
+var init_server_ts2 = __esm({
+  ".svelte-kit/output/server/entries/endpoints/api/stop/_stop_.json/_server.ts.js"() {
+    GET2 = async ({ params }) => {
+      return new Response(JSON.stringify(await pollStop(params.stop)));
+    };
   }
 });
 
@@ -3564,7 +3643,7 @@ var Server = class {
       app_template,
       app_template_contains_nonce: false,
       error_template,
-      version: "1670153607987"
+      version: "1670178924008"
     };
   }
   async init({ env }) {
@@ -3596,10 +3675,10 @@ var Server = class {
 var manifest = {
   appDir: "_app",
   appPath: "_app",
-  assets: /* @__PURE__ */ new Set(["favicon.png"]),
+  assets: /* @__PURE__ */ new Set(["favicon.png", "logo-text.png", "logo.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    entry: { "file": "_app/immutable/start-9dacd628.js", "imports": ["_app/immutable/start-9dacd628.js", "_app/immutable/chunks/index-e3728a11.js", "_app/immutable/chunks/singletons-c47bbd66.js"], "stylesheets": [], "fonts": [] },
+    entry: { "file": "_app/immutable/start-a15c56f5.js", "imports": ["_app/immutable/start-a15c56f5.js", "_app/immutable/chunks/index-e3728a11.js", "_app/immutable/chunks/singletons-c47bbd66.js"], "stylesheets": [], "fonts": [] },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),
@@ -3619,6 +3698,13 @@ var manifest = {
         params: [{ "name": "route", "optional": false, "rest": false, "chained": false }],
         page: null,
         endpoint: () => Promise.resolve().then(() => (init_server_ts(), server_ts_exports))
+      },
+      {
+        id: "/api/stop/[stop].json",
+        pattern: /^\/api\/stop\/([^/]+?)\.json\/?$/,
+        params: [{ "name": "stop", "optional": false, "rest": false, "chained": false }],
+        page: null,
+        endpoint: () => Promise.resolve().then(() => (init_server_ts2(), server_ts_exports2))
       }
     ],
     matchers: async () => {
