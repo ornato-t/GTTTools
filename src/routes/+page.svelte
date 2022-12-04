@@ -24,8 +24,8 @@
 		return `${d.getHours()}:${d.getMinutes()}`;
 	}
 
-	const pollingRoute = '13';
-	const pollingStop = 25;
+	const pollingRoute = '10';
+	const pollingStop = 27;
 	const vehicle: Promise<vehicle[]> = getVehicle(pollingRoute);
 	const stop: Promise<stop[]> = getStop(pollingStop);
 </script>
