@@ -10,7 +10,7 @@ async function pollRoute(route: string) {
   const options = {
     method: 'GET',
     headers: {
-      Referer: `https://www.gtt.to.it/cms/percorari/urbano?view=percorsi&bacino=U&linea=${route}&Regol=GE`
+      Referer: `https://www.gtt.to.it/cms/percorari/urbano`
     }
   };
 
