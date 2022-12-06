@@ -36,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@vercel/edge": "^0.1.2",
 		"aws-sdk": "^2.1268.0",
 		"daisyui": "^2.42.1",
 		"events": "^3.3.0",
