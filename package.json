@@ -37,6 +37,7 @@
 	"type": "module",
 	"dependencies": {
 		"daisyui": "^2.42.1",
+		"edge-runtime": "^2.0.2",
 		"events": "^3.3.0"
 	}
 }
