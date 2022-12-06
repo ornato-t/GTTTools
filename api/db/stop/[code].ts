@@ -3,4 +3,4 @@ export const config = {
 };
 
 export default (req) =>
-  new Response(`Hello, from ${req.url} I'm now an Edge Function!`);
+  new Response(`Hello, from ${req.query} I'm now an Edge Function!`);
