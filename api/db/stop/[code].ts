@@ -1,12 +1,6 @@
-import { runServer, EdgeRuntime } from 'edge-runtime'
+export const config = {
+  runtime: 'experimental-edge',
+};
 
-const runtime = new EdgeRuntime()
-const server = await runServer({ runtime })
-
-console.log(`Listening at ${server.url}`)
-
-export default function handler(request, response) {
-    const { code } = request.query;
-    return response.end(`Hello, stop number:${code}!`);
-  }
-  
+export default (req) =>
+  new Response(`Hello, from ${req.url} I'm now an Edge Function!`);
