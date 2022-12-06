@@ -9,8 +9,8 @@ export const load: any = async ({ params }) => {
 }
 
 async function getStop(stop: number) {
-    // const station = await fetch(`tools.gtt.cx/api/stop/${stop}.json`);
-    const station = await fetch(`http://tools.gtt.cx/api/stop/${stop}.json`);
+    // const station = await fetch(`tools.gtt.cx/proxy/stop/${stop}.json`);
+    const station = await fetch(`http://tools.gtt.cx/proxy/stop/${stop}.json`);
     const data = await station.json();
     return data as stop[];
 }
