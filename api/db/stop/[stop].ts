@@ -6,9 +6,9 @@ export default async function handler(request: Request, response: any) {  //Can'
   await client.connect();
   const db = client.db('GTTTools').collection('stops')
   const code = parseInt((request.url.match(/\d{1,}/gm) as string[])[0]);
-  const res = await db.findOne({ code: code });
+  const res = await db.findOne({ code: code }, { projection: { _id: 0, code: 0 } });
 
   response.status(200 as number).json({
-    code: code, cunt: true, query: res
+    code: code, data: res
   });
 }
