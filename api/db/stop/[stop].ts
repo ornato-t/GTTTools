@@ -5,10 +5,10 @@ export const config = {
 };
 
 const client = new MongoClient(process.env.MONGODB_URI as string);
-await client.connect();
-const db = client.db('GTTTools').collection('stops')
 
 export default async (req: Request) => {
+  await client.connect();
+  const db = client.db('GTTTools').collection('stops')
   const code = parseInt((req.url.match(/\d{1,}/gm) as string[])[0]);
   const res = await db.findOne({ code: code });
 
