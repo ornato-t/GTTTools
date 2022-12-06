@@ -4,8 +4,7 @@ export const config = {
   runtime: 'experimental-edge',
 };
 
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const client = new MongoClient(process.env.MONGODB_URI as string);
 
 export default async (req: Request) => {
   await client.connect();
