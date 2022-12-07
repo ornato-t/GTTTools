@@ -27,7 +27,7 @@
 	<div class="my-1">
 		<p>Route {pass.line}</p>
 		{#each pass.realTime as time}
-			<p>{printLocale(time)}</p>
+			<p>{printLocale(time)} or {time}</p>
 		{/each}
 	</div>
 {/each}
