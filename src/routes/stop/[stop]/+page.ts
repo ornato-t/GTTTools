@@ -12,14 +12,13 @@ export const load: any = async ({ params }) => {
 }
 
 async function getStop(stop: number) {
-    const station = await fetch(`https://tools.gtt.cx/proxy/stop/${stop}.json`);
+    const station = await fetch(`https://tools.gtt.cx/proxy/stop/${stop}`);
     const data = await station.json();
     return data as stop[];
 }
 
 async function getDB(stop: number) {
-    // const station = await fetch(`https://tools.gtt.cx/api/db/stop/${stop}`);
-    const station = await fetch(`https://tools.gtt.cx/proxy/stopDB/${stop}.json`);
+    const station = await fetch(`https://tools.gtt.cx/proxy/stopDB/${stop}`);
     const data = await station.json();
     return data as stopDB;
 }
