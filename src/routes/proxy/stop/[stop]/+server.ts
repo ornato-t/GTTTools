@@ -31,7 +31,7 @@ function dateFromHourStr(str: string) {
     const d = new Date();
     const i = str.indexOf(':')
 
-    return new Date(d.getFullYear(), d.getMonth(), d.getDay(), parseInt(str.substring(0, i)), parseInt(str.substring(i+1)));
+    return new Date(d.getFullYear(), d.getMonth(), d.getDay(), parseInt(str.substring(0, i)) - 1, parseInt(str.substring(i+1)));    //-1 to hours to correct timezone. I'll probably regret this
 }
 
 //Renames bus substituting trams, called "X navetta" to "XN", as shown on the bus themselves

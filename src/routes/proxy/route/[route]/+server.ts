@@ -42,5 +42,5 @@ function updatedDate(dateStr: string) {
   dateStr = dateStr.replaceAll('/', '-');
   const dateFields = dateStr.split('-');
 
-  return new Date(parseInt(dateFields[2]), parseInt(dateFields[1]) - 1, parseInt(dateFields[0]), parseInt(dateFields[3]), parseInt(dateFields[4])) 
+  return new Date(parseInt(dateFields[2]), parseInt(dateFields[1]) - 1, parseInt(dateFields[0]), parseInt(dateFields[3]) - 1, parseInt(dateFields[4])) //-1 hour to correct time zone. I'll probably regret this
 }
