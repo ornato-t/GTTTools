@@ -11,12 +11,12 @@ interface stopDBAPI {
 }
 
 export const GET: RequestHandler = async ({ params }) => {
-    return new Response(JSON.stringify(await pollStop(params.stop as string)));
+    return new Response(JSON.stringify(await pollDB(params.stop as string)));
 }
 
 //Fetch all info regarding departing vehicles from a stop (by number)
-export async function pollStop(stop: string) {
-    const url = `https://www.gtt.to.it/cms/index.php?option=com_gtt&task=palina.getTransitiOld&palina=${stop}&realtime=true`;
+export async function pollDB(stop: string) {
+    const url = `https://tools.gtt.cx/api/stop/${stop}`;
     const options = {
         method: 'GET'
     };
