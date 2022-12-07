@@ -28,19 +28,19 @@ async function pollRoute(route: string) {
   return vehicles;
 }
 
-// //Returns the full word "Bus" or "Tram"
+//Returns the full word "Bus" or "Tram"
 function vehicleName(initial: string) {
   if (initial === 'B') return 'Bus';
   if (initial === 'T') return 'Tram';
   return initial;
 }
 
-// //Converts a date string in the format "DD/MM/YYYY HH:mm" to a date object
+//Converts a date string in the format "DD/MM/YYYY HH:mm" to a date object
 function updatedDate(dateStr: string) {
   dateStr = dateStr.replace(' ', '-');
   dateStr = dateStr.replace(':', '-');
   dateStr = dateStr.replaceAll('/', '-');
   const dateFields = dateStr.split('-');
-  const dateStrReconstructed = `${dateFields[2]}-${dateFields[1]}-${dateFields[0]}T${dateFields[3]}:${dateFields[4]}`;
-  return new Date(dateStrReconstructed);
+
+  return new Date(parseInt(dateFields[0]), parseInt(dateFields[1]), parseInt(dateFields[2]), parseInt(dateFields[3]), parseInt(dateFields[4]))
 }
