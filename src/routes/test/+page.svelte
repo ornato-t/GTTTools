@@ -3,13 +3,13 @@
 	import type { stop } from '$lib/stop';
 
 	async function getVehicle(route: string) {
-		const line = await fetch(`/proxy/route/${route}.json`);
+		const line = await fetch(`/proxy/route/${route}`);
 		const data = await line.json();
 		return data as vehicle[];
 	}
 
 	async function getStop(stop: number) {
-		const station = await fetch(`/proxy/stop/${stop}.json`);
+		const station = await fetch(`/proxy/stop/${stop}`);
 		const data = await station.json();
 		return data as stop[];
 	}
