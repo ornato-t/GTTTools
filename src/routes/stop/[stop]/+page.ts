@@ -18,7 +18,8 @@ async function getStop(stop: number) {
 }
 
 async function getDB(stop: number) {
-    const station = await fetch(`https://tools.gtt.cx/api/db/stop/${stop}`);
+    // const station = await fetch(`https://tools.gtt.cx/api/db/stop/${stop}`);
+    const station = await fetch(`https://tools.gtt.cx/proxy/stopDB/${stop}.json`);
     const data = await station.json();
     return data as stopDB;
 }
