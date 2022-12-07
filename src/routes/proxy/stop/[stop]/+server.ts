@@ -29,9 +29,9 @@ export async function pollStop(stop: string) {
 //Returns a date object from a string formatted as HH:mm
 function dateFromHourStr(str: string) {
     const d = new Date();
-    const dateStr = d.toISOString();
-    const ISOStr = `${dateStr.substring(0, dateStr.indexOf('T'))}T${str}`;
-    return new Date(ISOStr);
+    const i = str.indexOf(':')
+
+    return new Date(d.getFullYear(), d.getMonth(), d.getDay(), parseInt(str.substring(0, i)), parseInt(str.substring(i+1)));
 }
 
 //Renames bus substituting trams, called "X navetta" to "XN", as shown on the bus themselves
