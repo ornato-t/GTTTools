@@ -17,7 +17,5 @@ export default async function handler(request: Request, response: any) {  //Can'
   const code = parseInt((request.url.match(/\d{1,}/gm) as string[])[0]);
   const res = await db.findOne({ code: code }, { projection: { _id: 0, code: 0, city: 0 } }) as stopDB;
 
-  response.status(200).json({
-    data: res
-  });
+  response.status(200).json(res);
 }
