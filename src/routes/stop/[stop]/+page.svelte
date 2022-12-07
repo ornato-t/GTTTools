@@ -3,7 +3,7 @@
 
 	function printLocale(d: Date) {
 		d = new Date(d);
-		return `${d.getHours()}:${d.getMinutes()}`;
+		return `${d.getHours()-1}:${d.getMinutes()}`;
 	}
 
 	export let data: PageData;
