@@ -2,8 +2,14 @@
 	import type { PageData } from './$types';
 
 	function printLocale(d: Date) {
-		d = new Date(d);
-		return `${d.getHours()-1}:${d.getMinutes()}`;
+		const formatter = Intl.DateTimeFormat('it-it', {
+			minute: '2-digit',
+			hour: '2-digit',
+			hour12: false,
+			timeZone: 'CET'
+		});
+
+		return formatter.format(new Date(d));
 	}
 
 	export let data: PageData;
