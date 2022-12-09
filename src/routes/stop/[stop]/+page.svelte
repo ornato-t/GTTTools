@@ -1,11 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import type { stop } from '$lib/stop';
-	// import { onMount } from 'svelte/types/runtime/internal/lifecycle';
-
-	// onMount(async () => {
-	// 	api = await getStop(data.code)
-	// })
 
 	async function getStop(stop: number) {
 		const station = await fetch(`https://tools.gtt.cx/proxy/stop/${stop}`);
