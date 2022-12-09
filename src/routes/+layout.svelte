@@ -4,6 +4,54 @@
 
 <svelte:head>
 	<title>GTTTools</title>
+	<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
 </svelte:head>
 
-<slot/>
+<div class="navbar bg-base-100">
+	<div class="navbar-start">
+		<label for="drawer" class="btn btn-square btn-ghost drawer-button lg:hidden">
+			<i class="bx bx-menu-alt-left bx-md" />
+		</label>
+	</div>
+	<div class="navbar-center">
+		<a class="btn btn-ghost normal-case text-xl" href="/">
+			<img src="/logo-text.png" alt="GTTTools" class="h-10" />
+		</a>
+	</div>
+	<div class="navbar-end" />
+</div>
+
+<div class="drawer drawer-mobile">
+	<input id="drawer" type="checkbox" class="drawer-toggle" />
+	<div class="drawer-content flex flex-col items-center justify-center">
+		<slot />
+	</div>
+	<div class="drawer-side">
+		<label for="drawer" class="drawer-overlay" />
+		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
+			<li><a href="/stop/search" data-sveltekit-preload-data>Cerca fermata</a></li>
+			<li><a href="/stop/gps" data-sveltekit-preload-data>Fermate vicine</a></li>
+			<li><a href="/stop/route" data-sveltekit-preload-data>Cerca linea</a></li>
+		</ul>
+	</div>
+</div>
+
+<footer class="footer p-10 bg-neutral text-neutral-content">
+	<div>
+		<span class="footer-title">About</span>
+		<a class="link link-hover" href="/about/me" data-sveltekit-preload-data>Chi sono</a>
+		<a class="link link-hover" href="/about/gtttools" data-sveltekit-preload-data
+			>Perché GTTTools?</a
+		>
+		<a
+			class="link link-hover"
+			href="https://github.com/ornato-t/GTTTools"
+			data-sveltekit-preload-data>GitHub</a
+		>
+	</div>
+	<div>
+		<span class="footer-title">Note legali</span>
+		<a class="link link-hover" href="/about/privacy" data-sveltekit-preload-data>Privacy</a>
+		<a class="link link-hover" href="/about/data" data-sveltekit-preload-data>Dati</a>
+	</div>
+</footer>
