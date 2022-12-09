@@ -9,7 +9,8 @@ export const GET: RequestHandler = async ({ params }) => {
 export async function pollStop(stop: string) {
     const url = `https://www.gtt.to.it/cms/index.php?option=com_gtt&task=palina.getTransitiOld&palina=${stop}&realtime=true`;
     const options = {
-        method: 'GET'
+        method: 'GET',
+        mode: 'no-cors' as RequestMode
     };
 
     const response = await fetch(url, options);
