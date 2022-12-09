@@ -1,8 +1,12 @@
+import { MongoClient, ObjectId } from "mongodb"
+import { MONGODB_URI } from "$env/static/private";
 import type { stopDB } from "$lib/stopDB";
 import type { RequestHandler } from "@sveltejs/kit";
 
+const client = new MongoClient(MONGODB_URI as string);
+
 interface stopDBAPI {
-    _id: string,    //It's actually a ObjectId but I can't use it here and would need to import a module just for that
+    _id: ObjectId,
     code: number,
     name: string,
     description: string,
@@ -16,15 +20,14 @@ export const GET: RequestHandler = async ({ params }) => {
 
 //Fetch all info regarding departing vehicles from a stop (by number)
 export async function pollDB(stop: string) {
-    const url = `https://tools.gtt.cx/api/stop/${stop}`;
-    const options = {
-        method: 'GET'
-    };
+    await client.connect();
+    const db = client.db('GTTTools').collection('stops');
 
-    const response = await fetch(url, options);
-    const stops: stopDBAPI = await response.json();
+    const code = parseInt(stop);
+
+    const stops = await db.findOne({ code: code }, { projection: { _id: 0, code: 0, city: 0 } }) as stopDBAPI;
     const result: stopDB = {
-        code: stops.code,
+        code: code,
         name: stops.name,
         description: stops.description,
         coordinates: {
