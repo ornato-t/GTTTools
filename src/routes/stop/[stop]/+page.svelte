@@ -15,19 +15,18 @@
 	export let data: PageData;
 </script>
 
-<h1 class="mb-4 font-bold">Stop {data.code}</h1>
+<h1 class="mb-4 font-bold">Fermata numero {data.code}</h1>
 <div class="my-4">
-	<p>Stop data</p>
-	<p>Name: {data.db.name}</p>
-	<p>Description: {data.db.description}</p>
+	<p>Nome: {data.db.name}</p>
+	<p>Descrizione: {data.db.description}</p>
 	<p>Lat: {data.db.coordinates.lat}</p>
 	<p>Lon: {data.db.coordinates.lon}</p>
 </div>
 {#each data.api as pass}
 	<div class="my-1">
-		<p>Route {pass.line}</p>
+		<p>Linea {pass.line}</p>
 		{#each pass.realTime as time}
-			<p>{printLocale(time)} or {time}</p>
+			<p>{printLocale(time)}</p>
 		{/each}
 	</div>
 {/each}
