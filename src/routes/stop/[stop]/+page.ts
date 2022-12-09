@@ -1,11 +1,13 @@
 import type { stop } from '$lib/stop';
 import type { stopDB } from '$lib/stopDB';
+import type { PageLoad } from './$types';
 
-export const load: any = async ({ params }) => {
-    const stop: Promise<stop[]> = getStop(params.stop);
-    const data: Promise<stopDB> = await getDB(params.stop)
+export const load: PageLoad = async ({ params }) => {
+    const code = parseInt(params.stop)
+    const stop: Promise<stop[]> = getStop(code);
+    const data: Promise<stopDB> = getDB(code);
     return {
-        code: params.stop,
+        code: code,
         api: stop,
         db: data
     };
