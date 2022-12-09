@@ -42,7 +42,7 @@
 				<a href="/stop/gps" data-sveltekit-preload-data on:click={toggleDrawer}>Fermate vicine</a>
 			</li>
 			<li>
-				<a href="/stop/route" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca linea</a>
+				<a href="/route/10" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca linea</a>
 			</li>
 		</ul>
 	</div>
