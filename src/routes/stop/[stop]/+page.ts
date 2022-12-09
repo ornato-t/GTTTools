@@ -6,7 +6,7 @@ export const load: PageLoad = async ({ params }) => {
     const code = parseInt(params.stop);
     return {
         code,
-        api: getStop(code),
+        // api: getStop(code),
         db: getDB(code)
     };
 }
