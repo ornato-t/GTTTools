@@ -17,8 +17,8 @@ export async function pollStop(stop: string) {
     const stopsWeb: stopWeb[] = await response.json();
 
     const stops: stop[] = stopsWeb.map(pass => ({
-        line: parseBusN(pass.LineaAlias),
-        lineID: pass.Linea,
+        route: parseBusN(pass.LineaAlias),
+        routeID: pass.Linea,
         direction: pass.Direzione,
         realTime: pass.PassaggiRT.map(hour => dateFromHourStr(hour)),
         programmed: pass.PassaggiPR.map(hour => dateFromHourStr(hour))

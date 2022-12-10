@@ -14,8 +14,8 @@ export interface stopWeb {
 
 //Represents a vehicle stopping by a stop. Prettified for use in app
 export interface stop {
-    line: string,
-    lineID: string,
+    route: string,
+    routeID: string,
     direction: string,
     realTime: Date[],
     programmed: Date[]

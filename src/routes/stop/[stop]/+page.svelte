@@ -34,10 +34,14 @@
 {#await api then stop}
 	{#each stop as pass}
 		<div class="my-1">
-			<p>Linea {pass.line}</p>
-			{#each pass.realTime as time}
-				<p>{printLocale(time)}</p>
-			{/each}
+			{#if pass.realTime.length > 0}
+				<a href="/route/{pass.route}" class="link" data-sveltekit-preload-data>
+					<p>Linea {pass.route}</p></a
+				>
+				{#each pass.realTime as time}
+					<p>{printLocale(time)}</p>
+				{/each}
+			{/if}
 		</div>
 	{/each}
 {/await}
