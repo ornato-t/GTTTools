@@ -1,5 +1,5 @@
 export interface stopDB{
-    // code: number,
+    code: number,
     name: string,
     description: string,
     city: string,
