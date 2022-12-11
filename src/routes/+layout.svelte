@@ -29,7 +29,7 @@
 
 <div class="drawer drawer-mobile">
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
-	<div class="drawer-content flex flex-col items-center justify-center">
+	<div class="drawer-content flex flex-col mx-8 my-4">
 		<slot />
 	</div>
 	<div class="drawer-side">
