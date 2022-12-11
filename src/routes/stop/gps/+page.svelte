@@ -15,16 +15,18 @@
 
 <Geolocation
 	getPosition
-	watch={true}
 	on:position={(e) => {
 		coords = e.detail.coords;
+		document.location = `/stop/gps/${coords.longitude};${coords.latitude};${Math.round(
+			coords.accuracy
+		)}`; //Redirect to DB query page
 	}}
 	on:error={(e) => {
 		//TODO: check for unsupported device error
 		errorFlag = true;
 		errorCode = e.detail.code; //This isn't an error
-		console.log(e.detail);
 	}}
+	options={{enableHighAccuracy: true}}
 />
 
 {#if errorFlag}
@@ -42,17 +44,6 @@
 		>Prova a usare la
 		<a href="/stop/search" class="link" data-sveltekit-preload-data> ricerca testuale</a>
 	</span>
-{:else if coords != undefined}
-	<div>Coordinate</div>
-	<div>
-		Latitudine: {coords.latitude}
-	</div>
-	<div>
-		Longitudine: {coords.longitude}
-	</div>
-	<div>
-		Precisione: {Math.round(coords.accuracy)}m
-	</div>
 {:else}
 	Caricamento...
 {/if}
