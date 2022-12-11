@@ -15,13 +15,14 @@
 
 <Geolocation
 	getPosition
+	watch={true}
 	on:position={(e) => {
 		coords = e.detail.coords;
 	}}
 	on:error={(e) => {
 		//TODO: check for unsupported device error
 		errorFlag = true;
-		errorCode = e.detail.code;	//This isn't an error
+		errorCode = e.detail.code; //This isn't an error
 		console.log(e.detail);
 	}}
 />
