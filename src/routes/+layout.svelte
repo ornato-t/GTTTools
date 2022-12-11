@@ -27,7 +27,7 @@
 	<div class="navbar-end" />
 </div>
 
-<div class="drawer drawer-mobile">
+<div class="drawer drawer-mobile h-full">
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content flex flex-col mx-8 my-4">
 		<slot />
