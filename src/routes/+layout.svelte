@@ -13,24 +13,48 @@
 	<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
 </svelte:head>
 
-<div class="navbar bg-base-100">
-	<div class="navbar-start">
-		<label for="drawer" class="btn btn-square btn-ghost drawer-button lg:hidden">
-			<i class="bx bx-menu-alt-left bx-md" />
-		</label>
-	</div>
-	<div class="navbar-center">
-		<a class="btn btn-ghost normal-case text-xl" href="/">
-			<img src="/logo-text.png" alt="GTTTools" class="h-10" />
-		</a>
-	</div>
-	<div class="navbar-end" />
-</div>
-
 <div class="drawer drawer-mobile h-full">
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content flex flex-col mx-8 my-4">
-		<slot />
+		<div class="navbar bg-base-100">
+			<div class="navbar-start">
+				<label for="drawer" class="btn btn-square btn-ghost drawer-button lg:hidden">
+					<i class="bx bx-menu-alt-left bx-md" />
+				</label>
+			</div>
+			<div class="navbar-center">
+				<a class="btn btn-ghost normal-case text-xl" href="/">
+					<img src="/logo-text.png" alt="GTTTools" class="h-10" />
+				</a>
+			</div>
+			<div class="navbar-end" />
+		</div>
+
+		<div class="min-h-[55vh]">
+			<slot />
+		</div>
+
+		<footer class="footer p-10 bg-neutral text-neutral-content">
+			<div>
+				<span class="footer-title">About</span>
+				<a class="link link-hover" href="/about/me" data-sveltekit-preload-data>Chi sono</a>
+				<a class="link link-hover" href="/about/gtttools" data-sveltekit-preload-data>
+					Perché GTTTools?
+				</a>
+				<a
+					class="link link-hover"
+					href="https://github.com/ornato-t/GTTTools"
+					data-sveltekit-preload-data
+				>
+					GitHub
+				</a>
+			</div>
+			<div>
+				<span class="footer-title">Note legali</span>
+				<a class="link link-hover" href="/about/privacy" data-sveltekit-preload-data>Privacy</a>
+				<a class="link link-hover" href="/about/data" data-sveltekit-preload-data>Dati</a>
+			</div>
+		</footer>
 	</div>
 	<div class="drawer-side">
 		<label for="drawer" class="drawer-overlay" />
@@ -47,25 +71,3 @@
 		</ul>
 	</div>
 </div>
-
-<footer class="footer p-10 bg-neutral text-neutral-content">
-	<div>
-		<span class="footer-title">About</span>
-		<a class="link link-hover" href="/about/me" data-sveltekit-preload-data>Chi sono</a>
-		<a class="link link-hover" href="/about/gtttools" data-sveltekit-preload-data>
-			Perché GTTTools?
-		</a>
-		<a
-			class="link link-hover"
-			href="https://github.com/ornato-t/GTTTools"
-			data-sveltekit-preload-data
-		>
-			GitHub
-		</a>
-	</div>
-	<div>
-		<span class="footer-title">Note legali</span>
-		<a class="link link-hover" href="/about/privacy" data-sveltekit-preload-data>Privacy</a>
-		<a class="link link-hover" href="/about/data" data-sveltekit-preload-data>Dati</a>
-	</div>
-</footer>
