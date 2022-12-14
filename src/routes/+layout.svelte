@@ -15,7 +15,7 @@
 
 <div class="drawer drawer-mobile h-full">
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
-	<div class="drawer-content flex flex-col mx-8 my-4">
+	<div class="drawer-content flex flex-col ">
 		<div class="navbar bg-base-100">
 			<div class="navbar-start">
 				<label for="drawer" class="btn btn-square btn-ghost drawer-button lg:hidden">
@@ -30,7 +30,7 @@
 			<div class="navbar-end" />
 		</div>
 
-		<div class="min-h-[55vh]">
+		<div class="min-h-[59vh] mx-4 my-2">
 			<slot />
 		</div>
 
