@@ -1,7 +1,14 @@
 <script>
+	import { onMount } from 'svelte';
 	import '../app.css';
 
 	let drawerVisible = false;
+	let manualTheme = '';
+	let dark = false;
+
+	onMount(() => {
+		if (window.matchMedia('(prefers-color-scheme: dark)').matches) dark = true;
+	});
 
 	function toggleDrawer() {
 		drawerVisible = !drawerVisible;
@@ -13,7 +20,7 @@
 	<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
 </svelte:head>
 
-<div class="drawer drawer-mobile h-full">
+<div class="drawer drawer-mobile h-full" data-theme={manualTheme}>
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content flex flex-col ">
 		<div class="navbar bg-base-100">
@@ -27,7 +34,31 @@
 					<img src="/logo-text.png" alt="GTTTools" class="h-10" />
 				</a>
 			</div>
-			<div class="navbar-end" />
+			<div class="navbar-end">
+				{#if dark}
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<div
+						class="btn btn-square btn-ghost"
+						on:click={() => {
+							manualTheme = 'winter';
+							dark = !dark;
+						}}
+					>
+						<i class="bx bx-sun bx-sm"/>
+					</div>
+				{:else}
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<div
+						class="btn btn-square btn-ghost"
+						on:click={() => {
+							manualTheme = 'night';
+							dark = !dark;
+						}}
+					>
+						<i class="bx bx-moon bx-sm"/>
+					</div>
+				{/if}
+			</div>
 		</div>
 
 		<div class="min-h-[59vh] mx-4 my-2">
