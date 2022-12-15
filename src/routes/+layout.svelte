@@ -44,7 +44,7 @@
 							dark = !dark;
 						}}
 					>
-						<i class="bx bx-sun bx-sm"/>
+						<i class="bx bx-sun bx-sm" />
 					</div>
 				{:else}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -55,7 +55,7 @@
 							dark = !dark;
 						}}
 					>
-						<i class="bx bx-moon bx-sm"/>
+						<i class="bx bx-moon bx-sm" />
 					</div>
 				{/if}
 			</div>
@@ -65,7 +65,7 @@
 			<slot />
 		</div>
 
-		<footer class="footer p-10 bg-neutral text-neutral-content mt-6">
+		<footer class="footer p-10 bg-neutral text-neutral-content mt-6 {drawerVisible ? 'hidden' : 'block'}">
 			<div>
 				<span class="footer-title">About</span>
 				<a class="link link-hover" href="/about/me" data-sveltekit-preload-data>Chi sono</a>
@@ -87,7 +87,7 @@
 			</div>
 		</footer>
 	</div>
-	<div class="drawer-side min-h-full">
+	<div class="drawer-side min-h-screen">
 		<label for="drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
 			<li>
