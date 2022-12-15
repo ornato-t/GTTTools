@@ -56,7 +56,7 @@
 			</div>
 		</footer>
 	</div>
-	<div class="drawer-side">
+	<div class="drawer-side min-h-full">
 		<label for="drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
 			<li>
