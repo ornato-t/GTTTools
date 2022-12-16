@@ -2,6 +2,7 @@
 	export const ssr = false; //Using a browser only API, can't SSR
 	import Geolocation from 'svelte-geolocation';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	let coords: GeolocationCoordinates;
 	let getPosition = false;
@@ -17,16 +18,15 @@
 	getPosition
 	on:position={(e) => {
 		coords = e.detail.coords;
-		document.location = `/stop/gps/${coords.longitude};${coords.latitude};${Math.round(
-			coords.accuracy
-		)}`; //Redirect to DB query page
+		const url = `/stop/gps/${coords.longitude};${coords.latitude};${Math.round(coords.accuracy)}`;
+		goto(url); //Redirect to DB query page
 	}}
 	on:error={(e) => {
 		//TODO: check for unsupported device error
 		errorFlag = true;
 		errorCode = e.detail.code; //This isn't an error
 	}}
-	options={{enableHighAccuracy: true}}
+	options={{ enableHighAccuracy: true }}
 />
 
 {#if errorFlag}
