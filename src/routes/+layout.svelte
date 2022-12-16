@@ -20,12 +20,12 @@
 	<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
 </svelte:head>
 
-<div class="drawer drawer-mobile h-full" data-theme={manualTheme}>
+<div class="drawer" data-theme={manualTheme}>
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
-	<div class="drawer-content flex flex-col ">
+	<div class="drawer-content">
 		<div class="navbar bg-base-100">
 			<div class="navbar-start">
-				<label for="drawer" class="btn btn-square btn-ghost drawer-button lg:hidden">
+				<label for="drawer" class="btn btn-square btn-ghost drawer-button">
 					<i class="bx bx-menu-alt-left bx-md" />
 				</label>
 			</div>
@@ -87,7 +87,7 @@
 			</div>
 		</footer>
 	</div>
-	<div class="drawer-side min-h-screen">
+	<div class="drawer-side">
 		<label for="drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
 			<li>
