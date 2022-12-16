@@ -65,7 +65,7 @@
 			<slot />
 		</div>
 
-		<footer class="footer p-10 bg-neutral text-neutral-content mt-6 {drawerVisible ? 'hidden' : 'block'}">
+		<footer class="footer p-10 bg-neutral text-neutral-content mt-6">
 			<div>
 				<span class="footer-title">About</span>
 				<a class="link link-hover" href="/about/me" data-sveltekit-preload-data>Chi sono</a>

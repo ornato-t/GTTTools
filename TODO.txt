@@ -1,0 +1,1 @@
+It works on basedcount, change the daisyui component and create the navbar manually on larger viewports 
