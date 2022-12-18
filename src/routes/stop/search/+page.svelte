@@ -32,7 +32,7 @@
 	{#if stops != undefined && value.length > 0}
 		{#each stops as stop}
 			<a
-				class="my-1 card card-compact bg-base-200 btn h-fit"
+				class="my-1 card card-compact bg-base-200 btn h-fit animate-none"
 				href="/stop/{stop.code}"
 				data-sveltekit-preload-data
 			>
