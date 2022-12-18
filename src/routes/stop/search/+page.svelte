@@ -42,7 +42,7 @@
 					{#if stop.description != undefined && stop.description != stop.name}
 						<span class="col-span-4 text-xs italic place-self-start">{stop.description}</span>
 					{/if}
-					{#if stop.city != undefined && stop.city != 'Torino'}
+					{#if stop.city != undefined && stop.city != 'TORINO'}
 						{#if !stop.name.includes(stop.city)}
 							<span class="col-span-4 text-xs italic place-self-start">{stop.city}</span>
 						{/if}
