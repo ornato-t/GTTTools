@@ -10,7 +10,7 @@ export const GET: RequestHandler = async ({ params, locals }) => {
     const skeleton = [
         {},
         { $project: { _id: 0, coordinates: 0 } },
-        { $addFields: { name: { $toUpper: "$name" }, description: { $toUpper: "$description" } } },
+        { $addFields: { name: { $toUpper: "$name" }, description: { $toUpper: "$description" }, city: { $toUpper: "$city" } } },
         { $limit: STOP_NUM }
     ];
     let aggr = new Array<object>;

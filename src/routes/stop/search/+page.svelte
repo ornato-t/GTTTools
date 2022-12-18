@@ -8,7 +8,6 @@
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
 			const res = await fetch(`https://tools.gtt.cx/proxy/search-stop/${stop}`);
-			// const res = await fetch(`http://localhost:5173/proxy/search-stop/${stop}`);
 			stops = await res.json();
 		}
 	}
@@ -33,22 +32,21 @@
 	{#if stops != undefined && value.length > 0}
 		{#each stops as stop}
 			<a
-				class="card card-compact bg-neutral shadow-xl my-3"
+				class="my-1 card card-compact bg-base-200 btn h-fit"
 				href="/stop/{stop.code}"
 				data-sveltekit-preload-data
 			>
-				<div class="card-body">
-					<h2 class="card-title break-words">{stop.name}</h2>
-
-					{#if stop.description != undefined}
-						<p>{stop.description}</p>
+				<div class="card-body w-full grid grid-cols-4">
+					<span class=" text-primary col-span-3 card-title">{stop.name}</span>
+					<span class="text-secondary py-1"> {stop.code}</span>
+					{#if stop.description != undefined && stop.description != stop.name}
+						<span class="col-span-4 text-xs italic place-self-start">{stop.description}</span>
 					{/if}
-
 					{#if stop.city != undefined && stop.city != 'Torino'}
-						<p>{stop.city}</p>
+						{#if !stop.name.includes(stop.city)}
+							<span class="col-span-4 text-xs italic place-self-start">{stop.city}</span>
+						{/if}
 					{/if}
-
-					<p>{stop.code}</p>
 				</div>
 			</a>
 		{/each}
