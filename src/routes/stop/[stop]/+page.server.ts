@@ -1,21 +1,9 @@
-import { MongoClient } from "mongodb"
-import { MONGODB_URI } from "$env/static/private";
 import type { stopDB } from '$lib/stopDB';
 import type { PageServerLoad } from './$types';
 
-const client = new MongoClient(MONGODB_URI as string);
-
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+    const { stops } = locals;
     const code = parseInt(params.stop);
-    return {
-        code,
-        db: getDB(code)
-    };
-}
-
-async function getDB(code: number) {
-    await client.connect();
-    const db = client.db('GTTTools').collection('stops');
 
     const aggr = [
         { '$match': { 'code': code } },
@@ -28,10 +16,14 @@ async function getDB(code: number) {
             }
         },
         { '$project': { 'coords': 0 } },
-    ]
+    ];
 
-    const stops = (await db.aggregate(aggr).toArray())[0] as stopDB
-    
-    return stops;
+    const res = stops.aggregate(aggr).toArray().then((arr: stopDB[]) => {
+        return arr[0] as stopDB;
+    }) as Promise<stopDB>;
+
+    return {
+        code,
+        db: res
+    };
 }
-

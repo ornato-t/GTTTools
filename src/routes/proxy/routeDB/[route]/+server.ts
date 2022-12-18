@@ -1,28 +1,11 @@
-import { MongoClient, ObjectId } from "mongodb"
-import { MONGODB_URI } from "$env/static/private";
 import type { routeDB } from "$lib/routeDB";
 import type { RequestHandler } from "@sveltejs/kit";
 
-const client = new MongoClient(MONGODB_URI as string);
-
-interface routeDBAPI {
-    _id: ObjectId,
-    code: string,
-    name: string,
-    type: string,
-    provider: string
-}
-
-export const GET: RequestHandler = async ({ params }) => {
-    return new Response(JSON.stringify(await pollDB(params.route as string)));
-}
-
 //Fetch all info regarding departing vehicles from a stop (by number)
-export async function pollDB(code: string) {
-    await client.connect();
-    const db = client.db('GTTTools').collection('routes');
+export const GET: RequestHandler = async ({ params, locals }) => {
+    const {routes} = locals;
 
-    const route = await db.findOne({ code: code }, { projection: { _id: 0, provider: 0 } }) as routeDBAPI as routeDB;
+    const route = await routes.findOne({ code: params.route }, { projection: { _id: 0, provider: 0 } }) as routeDB;
 
-    return route;
+    return new Response(JSON.stringify(route));
 }
