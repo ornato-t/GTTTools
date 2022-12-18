@@ -7,42 +7,48 @@ const STOP_NUM = 20;
 export const GET: RequestHandler = async ({ params, locals }) => {
     const { stops } = locals;
     const stop = params.stop as string;
-    let aggr = [];  //Aggregation pipeline
+    const skeleton = [
+        {},
+        { $project: { _id: 0, city: 0, coordinates: 0 } },
+        { $project: { name: { $toUpper: "$name" }, description: { $toUpper: "$description" } } },
+        { $limit: STOP_NUM }
+    ];
+    let aggr = new Array<object>;
 
     if (!Number.isNaN(stop)) {   //If search key is numeric add code lookup
         const code = parseInt(stop)
-        aggr = [
-            {
-                $search: {
-                    index: 'autocomplete_stops',
-                    compound: {
-                        should: [
-                            { autocomplete: { query: stop, path: 'description' } },
-                            { autocomplete: { query: stop, path: 'name' } },
-                            { range: { path: 'code', gte: code, lte: code, score: { boost: { value: 100 } } } }
-                        ]
-                    }
+        const search = {
+            $search: {
+                index: 'autocomplete_stops', compound: {
+                    should: [
+                        { autocomplete: { query: stop, path: 'description' } },
+                        { autocomplete: { query: stop, path: 'name' } },
+                        { range: { path: 'code', gte: code, lte: code, score: { boost: { value: 100 } } } }
+                    ]
                 }
-            },
-            { $project: { _id: 0, city: 0, coordinates: 0 } },
-            { $limit: STOP_NUM }
-        ]
+            }
+        }
+
+        aggr = skeleton.map((stage, i) => {
+            if (i === 0) return search;
+            else return stage;
+        });
     } else {    //If search key is NOT numeric only look at name and descr 
-        aggr = [
-            {
-                $search: {
-                    index: 'autocomplete_stops',
-                    compound: {
-                        should: [
-                            { autocomplete: { query: stop, path: 'description' } },
-                            { autocomplete: { query: stop, path: 'name' } }
-                        ]
-                    }
+        const search = {
+            $search: {
+                index: 'autocomplete_stops', compound: {
+                    should: [
+                        { autocomplete: { query: stop, path: 'description' } },
+                        { autocomplete: { query: stop, path: 'name' } }
+                    ]
                 }
-            },
-            { $project: { _id: 0, city: 0, coordinates: 0 } },
-            { $limit: STOP_NUM }
-        ]
+            }
+        }
+
+        aggr = skeleton.map((stage, i) => {
+            if (i === 0) return search;
+            else return stage;
+        });
     }
 
     const res = await stops.aggregate(aggr).toArray() as stopDB[];
