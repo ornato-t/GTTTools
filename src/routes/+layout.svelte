@@ -74,7 +74,7 @@
 				</li>
 			</ul>
 
-			<div class="mx-4 my-2 lg:ml-44">
+			<div class="mx-4 my-2 lg:w-full">
 				<slot />
 			</div>
 		</div>
