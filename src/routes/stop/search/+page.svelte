@@ -8,8 +8,18 @@
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
 			const res = await fetch(`https://tools.gtt.cx/proxy/search-stop/${stop}`);
+			// const res = await fetch(`http://localhost:5173/proxy/search-stop/${stop}`);
 			stops = await res.json();
 		}
+	}
+
+	function checkCity(stop: stopDB) {
+		if (stop.city === undefined) return false;
+		if (stop.city === 'TORINO') return false;
+		if (stop.description != undefined) if (stop.description.includes(stop.city)) return false;
+		if (stop.name.includes(stop.city)) return false;
+
+		return true;
 	}
 </script>
 
@@ -42,10 +52,8 @@
 					{#if stop.description != undefined && stop.description != stop.name}
 						<span class="col-span-4 text-xs italic place-self-start">{stop.description}</span>
 					{/if}
-					{#if stop.city != undefined && stop.city != 'TORINO'}
-						{#if !stop.name.includes(stop.city)}
-							<span class="col-span-4 text-xs italic place-self-start">{stop.city}</span>
-						{/if}
+					{#if checkCity(stop)}
+						<span class="col-span-4 text-xs italic place-self-start">{stop.city}</span>
 					{/if}
 				</div>
 			</a>
