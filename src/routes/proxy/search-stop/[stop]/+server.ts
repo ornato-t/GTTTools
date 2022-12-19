@@ -7,17 +7,10 @@ const STOP_NUM = 20;
 export const GET: RequestHandler = async ({ params, locals }) => {
     const { stops } = locals;
     const stop = params.stop as string;
-    const skeleton = [
-        {},
-        { $project: { _id: 0, coordinates: 0 } },
-        { $addFields: { name: { $toUpper: "$name" }, description: { $toUpper: "$description" }, city: { $toUpper: "$city" } } },
-        { $limit: STOP_NUM }
-    ];
-    let aggr = new Array<object>;
+    const code = parseInt(stop);
 
-    if (!Number.isNaN(stop)) {   //If search key is numeric add code lookup
-        const code = parseInt(stop)
-        const search = {
+    const aggr = [
+        {
             $search: {
                 index: 'autocomplete_stops', compound: {
                     should: [
@@ -27,29 +20,11 @@ export const GET: RequestHandler = async ({ params, locals }) => {
                     ]
                 }
             }
-        }
-
-        aggr = skeleton.map((stage, i) => {
-            if (i === 0) return search;
-            else return stage;
-        });
-    } else {    //If search key is NOT numeric only look at name and descr 
-        const search = {
-            $search: {
-                index: 'autocomplete_stops', compound: {
-                    should: [
-                        { autocomplete: { query: stop, path: 'description' } },
-                        { autocomplete: { query: stop, path: 'name' } }
-                    ]
-                }
-            }
-        }
-
-        aggr = skeleton.map((stage, i) => {
-            if (i === 0) return search;
-            else return stage;
-        });
-    }
+        },
+        { $project: { _id: 0, coordinates: 0 } },
+        { $addFields: { name: { $toUpper: "$name" }, description: { $toUpper: "$description" }, city: { $toUpper: "$city" } } },
+        { $limit: STOP_NUM }
+    ];
 
     const res = await stops.aggregate(aggr).toArray() as stopDB[];
 
