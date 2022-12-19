@@ -70,7 +70,7 @@
 					<a href="/stop/gps" data-sveltekit-preload-data>Fermate vicine</a>
 				</li>
 				<li>
-					<a href="/route/10" data-sveltekit-preload-data>Cerca linea</a>
+					<a href="/route/search" data-sveltekit-preload-data>Cerca linea</a>
 				</li>
 			</ul>
 

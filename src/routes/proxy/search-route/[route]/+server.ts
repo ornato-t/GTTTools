@@ -21,11 +21,8 @@ export const GET: RequestHandler = async ({ params, locals }) => {
             }
         }
     }, {
-        $project: { _id: 0, provider: 0, codeInt: 0 }
-    }, 
-    {
-        $addFields: { score: {$meta: 'searchScore'}}
-    },{
+        $project: { _id: 0, codeInt: 0 }
+    }, {
         $limit: STOP_NUM
     }];
 
