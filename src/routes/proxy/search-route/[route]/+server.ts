@@ -1,0 +1,35 @@
+import type { routeDB } from "$lib/routeDB";
+import type { RequestHandler } from "@sveltejs/kit";
+
+const STOP_NUM = 10;
+
+//Fetch all info regarding departing vehicles from a stop (by name, description or code)
+export const GET: RequestHandler = async ({ params, locals }) => {
+    const { routes } = locals;
+    const route = params.route as string;
+    const aggr = [{
+        $search: {
+            index: 'autocomplete_routes',
+            compound: {
+                should: [
+                    { autocomplete: { query: route, path: 'code' } },
+                    { autocomplete: { query: route, path: 'name' } },
+                    { text: { query: route, path: 'type' } },
+                    { range: { path: 'codeInt', gte: Number.parseInt(route), lte: Number.parseInt(route) } },
+                    { text: { query: 'GTT Servizio Urbano', path: 'provider' } }
+                ]
+            }
+        }
+    }, {
+        $project: { _id: 0, provider: 0, codeInt: 0 }
+    }, 
+    {
+        $addFields: { score: {$meta: 'searchScore'}}
+    },{
+        $limit: STOP_NUM
+    }];
+
+    const res = await routes.aggregate(aggr).toArray() as routeDB[];
+
+    return new Response(JSON.stringify(res));
+}
