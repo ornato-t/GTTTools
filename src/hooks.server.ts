@@ -23,6 +23,16 @@ export const handleError = (({ error, event }) => {
                 message: 'GTT API offline',
                 status: 503
             };
+        case '/proxy/stop/[stop]':
+            return {
+                message: 'GTT API offline',
+                status: 503
+            };
+        default:
+            return {
+                message: 'Internal server error',
+                status: 500
+            };
 
     }
 
