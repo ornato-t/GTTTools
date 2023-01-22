@@ -1,8 +1,9 @@
 import type { stopDB } from '$lib/stopDB';
 import type { PageServerLoad } from './$types';
+import type { Collection, Document } from "mongodb";
 
 export const load: PageServerLoad = async ({ params, locals }) => {
-    const { stops } = locals;
+    const { stops }: { stops: Collection<stopDB> } = locals;
     const code = parseInt(params.stop);
 
     const aggr = [
@@ -18,7 +19,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
         { '$project': { 'coords': 0 } },
     ];
 
-    const res = stops.aggregate(aggr).toArray().then((arr: stopDB[]) => {
+    const res = stops.aggregate(aggr).toArray().then((arr: Document[]) => {
         return arr[0] as stopDB;
     }) as Promise<stopDB>;
 

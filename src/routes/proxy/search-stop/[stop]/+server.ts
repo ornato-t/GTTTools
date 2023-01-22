@@ -1,11 +1,13 @@
 import type { stopDB } from "$lib/stopDB";
 import type { RequestHandler } from "@sveltejs/kit";
+import type { Collection } from "mongodb";
 
 const STOP_NUM = 20;
 
 //Fetch all info regarding departing vehicles from a stop (by name, description or code)
 export const GET: RequestHandler = async ({ params, locals }) => {
-    const { stops } = locals;
+    const { stops }: { stops: Collection<stopDB> } = locals;
+
     const stop = params.stop as string;
     const code = parseInt(stop);
 
