@@ -14,6 +14,8 @@ export async function pollStop(stop: string) {
     };
 
     const response = await fetch(url, options);
+    if (response.status !== 200) throw new Error();
+
     const stopsWeb: stopWeb[] = await response.json();
 
     const stops: stop[] = stopsWeb.map(pass => ({
@@ -32,7 +34,7 @@ function dateFromHourStr(str: string) {
     const d = new Date();
     const i = str.indexOf(':')
 
-    return new Date(d.getFullYear(), d.getMonth(), d.getDay(), parseInt(str.substring(0, i)) - 1, parseInt(str.substring(i+1)));    //-1 to hours to correct timezone. I'll probably regret this
+    return new Date(d.getFullYear(), d.getMonth(), d.getDay(), parseInt(str.substring(0, i)) - 1, parseInt(str.substring(i + 1)));    //-1 to hours to correct timezone. I'll probably regret this
 }
 
 //Renames bus substituting trams, called "X navetta" to "XN", as shown on the bus themselves

@@ -36,10 +36,4 @@ export const handleError = (({ error, event }) => {
 
     }
 
-    return {
-        message: 'Whoops!',
-        params: event.params,
-        route: route,
-    };
-
 }) satisfies HandleServerError;
