@@ -25,6 +25,7 @@
 	<div class="drawer-content">
 		<nav class="navbar bg-base-100">
 			<div class="navbar-start">
+				<!-- Button icon (mobile) -->
 				<label for="drawer" class="btn btn-square btn-ghost drawer-button lg:hidden">
 					<i class="bx bx-menu-alt-left bx-md" />
 				</label>
@@ -61,8 +62,8 @@
 			</div>
 		</nav>
 
-		<div class="lg:flex lg:flex-row min-h-[60vh] ">
-			<ul class="hidden lg:block menu p-4 w-80 bg-base-300 text-base-content">
+		<div class="lg:flex lg:flex-row min-h-[80vh]">
+			<ul class="hidden lg:block menu p-4 w-80 bg-base-300 text-base-content -mt-16">
 				<li>
 					<a href="/stop/search" data-sveltekit-preload-data>Cerca fermata</a>
 				</li>
