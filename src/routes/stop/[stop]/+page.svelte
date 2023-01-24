@@ -26,7 +26,7 @@
 </div>
 
 <!-- Desktop -->
-<div class="hidden: lg:grid grid-cols-4 gap-4 mt-2">
+<div class="hidden lg:grid grid-cols-4 gap-4 mt-2">
 	{#await api then stop}
 		{#each stop as pass}
 			<a href="/route/{pass.route}" data-sveltekit-preload-data>
