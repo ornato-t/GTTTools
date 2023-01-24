@@ -19,6 +19,8 @@ export async function pollStop(stop: string) {
     const stopsWeb: stopWeb[] = await response.json();
 
     const stops = stopsWeb.map(pass => {
+        if(pass.Linea === undefined) throw new Error('Undefined stop name');
+
         if (pass.Linea === 'METRO' || pass.Bacino === 'E' || pass.PassaggiRT.length === 0)  // METRO and "Bus Extraurbani" don't have real time passages. If no real time passages are available return the programmed one
             return {
                 route: parseBusN(pass.LineaAlias),
