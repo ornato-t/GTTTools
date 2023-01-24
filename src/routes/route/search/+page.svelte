@@ -1,14 +1,14 @@
 <script lang="ts">
 	import Search from 'svelte-search';
 	import type { routeDB } from '$lib/routeDB';
+	import fetch from '$lib/proxyRequest';
 
 	let value = '';
 	let routes = new Array<routeDB>();
 
 	async function searchDB(route: string) {
 		if (route.length > 0) {
-			const res = await fetch(`https://tools.gtt.cx/proxy/search-route/${route}`);
-			// const res = await fetch(`http://localhost:5173/proxy/search-route/${route}`);
+			const res = await fetch(`/proxy/search-route/${route}`);
 			routes = await res.json();
 		}
 	}

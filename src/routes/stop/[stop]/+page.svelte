@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import type { stop } from '$lib/stop';
+	import fetch from '$lib/proxyRequest';
 
 	async function getStop(stop: number) {
-		const station = await fetch(`https://tools.gtt.cx/proxy/stop/${stop}`);
-		// const station = await fetch(`http://localhost:5173/proxy/stop/${stop}`);
+		const station = await fetch(`/proxy/stop/${stop}`);
 
 		if (station.status !== 200) {
 			const err = await station.json();
