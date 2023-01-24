@@ -10,12 +10,15 @@ async function pollRoute(route: string) {
     const options = {
         method: 'GET',
         headers: {
-            Referer: `https://www.gtt.to.it/cms/percorari/urbano`
+            Referer: `https://www.gtt.to.it/cms/percorari/urbano`,
+            mode: 'no-cors' as RequestMode
         }
     };
 
     const response = await fetch(url, options);
-    const vehiclesWeb: vehicleWeb[] = await response.json();
+    const vehiclesWeb: vehicleWeb[] | null = await response.json();
+
+    if(vehiclesWeb === null) return [];
 
     const vehicles: vehicle[] = vehiclesWeb.map(vehicle => ({
         id: vehicle.id,

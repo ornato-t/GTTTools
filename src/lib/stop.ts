@@ -17,6 +17,6 @@ export interface stop {
     route: string,
     routeID: string,
     direction: string,
-    realTime: Date[],
-    programmed: Date[]
+    pass: Date[],
+    realTime: boolean
 }

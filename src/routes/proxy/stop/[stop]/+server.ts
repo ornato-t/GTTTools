@@ -18,13 +18,24 @@ export async function pollStop(stop: string) {
 
     const stopsWeb: stopWeb[] = await response.json();
 
-    const stops: stop[] = stopsWeb.map(pass => ({
-        route: parseBusN(pass.LineaAlias),
-        routeID: pass.Linea,
-        direction: pass.Direzione,
-        realTime: pass.PassaggiRT.map(hour => dateFromHourStr(hour)),
-        programmed: pass.PassaggiPR.map(hour => dateFromHourStr(hour))
-    }))
+    const stops = stopsWeb.map(pass => {
+        if (pass.Linea === 'METRO' || pass.Bacino === 'E' || pass.PassaggiRT.length === 0)  // METRO and "Bus Extraurbani" don't have real time passages. If no real time passages are available return the programmed one
+            return {
+                route: parseBusN(pass.LineaAlias),
+                routeID: pass.Linea,
+                direction: pass.Direzione,
+                pass: pass.PassaggiPR.map(hour => dateFromHourStr(hour)),
+                realTime: false
+            }
+        else
+            return {
+                route: parseBusN(pass.LineaAlias),
+                routeID: pass.Linea,
+                direction: pass.Direzione,
+                pass: pass.PassaggiRT.map(hour => dateFromHourStr(hour)),
+                realTime: true
+            }
+    }) satisfies stop[];
 
     return stops;
 }

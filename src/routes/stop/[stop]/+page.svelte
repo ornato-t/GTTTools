@@ -45,13 +45,18 @@
 {#await api then stop}
 	{#each stop as pass}
 		<div class="my-1">
-			{#if pass.realTime.length > 0}
+			{#if pass.pass.length > 0}
 				<a href="/route/{pass.route}" class="link" data-sveltekit-preload-data>
-					<p>Linea {pass.route}</p></a
-				>
-				{#each pass.realTime as time}
+					<p>Linea {pass.route}</p>
+				</a>
+				{#if !pass.realTime}
+					<span class="=">Informazioni in tempo reale non disponibili</span>{
+				/if}
+				{#each pass.pass as time}
 					<p>{printLocale(time)}</p>
 				{/each}
+			{:else}
+				<p>No passages available</p>
 			{/if}
 		</div>
 	{/each}
