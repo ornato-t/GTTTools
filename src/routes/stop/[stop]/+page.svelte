@@ -32,13 +32,8 @@
 	}
 </script>
 
-<h1 class="mb-4 font-bold">Fermata numero {data.code}</h1>
-<div class="my-4">
-	<p>Nome: {data.db.name}</p>
-	<p>Descrizione: {data.db.description}</p>
-	<!-- <p>Lat: {data.db.coordinates.lat}</p>
-	<p>Lon: {data.db.coordinates.lon}</p> -->
-</div>
+<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
+<h2 class="my-4 font-light">{data.db.description}</h2>
 
 <!-- Desktop -->
 <div class="hidden lg:grid grid-cols-4 gap-4 mt-2">
@@ -85,4 +80,8 @@
 	{:else}
 		Loading...
 	{/if}
+</div>
+
+<div class="lg:hidden">
+	Stronzoh, ti ho detto che non funziona su mobile
 </div>
