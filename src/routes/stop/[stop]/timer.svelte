@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let time: Date;
-	time = new Date(new Date(time).valueOf() - 3600000);	//Subtract 1 hour [ms] to correct timezone	
+	time = new Date(new Date(time).valueOf() - 3600000); //Subtract 1 hour [ms] to correct timezone
 
 	const diff = new Date(time.getTime() - Date.now());
 
@@ -19,6 +19,8 @@
 	}, 1000);
 </script>
 
-<span style="--value:{hours};" />:
+{#if hours > 0}
+	<span style="--value:{hours};" />:
+{/if}
 <span style="--value:{minutes};" />:
 <span style="--value:{seconds};" />
