@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import getStop from './getStop';
+	import Timer from './timer.svelte';
 
 	function printLocale(d: Date) {
 		const formatter = Intl.DateTimeFormat('it-it', {
@@ -33,18 +34,26 @@
 				<div class="card w-96 h-full bg-neutral hover:bg-neutral-focus shadow-xl">
 					<div class="card-body p-6">
 						{#if pass.pass.length > 0}
-							<h2 class="card-title">
-								Linea {pass.route}
+							<h2 class="card-title  mb-4 grid grid-cols-4">
+								<span class="text-2xl text-left">{pass.route}</span>
+								<span class="text-sm font-light text-right col-span-3">
+									{pass.direction}
+								</span>
 							</h2>
 							<div class="justify-end">
-								<div class="w-full grid grid-cols-1">
+								<div class="w-full grid grid-cols-3">
 									{#each pass.pass as time}
-										<p>{printLocale(time)}</p>
+										<div class="text-left">
+											{printLocale(time)}
+										</div>
+										<div class="justify-end col-span-2 countdown font-mono">
+											<Timer {time}/>
+										</div>
 									{/each}
 								</div>
 
 								{#if !pass.realTime}
-									<div class="divider my-0" />
+									<div class="divider mb-0 mt-4" />
 									<div class="italic text-sm w-fit mx-auto opacity-60">
 										Informazioni in tempo reale non disponibili
 									</div>
