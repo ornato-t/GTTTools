@@ -28,5 +28,13 @@
 {#if hours > 0}
 	<span style="--value:{hours};" />:
 {/if}
-<span style="--value:{minutes};" />:
-<span style="--value:{seconds};" />
+{#if minutes >= 0}
+	<span style="--value:{minutes};" />:
+{:else}
+	<span style="--value:00;" />:
+{/if}
+{#if seconds >= 0}
+	<span style="--value:{seconds};" />
+{:else}
+	<span style="--value:00;" />
+{/if}
