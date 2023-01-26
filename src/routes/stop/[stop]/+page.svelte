@@ -33,7 +33,7 @@
 	}
 </script>
 
-<div class="sticky top-0 z-10 bg-base-100 p-4 rounded-md">
+<div class="p-4">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
 	<h2 class="font-light">{data.db.description}</h2>
 </div>
