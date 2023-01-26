@@ -1,5 +1,6 @@
 import type { stop, stopWeb } from "$lib/stop";
 import type { RequestHandler } from "@sveltejs/kit";
+import moment from "moment-timezone";
 
 export const GET: RequestHandler = async ({ params }) => {
     return new Response(JSON.stringify(await pollStop(params.stop as string)));
@@ -50,10 +51,13 @@ export async function pollStop(stop: string) {
 
 //Returns a date object from a string formatted as HH:mm
 function dateFromHourStr(str: string) {
-    const d = new Date();
-    const i = str.indexOf(':')
+    // const res = moment.tz(str, "Europe/Rome");
+    const res = moment(str, ['h:m a', 'H:m']);
+    const out = res.toDate();
 
-    return new Date(d.getFullYear(), d.getMonth(), d.getDay(), parseInt(str.substring(0, i)) - 1, parseInt(str.substring(i + 1)));    //-1 to hours to correct timezone. I'll probably regret this
+    console.log(str, res, out)
+
+    return out;
 }
 
 //Renames bus substituting trams, called "X navetta" to "XN", as shown on the bus themselves
