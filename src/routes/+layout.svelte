@@ -41,7 +41,7 @@
 					<div
 						class="btn btn-square btn-ghost"
 						on:click={() => {
-							manualTheme = 'winter';
+							manualTheme = 'customLight';
 							dark = !dark;
 						}}
 					>
