@@ -51,14 +51,9 @@ export async function pollStop(stop: string) {
 
 //Returns a date object from a string formatted as HH:mm
 function dateFromHourStr(str: string) {
-    // const res = moment.tz(str, "Europe/Rome");
-    // const res = moment(str, ['h:m a', 'H:m']);
     const res = DateTime.fromFormat(str, 'H:m', { locale: 'it', zone: 'Europe/Rome' });
-    const out = res.toJSDate();
 
-    console.log(str, out)
-
-    return out;
+    return res.toJSDate();
 }
 
 //Renames bus substituting trams, called "X navetta" to "XN", as shown on the bus themselves
