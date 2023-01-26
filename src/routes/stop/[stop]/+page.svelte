@@ -2,6 +2,7 @@
 	import type { stop } from '$lib/stop';
 	import type { PageData } from './$types';
 	import getStop from './getStop';
+	import Loading from './loading.svelte';
 	import Timer from './timer.svelte';
 
 	export let data: PageData;
@@ -80,7 +81,14 @@
 			{/each}
 		{/key}
 	{:else}
-		Loading...
+		<Loading />
+		<Loading />
+		<span class="hidden xl:block">
+			<Loading />
+		</span>
+		<span class="hidden 2xl:block">
+			<Loading />
+		</span>
 	{/if}
 </div>
 
@@ -127,6 +135,10 @@
 			{/each}
 		{/key}
 	{:else}
-		Loading...
-	{/if}
+		<div class="mx-4 grid gap-y-4">
+			<Loading />
+			<Loading />
+			<Loading />
+			<Loading />
+		</div>{/if}
 </div>
