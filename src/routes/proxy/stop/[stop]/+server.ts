@@ -1,6 +1,6 @@
 import type { stop, stopWeb } from "$lib/stop";
 import type { RequestHandler } from "@sveltejs/kit";
-import moment from "moment-timezone";
+import { DateTime } from "luxon"
 
 export const GET: RequestHandler = async ({ params }) => {
     return new Response(JSON.stringify(await pollStop(params.stop as string)));
@@ -52,10 +52,11 @@ export async function pollStop(stop: string) {
 //Returns a date object from a string formatted as HH:mm
 function dateFromHourStr(str: string) {
     // const res = moment.tz(str, "Europe/Rome");
-    const res = moment(str, ['h:m a', 'H:m']);
-    const out = res.toDate();
+    // const res = moment(str, ['h:m a', 'H:m']);
+    const res = DateTime.fromFormat(str, 'H:m');
+    const out = res.toJSDate();
 
-    console.log(str, res, out)
+    console.log(str, out)
 
     return out;
 }
