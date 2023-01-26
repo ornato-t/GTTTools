@@ -1,5 +1,6 @@
 import type { vehicle, vehicleWeb } from "$lib/vehicle";
 import type { RequestHandler } from "@sveltejs/kit";
+import { DateTime } from "luxon"
 
 export const GET: RequestHandler = async ({ params }) => {
     return new Response(JSON.stringify(await pollRoute(params.route as string)));
@@ -41,10 +42,7 @@ function vehicleName(initial: string) {
 
 //Converts a date string in the format "DD/MM/YYYY HH:mm" to a date object
 function updatedDate(dateStr: string) {
-    dateStr = dateStr.replace(' ', '-');
-    dateStr = dateStr.replace(':', '-');
-    dateStr = dateStr.replaceAll('/', '-');
-    const dateFields = dateStr.split('-');
-
-    return new Date(parseInt(dateFields[2]), parseInt(dateFields[1]) - 1, parseInt(dateFields[0]), parseInt(dateFields[3]) - 1, parseInt(dateFields[4])) //-1 hour to correct time zone. I'll probably regret this
+    const res = DateTime.fromFormat(dateStr, 'D H:mm', { locale: 'it', zone: 'Europe/Rome' });
+    
+    return res.toJSDate();
 }
