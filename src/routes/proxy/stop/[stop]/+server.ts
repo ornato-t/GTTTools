@@ -53,7 +53,7 @@ export async function pollStop(stop: string) {
 function dateFromHourStr(str: string) {
     // const res = moment.tz(str, "Europe/Rome");
     // const res = moment(str, ['h:m a', 'H:m']);
-    const res = DateTime.fromFormat(str, 'H:m').setZone("Europe/Rome");
+    const res = DateTime.fromFormat(str, 'H:m', { locale: 'it', zone: 'Europe/Rome' });
     const out = res.toJSDate();
 
     console.log(str, out)
