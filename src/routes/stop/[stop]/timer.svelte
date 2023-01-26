@@ -1,19 +1,25 @@
 <script lang="ts">
-	export let time: Date;
-	time = new Date(new Date(time).valueOf() - 3600000); //Subtract 1 hour [ms] to correct timezone
+	import { DateTime } from 'luxon';
 
-	const diff = new Date(time.valueOf() - Date.now());
+	export let time: Date; //TS treats time as a Date but it's actually a string
 
-	let hours = diff.getHours();
-	let minutes = diff.getMinutes();
-	let seconds = diff.getSeconds();
+	const timeObj = DateTime.fromISO(time as unknown as string);
+	const diff = timeObj
+		.diff(DateTime.local({ zone: 'Europe/Rome' }), ['hours', 'minutes', 'seconds'])
+		.toObject();
+
+	let hours = diff.hours || 0;
+	let minutes = diff.minutes || 0;
+	let seconds = Math.floor(diff.seconds || 0);
 
 	const id = setInterval(() => {
-		const diff = new Date(time.valueOf() - Date.now());
+		const diff = timeObj
+			.diff(DateTime.local({ zone: 'Europe/Rome' }), ['hours', 'minutes', 'seconds'])
+			.toObject();
 
-		hours = diff.getHours();
-		minutes = diff.getMinutes();
-		seconds = diff.getSeconds();
+		hours = diff.hours || 0;
+		minutes = diff.minutes || 0;
+		seconds = Math.floor(diff.seconds || 0);
 
 		if (hours === 0 && minutes === 0 && seconds === 0) clearInterval(id);
 	}, 1000);
