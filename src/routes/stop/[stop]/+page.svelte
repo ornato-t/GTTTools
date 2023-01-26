@@ -10,11 +10,18 @@
 	const SEC_REFRESH = 30;
 
 	let api = new Array<stop>();
+	let error = false;
+	let errorMsg: string;
 
 	poll(data.code, 1000 * SEC_REFRESH);
 
 	async function poll(code: number, interval: number) {
-		api = await getStop(data.code);
+		try {
+			api = await getStop(data.code);
+		} catch (e) {
+			error = true;
+			errorMsg = e as string;
+		}
 
 		setInterval(async () => {
 			api = await getStop(code);
@@ -37,6 +44,15 @@
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
 	<h2 class="font-light">{data.db.description}</h2>
 </div>
+
+{#if error}
+	<div class="alert alert-error shadow-lg mb-4">
+		<div>
+			<i class="bx bx-error-circle" />
+			<span>Error! {errorMsg}</span>
+		</div>
+	</div>
+{/if}
 
 <!-- Desktop -->
 <div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 mt-2">
