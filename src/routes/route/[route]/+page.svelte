@@ -1,32 +1,63 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { DateTime } from 'luxon';
 
-	function printLocale(d: Date) {
-		const formatter = Intl.DateTimeFormat('it-it', {
-			minute: '2-digit',
-			hour: '2-digit',
-			hour12: false,
-			timeZone: 'CET'
+	function relativeDate(d: Date) {
+		const target = DateTime.fromJSDate(new Date(d));
+		const diff = DateTime.local({ zone: 'Europe/Rome' }).diff(target, ['minutes']);
+
+		const formatter = new Intl.RelativeTimeFormat('it-it', {
+			numeric: 'always',
+			style: 'short'
 		});
 
-		return formatter.format(new Date(d));
+		return formatter.format(-Math.round(diff.minutes), 'minutes');
 	}
 
 	export let data: PageData;
 </script>
 
-<h1 class="mb-4 font-bold">Linea {data.code}</h1>
-<div class="my-4">
-	<p>Nome: {data.db.name}</p>
-	<p>Tipo (nominale): {data.db.type}</p>
+<div class="p-4">
+	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.type}</h1>
+	<h2 class="font-light">{data.db.name}</h2>
 </div>
-{#each data.api as vehicle}
-	<div class="my-1">
-		<p>ID veicolo: {vehicle.id}</p>
-		<p>Tipo: {vehicle.vehicleType}</p>
-		<p>Lat: {vehicle.lat}</p>
-		<p>Lon: {vehicle.lon}</p>
-		<p>Direzione: {vehicle.direction}</p>
-		<p>Ultimo aggiornamento: {printLocale(vehicle.updated)}</p>
-	</div>
-{/each}
+
+<!-- Desktop -->
+<div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 mt-2">
+	{#if data.api.length !== 0}
+		{#key data.api}
+			{#each data.api as vehicle}
+				<a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data>
+					<div
+						class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl"
+					>
+						<div class="card-body p-6">
+							<h2 class="card-title  mb-4 grid grid-cols-4">
+								<span class="text-2xl text-left">{vehicle.id}</span>
+								<span class="text-sm font-light text-right col-span-3">
+									{vehicle.vehicleType.toUpperCase()}
+								</span>
+							</h2>
+
+							<div class="mx-auto -mb-2">Posizione:</div>
+							<div class="mx-auto font-mono">
+								{vehicle.lat},{vehicle.lon}
+							</div>
+
+							<div class="justify-end mt-4">
+								{#if vehicle.full}
+									<div class="text-warning mx-auto w-fit my-2">Veicolo pieno!</div>
+								{/if}
+								<div class="font-mono text-sm text-end">
+									Aggiornato {relativeDate(vehicle.updated)}
+								</div>
+							</div>
+						</div>
+					</div>
+				</a>
+			{/each}
+		{/key}
+	{:else}
+		<p>Nessuna informazione in tempo reale disponibile</p>
+	{/if}
+</div>
