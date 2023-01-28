@@ -16,7 +16,9 @@ export interface vehicle {
     vehicleType: string,
     lat: number,
     lon: number,
-    direction: number,
     updated: Date,
+    full: boolean
+    // direction: string | null,
+    // closest: string
   };
   
