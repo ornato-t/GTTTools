@@ -1,18 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { DateTime } from 'luxon';
+	import { invalidate } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import Counter from './counter.svelte';
 
-	function relativeDate(d: Date) {
-		const target = DateTime.fromJSDate(new Date(d));
-		const diff = DateTime.local({ zone: 'Europe/Rome' }).diff(target, ['minutes']);
-
-		const formatter = new Intl.RelativeTimeFormat('it-it', {
-			numeric: 'always',
-			style: 'short'
-		});
-
-		return formatter.format(-Math.round(diff.minutes), 'minutes');
-	}
+	//Refresh data every 5 seconds
+	onMount(() => setInterval(() => invalidate('vehicle'), 5000));
 
 	export let data: PageData;
 </script>
@@ -49,7 +42,7 @@
 									<div class="text-warning mx-auto w-fit my-2">Veicolo pieno!</div>
 								{/if}
 								<div class="font-mono text-sm text-end">
-									Aggiornato {relativeDate(vehicle.updated)}
+									Aggiornato <Counter time={vehicle.updated}/>
 								</div>
 							</div>
 						</div>
@@ -58,7 +51,7 @@
 			{/each}
 		{/key}
 	{:else}
-		<p>Nessuna informazione in tempo reale disponibile</p>
+		<div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
 	{/if}
 </div>
 
@@ -88,7 +81,7 @@
 									<div class="text-warning mx-auto w-fit my-2">Veicolo pieno!</div>
 								{/if}
 								<div class="font-mono text-sm text-end">
-									Aggiornato {relativeDate(vehicle.updated)}
+									Aggiornato <Counter time={vehicle.updated}/>
 								</div>
 							</div>
 						</div>
@@ -97,6 +90,6 @@
 			{/each}
 		{/key}
 	{:else}
-		<p>Nessuna informazione in tempo reale disponibile</p>
+		<div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
 	{/if}
 </div>

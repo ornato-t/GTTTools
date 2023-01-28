@@ -3,8 +3,10 @@ import type { routeDB } from '$lib/routeDB';
 import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
 
-export const load = (async ({ params, fetch }) => {
+export const load = (async ({ params, fetch, depends }) => {
     const code = params.route;
+
+    depends('vehicle')
 
     return {
         code,
