@@ -4,4 +4,6 @@
 	export let data: PageData;
 </script>
 
-{data.code}
+<!-- {data.code} -->
+
+<img src="/proxy/image/{data.code}" alt="Cat" class="mx-auto h-full"/>
