@@ -39,7 +39,7 @@
 	/>
 </div>
 
-<div class="mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
+<div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
 	{#if stops != undefined && value.length > 0}
 		{#each stops as stop}
 			<a
