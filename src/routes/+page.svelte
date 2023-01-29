@@ -4,7 +4,7 @@
 
 <div class="grid w-full min-h-screen bg-base-200 pb-6 grid-cols-2">
   <div class="hero-content flex-col lg:flex-row place-self-start my-auto h-fit w-full">
-		<i class="bx bx-search-alt-2 bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content " />
+		<i class="bx bx-search-alt-2 bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Cerca una fermata</h1>
 		<span class="py-6">
@@ -18,7 +18,7 @@
 	<div/>
 	<div/>
   <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
-		<i class="bx bx-current-location bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content " />
+		<i class="bx bx-current-location bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 	  <h1 class="text-5xl font-bold">Fermate vicino a te</h1>
 	  	<span class="py-6">
@@ -32,7 +32,7 @@
 	<div/>
 	<div/>
   <div class="hero-content flex-col lg:flex-row place-self-start my-auto h-fit w-full">
-		<i class="bx bx-map bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content " />
+		<i class="bx bx-map bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Cerca una linea</h1>
 	  <span class="py-6">
@@ -46,7 +46,7 @@
 	<div/>
 	<div/>
   <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
-		<i class="bx bx-bus bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content " />
+		<i class="bx bx-bus bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Trova un veicolo</h1>
 		<span class="py-6">
