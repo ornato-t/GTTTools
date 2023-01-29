@@ -1,0 +1,278 @@
+export { }
+
+interface vehicle {
+    id: number,
+    url: string,
+}
+
+//Serie 01E-23E - Electric buses (STAR routes)
+const electric1 = [
+    {
+        id: 18,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/18E-02-800.jpg"
+    }, {
+        id: 21,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/21E-01-800.jpg"
+    }, {
+        id: 22,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/22E-01-800.jpg"
+    }, {
+        id: 23,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/23E-01-800.jpg"
+    }, {
+        id: 17,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/17E-01-800.jpg"
+    }, {
+        id: 5,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/05E-08-800.jpg"
+    }, {
+        id: 7,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/07E-01-800.jpg"
+    }, {
+        id: 8,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/08E-01-800.jpg"
+    }, {
+        id: 9,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/09E-01-800.jpg"
+    }, {
+        id: 10,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/10E-02-800.jpg"
+    }, {
+        id: 13,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/13E-01-800.jpg"
+    }, {
+        id: 14,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/14E-02-800.jpg"
+    }, {
+        id: 15,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/15E-01-800.jpg"
+    }, {
+        id: 16,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/16E-01-800.jpg"
+    }, {
+        id: 1,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/01E-02-800.jpg"
+    }, {
+        id: 3,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/01E-23E/03E-03-800.jpg"
+    }
+]satisfies vehicle[];
+
+//Serie 30E-49E, serie 50E-57E - Electric buses
+const electric2 = [{
+    id: 30,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/30E-01-800.jpg"
+}, {
+    id: 31,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/31E-01-800.jpg"
+}, {
+    id: 32,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/32E-01-800.jpg"
+}, {
+    id: 33,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/33E-01-800.jpg"
+}, {
+    id: 34,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/34E-01-800.jpg"
+}, {
+    id: 35,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/35E-01-800.jpg"
+}, {
+    id: 36,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/36E-01-800.jpg"
+}, {
+    id: 37,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/37E-02-800.jpg"
+}, {
+    id: 38,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/38E-01-800.jpg"
+}, {
+    id: 39,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/39E-01-800.jpg"
+}, {
+    id: 40,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/40E-02-800.jpg"
+}, {
+    id: 41,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/41E-02-800.jpg"
+}, {
+    id: 42,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/42E-01-800.jpg"
+}, {
+    id: 43,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/43E-01-800.jpg"
+}, {
+    id: 44,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/44E-01-800.jpg"
+}, {
+    id: 45,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/45E-01-800.jpg"
+}, {
+    id: 46,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/46E-01-800.jpg"
+}, {
+    id: 47,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/47E-01-800.jpg"
+}, {
+    id: 48,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/48E-01-800.jpg"
+}, {
+    id: 49,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/30E-49E/49E-01-800.jpg"
+}, {
+    id: 50,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/50E-57E/50E-02-800.jpg"
+}, {
+    id: 51,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/50E-57E/51E-01-800.jpg"
+}, {
+    id: 52,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/50E-57E/52E-01-800.jpg"
+}, {
+    id: 53,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/50E-57E/53E-01-800.jpg"
+}, {
+    id: 54,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/50E-57E/54E-01-800.jpg"
+}, {
+    id: 55,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/50E-57E/55E-01-800.jpg"
+}, {
+    id: 56,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/50E-57E/56E-01-800.jpg"
+}]satisfies vehicle[];
+
+//Serie 85-89 - Operating in Ivrea
+const ivrea = [{
+    id: 85,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/85-89/85-01-800.jpg"
+}, {
+    id: 86,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/85-89/86-01-800.jpg"
+}, {
+    id: 87,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/85-89/87-01-800.jpg"
+}, {
+    id: 88,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/85-89/88-01-800.jpg"
+}, {
+    id: 89,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/85-89/89-01-800.jpg"
+}
+]satisfies vehicle[];
+
+//Serie 2300-2334 - Regular bus, yellow interiors - "Pullman Giallo"
+const yellow = [{
+    id: 2300,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2300-02-800.jpg"
+}, {
+    id: 2301,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2301-03-800.jpg"
+}, {
+    id: 2302,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2302-02-800.jpg"
+}, {
+    id: 2303,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2303-02-800.jpg"
+}, {
+    id: 2304,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2304-01-800.jpg"
+}, {
+    id: 2305,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2305-01-800.jpg"
+}, {
+    id: 2306,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2306-01-800.jpg"
+}, {
+    id: 2307,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2307-01-800.jpg"
+}, {
+    id: 2308,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2308-01-800.jpg"
+}, {
+    id: 2309,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2309-01-800.jpg"
+}, {
+    id: 2310,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2310-02-800.jpg"
+}, {
+    id: 2311,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2311-01-800.jpg"
+}, {
+    id: 2312,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2312-01-800.jpg"
+}, {
+    id: 2313,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2313-02-800.jpg"
+}, {
+    id: 2314,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2314-01-800.jpg"
+}, {
+    id: 2315,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2315-03-800.jpg"
+}, {
+    id: 2316,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2316-01-800.jpg"
+}, {
+    id: 2317,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2317-01-800.jpg"
+}, {
+    id: 2318,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2318-01-800.jpg"
+}, {
+    id: 2319,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2319-02-800.jpg"
+}, {
+    id: 2320,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2320-01-800.jpg"
+}, {
+    id: 2321,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2321-01-800.jpg"
+}, {
+    id: 2322,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2322-02-800.jpg"
+}, {
+    id: 2323,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2323-01-800.jpg"
+}, {
+    id: 2324,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2324-02-800.jpg"
+}, {
+    id: 2325,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2325-03-800.jpg"
+}, {
+    id: 2326,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2326-01-800.jpg"
+}, {
+    id: 2327,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2327-01-800.jpg"
+}, {
+    id: 2328,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2328-01-800.jpg"
+}, {
+    id: 2329,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2329-01-800.jpg"
+}, {
+    id: 2330,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2330-01-800.jpg"
+}, {
+    id: 2331,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2331-01-800.jpg"
+}, {
+    id: 2332,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2332-01-800.jpg"
+}, {
+    id: 2333,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2333-01-800.jpg"
+}, {
+    id: 2334,
+    url: "http://www.tplitalia.it/GTT/AutobusUrbSub/2300-2334/2334-03-800.jpg"
+}]satisfies vehicle[];
+
+
+const template = [
+    {
+        id: 0,
+        url: ""
+    }
+]satisfies vehicle[];
