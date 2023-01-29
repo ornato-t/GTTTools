@@ -2,7 +2,7 @@
 	export const prerender = true;
 </script>
 
-<div class="grid w-full min-h-screen bg-base-200 pb-6 grid-cols-2">
+<div class="grid w-full min-h-screen bg-base-200 pb-6 lg:grid-cols-2 gap-y-4 lg:gap-y-0">
   <div class="hero-content flex-col lg:flex-row place-self-start my-auto h-fit w-full">
 		<i class="bx bx-search-alt-2 bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
@@ -12,7 +12,7 @@
 			<p>Segui in tempo reale i passaggi di mezzi e linee.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-      <a href="/stop/search" class="btn btn-lg btn-primary place-self-end">cerca</a>
+      <a href="/stop/search" class="btn lg:btn-lg btn-primary lg:place-self-end">cerca</a>
     </div>
   </div>
 	<div/>
@@ -26,7 +26,7 @@
 			<p>Segui in tempo reale i passaggi di mezzi e linee.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="/stop/gps" class="btn btn-lg btn-primary place-self-start">posizione</a>
+	  <a href="/stop/gps" class="btn lg:btn-lg btn-primary lg:place-self-start">posizione</a>
 	</div>
   </div>
 	<div/>
@@ -40,7 +40,7 @@
 		  <p>Osserva i movimenti dei mezzi in tempo reale su una mappa della Città.</p>
 		  <p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 	  </span>
-	  <a href="/route/search" class="btn btn-lg btn-primary place-self-end">cerca</a>
+	  <a href="/route/search" class="btn lg:btn-lg btn-primary lg:place-self-end">cerca</a>
 	</div>
   </div>
 	<div/>
@@ -53,7 +53,7 @@
 			<p>Trova la linea su cui è un servizio un veicolo, la sua posizione in tempo reale e - qualora disponibile - una sua immagine.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="/vehicle/search" class="btn btn-lg btn-primary place-self-start">trova</a>
+	  <a href="/vehicle/search" class="btn lg:btn-lg btn-primary lg:place-self-start">trova</a>
 	</div>
   </div>
 </div>
