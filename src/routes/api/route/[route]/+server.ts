@@ -1,12 +1,8 @@
 import type { vehicle, vehicleWeb } from "$lib/vehicle";
 import type { RequestHandler } from "@sveltejs/kit";
-// import type { stopDB } from "$lib/stopDB";
-// import type { Collection } from "mongodb";
 import { DateTime } from "luxon"
 
 export const GET: RequestHandler = async ({ params }) => {
-    // const { stops }: { stops: Collection<stopDB> } = locals;
-
     return new Response(JSON.stringify(await pollRoute(params.route as string)));
 }
 
