@@ -2,7 +2,7 @@ import type { stop } from '$lib/stop';
 import fetch from '$lib/proxyRequest';
 
 export default async function getStop(stop: number) {
-    const station = await fetch(`/proxy/stop/${stop}`);
+    const station = await fetch(`/api/stop/${stop}`);
 
     if (station.status !== 200) {
         const err = await station.json();

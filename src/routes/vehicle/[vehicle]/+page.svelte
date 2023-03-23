@@ -6,4 +6,4 @@
 
 <!-- {data.code} -->
 
-<img src="/proxy/image/{data.code}" alt="Cat" class="mx-auto h-full"/>
+<img src="/api/image/{data.code}" alt="Cat" class="mx-auto h-full"/>

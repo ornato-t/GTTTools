@@ -16,7 +16,7 @@ export const load = (async ({ params, fetch, depends }) => {
 }) satisfies PageLoad;
 
 async function getRoute(code: string, fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>) {
-    const route = await fetch(`/proxy/route/${code}`);
+    const route = await fetch(`/api/route/${code}`);
 
     if (route.status !== 200) {
         const err = await route.json();
@@ -27,7 +27,7 @@ async function getRoute(code: string, fetch: (input: RequestInfo | URL, init?: R
 }
 
 async function getDB(code: string, fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>) {
-    const route = await fetch(`/proxy/routeDB/${code}`);
+    const route = await fetch(`/api/routeDB/${code}`);
 
     if (route.status !== 200) throw error(route.status, {
         message: "Couldn't fetch from routes database"

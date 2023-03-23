@@ -18,12 +18,12 @@ export const handleError = (({ error, event }) => {
     const route = event.route.id;
 
     switch (route) {
-        case '/proxy/route/[route]':
+        case '/api/route/[route]':
             return {
                 message: 'GTT API offline',
                 status: 503
             };
-        case '/proxy/stop/[stop]':
+        case '/api/stop/[stop]':
             return {
                 message: 'GTT API offline',
                 status: 503
