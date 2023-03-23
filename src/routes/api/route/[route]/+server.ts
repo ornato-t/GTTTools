@@ -29,11 +29,11 @@ async function pollRoute(route: string) {
             lat: vehicle.lat,
             lon: vehicle.lon,
             updated: updatedDate(vehicle.aggiornamento),
-            full: vehicle.occupazione === 1 ? true : false
-
+            full: vehicle.occupazione,
             //Rejected: they make the loading too slow
             // direction: await closestStopCode(vehicle.direzione, db),
-            // closest: await closestStopGPS(vehicle.lat, vehicle.lon, db)
+            // closest: await closestStopGPS(vehicle.lat, vehicle.lon, db),
+            direction: null
         });
     }
 
