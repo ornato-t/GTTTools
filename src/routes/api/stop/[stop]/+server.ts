@@ -7,7 +7,7 @@ export const GET: RequestHandler = async ({ params }) => {
 }
 
 //Fetch all info regarding departing vehicles from a stop (by number)
-export async function pollStop(stop: string) {
+async function pollStop(stop: string) {
     const url = `https://www.gtt.to.it/cms/index.php?option=com_gtt&task=palina.getTransitiOld&palina=${stop}&realtime=true`;
     const options = {
         method: 'GET',
