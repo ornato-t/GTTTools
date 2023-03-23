@@ -1,19 +1,20 @@
 import type { vehicle } from '$lib/vehicle';
 import type { routeDB } from '$lib/routeDB';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
+import type { Collection } from "mongodb";
 
-export const load = (async ({ params, fetch, depends }) => {
+export const load = (async ({ params, fetch, depends, locals }) => {
     const code = params.route;
 
-    depends('vehicle')
+    depends('vehicle');
 
     return {
         code,
         api: getRoute(code, fetch),
-        db: getDB(code, fetch)
+        db: getDB(code, locals)
     };
-}) satisfies PageLoad;
+}) satisfies PageServerLoad;
 
 async function getRoute(code: string, fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>) {
     const route = await fetch(`/api/route/${code}`);
@@ -26,12 +27,10 @@ async function getRoute(code: string, fetch: (input: RequestInfo | URL, init?: R
     return route.json() as Promise<vehicle[]>;
 }
 
-async function getDB(code: string, fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>) {
-    const route = await fetch(`/api/routeDB/${code}`);
+async function getDB(code: string, locals: App.Locals) {
+    const { routes }: { routes: Collection<routeDB> } = locals;
 
-    if (route.status !== 200) throw error(route.status, {
-        message: "Couldn't fetch from routes database"
-    });
+    const route = routes.findOne({ code }, { projection: { _id: 0, provider: 0 } }) as Promise<routeDB>;
 
-    return route.json() as Promise<routeDB>;
+    return route;
 }
