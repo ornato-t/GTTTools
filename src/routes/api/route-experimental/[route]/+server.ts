@@ -14,21 +14,24 @@ async function pollRoute(route: string) {
     const buffer = await res.arrayBuffer();
     const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(new Uint8Array(buffer));
 
-    //Array of routes matching the queried one
-    const routes = feed.entity.filter(element => element.vehicle?.trip?.routeId == route);
+    const returned = new Array<vehicle>;    //Array of routes matching the queried one
+    for (const doc of feed.entity) {
+        if (doc.vehicle?.trip?.routeId === route) {
+            const idNum = Number.parseInt(doc.vehicle?.vehicle?.label as string);
 
-    return routes.map(doc => {
-        const idNum = Number.parseInt(doc.vehicle?.vehicle?.label as string);
-        return {
-            id: idNum,
-            vehicleType: vehicleName(idNum),
-            lat: doc.vehicle?.position?.latitude as number,
-            lon: doc.vehicle?.position?.longitude as number,
-            updated: updatedDate(doc.vehicle?.timestamp as number | null | undefined),
-            // full: doc.vehicle?.occupancyStatus as number,
-            // direction: doc.vehicle?.position?.bearing as number | null,
-        } satisfies vehicle;
-    })
+            returned.push({
+                id: idNum,
+                vehicleType: vehicleName(idNum),
+                lat: doc.vehicle?.position?.latitude as number,
+                lon: doc.vehicle?.position?.longitude as number,
+                updated: updatedDate(doc.vehicle?.timestamp as number | null | undefined),
+                // full: doc.vehicle?.occupancyStatus as number,
+                // direction: doc.vehicle?.position?.bearing as number | null,
+            });
+        }
+    }
+
+    return returned;
 }
 
 //Returns the full word "Bus" or "Tram"
