@@ -25,8 +25,8 @@ async function pollRoute(route: string) {
             lat: doc.vehicle?.position?.latitude as number,
             lon: doc.vehicle?.position?.longitude as number,
             updated: updatedDate(doc.vehicle?.timestamp as number | null | undefined),
-            full: doc.vehicle?.occupancyStatus as number,
-            direction: doc.vehicle?.position?.bearing as number | null,
+            // full: doc.vehicle?.occupancyStatus as number,
+            // direction: doc.vehicle?.position?.bearing as number | null,
         } satisfies vehicle;
     })
 }
