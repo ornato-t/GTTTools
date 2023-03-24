@@ -13,9 +13,9 @@ async function pollRoute(route: string) {
     const res = await fetch(url);
     const buffer = await res.arrayBuffer();
     const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(new Uint8Array(buffer));
-
+    
     //Array of routes matching the queried one
-    const routes = feed.entity.filter(element => element.tripUpdate?.trip.routeId == route);
+    const routes = feed.entity.filter(element => element.vehicle?.trip?.routeId == route);
 
     return routes.map(doc => {
         return {
