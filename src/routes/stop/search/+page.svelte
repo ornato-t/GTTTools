@@ -8,8 +8,7 @@
 
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
-			const res = await fetch(`/proxy/search-stop/${stop}`);
-			// const res = await fetch(`http://localhost:5173/proxy/search-stop/${stop}`);
+			const res = await fetch(`/api/search-stop/${stop}`);
 			stops = await res.json();
 		}
 	}

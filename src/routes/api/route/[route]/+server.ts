@@ -1,12 +1,8 @@
 import type { vehicle, vehicleWeb } from "$lib/vehicle";
 import type { RequestHandler } from "@sveltejs/kit";
-// import type { stopDB } from "$lib/stopDB";
-// import type { Collection } from "mongodb";
 import { DateTime } from "luxon"
 
 export const GET: RequestHandler = async ({ params }) => {
-    // const { stops }: { stops: Collection<stopDB> } = locals;
-
     return new Response(JSON.stringify(await pollRoute(params.route as string)));
 }
 
@@ -33,11 +29,11 @@ async function pollRoute(route: string) {
             lat: vehicle.lat,
             lon: vehicle.lon,
             updated: updatedDate(vehicle.aggiornamento),
-            full: vehicle.occupazione === 1 ? true : false
-
+            full: vehicle.occupazione,
             //Rejected: they make the loading too slow
             // direction: await closestStopCode(vehicle.direzione, db),
-            // closest: await closestStopGPS(vehicle.lat, vehicle.lon, db)
+            // closest: await closestStopGPS(vehicle.lat, vehicle.lon, db),
+            direction: null
         });
     }
 

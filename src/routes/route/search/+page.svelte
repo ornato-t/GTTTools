@@ -8,7 +8,7 @@
 
 	async function searchDB(route: string) {
 		if (route.length > 0) {
-			const res = await fetch(`/proxy/search-route/${route}`);
+			const res = await fetch(`/api/search-route/${route}`);
 			routes = await res.json();
 		}
 	}
