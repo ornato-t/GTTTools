@@ -76,7 +76,7 @@ async function pollStop(stop: string, db: Collection<trip>) {
 
 //Returns a date object from a string formatted as HH:mm
 function getDate(d: Long | null | undefined) {
-    console.log('Date:', d);
+    console.log('Date:', d, typeof d, 'Low:', d?.low);
     if (d == null) return new Date();
     return new Date(d.low * 1000);
 }
