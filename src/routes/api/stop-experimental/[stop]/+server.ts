@@ -2,8 +2,7 @@ import type { stop } from "$lib/stop";
 import type { trip } from "$lib/trip";
 import type { RequestHandler } from "@sveltejs/kit";
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
-import type { Collection } from "mongodb";
-import type { Long } from "mongodb";
+import type { Collection, Long } from "mongodb";
 
 export const GET: RequestHandler = async ({ params, locals }) => {
     const { trips }: { trips: Collection<trip> } = locals;
