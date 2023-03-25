@@ -13,43 +13,37 @@ async function pollRoute(route: string) {
     const res = await fetch(url);
     const buffer = await res.arrayBuffer();
     const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(new Uint8Array(buffer));
-    
-    //Array of routes matching the queried one
-    const routes = feed.entity.filter(element => element.vehicle?.trip?.routeId == route);
 
-    return routes.map(doc => {
-        return {
-            id: Number.parseInt(doc.vehicle?.vehicle?.label as string),
-            vehicleType: vehicleName(doc.vehicle?.vehicle?.label) as string,
-            lat: doc.vehicle?.position?.latitude as number,
-            lon: doc.vehicle?.position?.longitude as number,
-            updated: updatedDate(doc.vehicle?.timestamp as number | null | undefined),
-            full: doc.vehicle?.occupancyStatus as number,
-            direction: doc.vehicle?.position?.bearing as number | null,
-        } satisfies vehicle;
-    })
+    const returned = new Array<vehicle>;    //Array of routes matching the queried one
+    for (const doc of feed.entity) {
+        if (doc.vehicle?.trip?.routeId === route) {
+            const idNum = Number.parseInt(doc.vehicle?.vehicle?.label as string);
 
-    //Fetch GTFSRT endpoint
-    //Array.filter only elements with ROUTE - TODO: send code in matching format, es: '10U'
-    //No DB query should be necessary
-    //Consider (test speed) when adding db query for each vehicle on route matching direction_id and trip_id on trips (or trips_full), it returns the headsign
-    //Actually I don't even need to do that. It's either 1 or 0. I won't know what those numbers will mean but I can diferentiate between the two
+            returned.push({
+                id: idNum,
+                vehicleType: vehicleName(idNum),
+                lat: doc.vehicle?.position?.latitude as number,
+                lon: doc.vehicle?.position?.longitude as number,
+                updated: updatedDate(doc.vehicle?.timestamp as number | null | undefined),
+                // full: doc.vehicle?.occupancyStatus as number,
+                // direction: doc.vehicle?.position?.bearing as number | null,
+            });
+        }
+    }
 
-    //NOTE: sometimes the GTFS API goes down. Keep other API as fallback
+    return returned;
 }
 
 //Returns the full word "Bus" or "Tram"
-//TODO: add function matching ID with type of vehicle
-function vehicleName(initial: string | null | undefined) {
-    return initial;
+function vehicleName(initial: number | null | undefined) {
     if (initial == null) return 'Sconosciuto';
 
-    if (initial === 'B') return 'Bus';
-    if (initial === 'T') return 'Tram';
+    if ((initial >= 2800 && initial < 2900) || initial >= 5000) return 'Tram';
+    else return 'Bus';
 }
 
 //Converts a timestamp to a date object
 function updatedDate(date: number | null | undefined) {
     if (date == null) return new Date();
-    return new Date(date as number);
+    return new Date(date * 1000 as number);
 }
