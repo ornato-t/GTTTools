@@ -2,8 +2,7 @@ import type { stop } from "$lib/stop";
 import type { trip } from "$lib/trip";
 import type { RequestHandler } from "@sveltejs/kit";
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
-import type { Collection } from "mongodb";
-import type Long from "node_modules/long";
+import type { Collection, Long } from "mongodb";
 
 export const GET: RequestHandler = async ({ params, locals }) => {
     const { trips }: { trips: Collection<trip> } = locals;
@@ -36,7 +35,7 @@ async function pollStop(stop: string, db: Collection<trip>) {
                 if (addedRoutes.includes(trip.route)) { // Is this entity already present in the returned ones?
                     for (const el of returned) {    //If true, find the matching one and push the passage time
                         if (el.route === trip.route) {
-                            el.pass.push(getDate(entity.tripUpdate?.timestamp as Long | null | undefined));
+                            el.pass.push(getDate(entity.tripUpdate?.timestamp as Long | number | null | undefined));
                             break;
                         }
                     }
@@ -46,7 +45,7 @@ async function pollStop(stop: string, db: Collection<trip>) {
                         route: trip.route,
                         routeID: trip.route,
                         direction: trip.destination,
-                        pass: [getDate(entity.tripUpdate?.timestamp as Long | null | undefined)],
+                        pass: [getDate(entity.tripUpdate?.timestamp as Long | number | null | undefined)],
                         realTime: true,
                     })
                 }
@@ -76,7 +75,8 @@ async function pollStop(stop: string, db: Collection<trip>) {
 }
 
 //Returns a date object from a string formatted as HH:mm
-function getDate(d: Long | null | undefined) {
-    if (d == null) return new Date();
-    return new Date(d.low * 1000);
+function getDate(d: Long | number | null | undefined) {
+    if (d == null) return new Date();   //d is of type null or undefined
+    if (typeof d === 'number') return new Date(d * 1000);   //d is of type number
+    return new Date(d.low * 1000);  //d is of type Long
 }
