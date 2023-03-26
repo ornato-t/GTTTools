@@ -75,6 +75,7 @@ async function pollStop(stop: string, db: Collection<trip>) {
 }
 
 //Returns a date object from a string formatted as HH:mm
+//Depending on the runtime, d is either parsed as a Long or a number, so we have to watch for both cases
 function getDate(d: Long | number | null | undefined) {
     if (d == null) return new Date();   //d is of type null or undefined
     if (typeof d === 'number') return new Date(d * 1000);   //d is of type number
