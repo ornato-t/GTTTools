@@ -16,7 +16,7 @@ async function pollRoute(route: string) {
 
     const returned = new Array<vehicle>;    //Array of routes matching the queried one
     for (const doc of feed.entity) {
-        if (doc.vehicle?.trip?.routeId === route) {
+        if (doc.vehicle?.trip?.routeId === route + 'U') {
             const idNum = Number.parseInt(doc.vehicle?.vehicle?.label as string);
 
             returned.push({

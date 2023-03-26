@@ -22,7 +22,7 @@ async function getRoute(code: string, fetch: (input: RequestInfo | URL, init?: R
     try {   //Try to fetch from site first (faster)
         route = await fetch(`/api/route/${code}`, { signal: AbortSignal.timeout(1000) });   //Send timeout if request takes longer than a seconds
     } catch (e) {   //If it fails, resort to experimental API
-        route = await fetch(`/api/route-experimental/${code}U`);
+        route = await fetch(`/api/route-experimental/${code}`);
     }
 
     if (route.status !== 200) {
