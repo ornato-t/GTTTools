@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 
-	const SEC_REFRESH = 30;
+	const SEC_REFRESH = 10;
 
 	let api = new Array<stop>();
 	let error = false;

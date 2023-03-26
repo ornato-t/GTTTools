@@ -4,8 +4,8 @@
 	import { onMount } from 'svelte';
 	import Counter from './counter.svelte';
 
-	//Refresh data every 5 seconds
-	onMount(() => setInterval(() => invalidate('vehicle'), 5000));
+	//Refresh data every seconds
+	onMount(() => setInterval(() => invalidate('vehicle'), 1000));
 
 	export let data: PageData;
 </script>
@@ -38,9 +38,9 @@
 							</div>
 
 							<div class="justify-end mt-4">
-								{#if vehicle.full}
+								<!-- {#if vehicle.full}
 									<div class="text-warning mx-auto w-fit my-2">Veicolo pieno!</div>
-								{/if}
+								{/if} -->
 								<div class="font-mono text-sm text-end">
 									Aggiornato <Counter time={vehicle.updated}/>
 								</div>
@@ -77,9 +77,9 @@
 							</div>
 
 							<div class="justify-end mt-4">
-								{#if vehicle.full}
+								<!-- {#if vehicle.full}
 									<div class="text-warning mx-auto w-fit my-2">Veicolo pieno!</div>
-								{/if}
+								{/if} -->
 								<div class="font-mono text-sm text-end">
 									Aggiornato <Counter time={vehicle.updated}/>
 								</div>
