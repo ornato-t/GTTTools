@@ -14,7 +14,7 @@ export const GET: RequestHandler = async ({ params, locals }) => {
 async function pollStop(stop: string, db: Collection<trip>) {
     const url = 'http://percorsieorari.gtt.to.it/das_gtfsrt/trip_update.aspx';
 
-    const tripsDB = await db.find({ "stops.id": Number.parseInt(stop) }).project({ _id: 0, trip_id: 1, route: 1, provider: 1, dates: 1, type_it: 1 }).toArray() as trip[];
+    const tripsDB = await db.find({ "stops.id": Number.parseInt(stop) }).project({ _id: 0, trip_id: 1, route: 1, destination: 1, provider: 1, dates: 1, type_it: 1 }).toArray() as trip[];
 
     //Fetch and parse feed
     const res = await fetch(url);
