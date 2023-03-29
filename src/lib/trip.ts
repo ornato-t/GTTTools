@@ -20,6 +20,6 @@ interface days {
 }
 
 interface trip_stop {
-    id: number,
+    id: string,
     arrival: string,
 }
