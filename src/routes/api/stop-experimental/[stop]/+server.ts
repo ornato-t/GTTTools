@@ -23,60 +23,35 @@ async function pollStop(stop: string, db: Collection<trip>) {
     const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(new Uint8Array(buffer));
 
     const returned = new Array<stop>;   //Array of returned stop objects
-    const addedRoutes = new Array<string>;  //Temporary array
+    const addedRoutes = new Array<string>;  //Temporary array, saves trips that have already been added
 
-    /*
-        Match trips and entities, return the ones related to the desired stop.
-        This is hardly readable, but better for complexity. We have hundred of trips so it's relevant 
-    */
-    for (const entity of feed.entity) { //Loop through entities (feed entries)
-        for (const trip of tripsDB) {   //Loop through trips (db entries)
-            if (entity.id === trip.trip_id) {   //Match trips and entities
+    //Match trips and entities, return the ones related to the desired stop
+    for (const match of findIntersection(feed.entity, tripsDB)) {   //For each match between a trip in the feed and one on the db
+        const { db, entity } = match;
 
-                if (addedRoutes.includes(trip.route)) { // Is this entity already present in the returned ones?
-                    for (const el of returned) {    //If true, find the matching one and push the passage time
-                        if (el.route === trip.route) {
-                            const time = matchStop(entity.tripUpdate?.stopTimeUpdate as stopTimeGTFS[], trip.stops, stop);
-                            if (time === null) break;
-
-                            el.pass.push(getDate(time));
-                            break;
-                        }
-                    }
-                } else {    //If false, create a new returned object
-                    const time = matchStop(entity.tripUpdate?.stopTimeUpdate as stopTimeGTFS[], trip.stops, stop);
-                    if (time === null) break;
-
-                    addedRoutes.push(trip.route);
-                    returned.push({
-                        route: trip.route,
-                        routeID: trip.route,
-                        direction: trip.destination,
-                        pass: [getDate(time)],
-                        realTime: true,
-                    })
+        if (addedRoutes.includes(db.route)) {   //If the route is already in the returned route list
+            for (const el of returned) {    //Find the matching route and push
+                if (el.route === db.route) {
+                    const time = matchStop(entity.tripUpdate?.stopTimeUpdate as stopTimeGTFS[], db.stops, stop);
+                    if (time != null) el.pass.push(getDate(time));
+                    break;
                 }
-                break;
+            }
+
+        } else {    //Otherwise simply push it
+            const time = matchStop(entity.tripUpdate?.stopTimeUpdate as stopTimeGTFS[], db.stops, stop);
+            if (time != null) {
+                addedRoutes.push(db.route);
+                returned.push({
+                    route: db.route,
+                    routeID: db.route,
+                    direction: db.destination,
+                    pass: [getDate(time)],
+                    realTime: true,
+                })
             }
         }
     }
-
-    //Unfortunately the dates (passage times) aren't sorted in the feed, so we have to sort them manually
-    for (const el of returned) {
-        el.pass.sort((a: Date, b: Date) => {
-            if (a < b) return -1;
-            if (a < b) return 1;
-            return 0;
-        })
-    }
-
-
-    //Lastly, sort by route names
-    returned.sort((a: stop, b: stop) => {
-        if (a.routeID < b.routeID) return -1;
-        if (a.routeID < b.routeID) return 1;
-        return 0;
-    })
 
     return returned;
 }
@@ -102,10 +77,28 @@ function matchStop(stopTimeArr: stopTimeGTFS[], stopTimeDBArr: trip_stop[], stop
     if (stopRT.length > 1) console.log('Warning, found multiple matches for the same sequence number:', stop);
     else if (stopRT.length === 0) return null;
 
-
     return stopRT[0].departure.time;
 
 }
+
+//Find the intersection between a GTFS entity feed and a collection of trips (comparing trip_ids)
+//Returns an array containing the two objects
+function findIntersection(feed: GtfsRealtimeBindings.transit_realtime.IFeedEntity[], db: trip[]) {
+    const set = new Set(db.map(obj => obj.trip_id));
+    const intersection = [];
+
+
+    for (const obj of feed) {
+        if (set.has(obj.id)) {
+            const dbObj = db.find(item => item.trip_id === obj.id);
+
+            if (dbObj != null) intersection.push({ db: dbObj, entity: obj });
+        }
+    }
+
+    return intersection;
+}
+
 interface stopTimeGTFS {
     stopSequence: number;
     departure: { time: Long | number };
