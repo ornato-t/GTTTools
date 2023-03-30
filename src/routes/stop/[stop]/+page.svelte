@@ -55,7 +55,7 @@
 {/if}
 
 <!-- Desktop -->
-<div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 mt-2">
+<div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 min-[1900px]:grid-cols-4 gap-4 mt-2">
 	{#if api.length !== 0}
 		{#key api}
 			{#each api as pass}

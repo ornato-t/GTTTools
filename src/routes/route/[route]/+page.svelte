@@ -16,7 +16,7 @@
 </div>
 
 <!-- Desktop -->
-<div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 mt-2">
+<div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 min-[1900px]:grid-cols-4 gap-4 mt-2">
 	{#if data.api.length !== 0}
 		{#key data.api}
 			{#each data.api as vehicle}
@@ -25,7 +25,7 @@
 						class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl"
 					>
 						<div class="card-body p-6">
-							<h2 class="card-title  mb-4 grid grid-cols-4">
+							<h2 class="card-title mb-4 grid grid-cols-4">
 								<span class="text-2xl text-left">{vehicle.id}</span>
 								<span class="text-sm font-light text-right col-span-3">
 									{vehicle.vehicleType.toUpperCase()}
