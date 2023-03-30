@@ -53,6 +53,23 @@ async function pollStop(stop: string, db: Collection<trip>) {
         }
     }
 
+    //Unfortunately the dates (passage times) aren't sorted in the feed, so we have to sort them manually
+    for (const el of returned) {
+        el.pass.sort((a: Date, b: Date) => {
+            if (a < b) return -1;
+            if (a < b) return 1;
+            return 0;
+        })
+    }
+
+
+    //Lastly, sort by route names
+    returned.sort((a: stop, b: stop) => {
+        if (a.routeID < b.routeID) return -1;
+        if (a.routeID < b.routeID) return 1;
+        return 0;
+    })
+
     return returned;
 }
 
