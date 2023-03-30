@@ -19,7 +19,8 @@ interface days {
     sunday: boolean,
 }
 
-interface trip_stop {
+export interface trip_stop {
     id: string,
     arrival: string,
+    sequence: number,
 }
