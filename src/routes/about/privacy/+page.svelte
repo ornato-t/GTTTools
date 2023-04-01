@@ -1,8 +1,3 @@
-<script lang="ts">
-	export const csr = false;
-</script>
-
-
 <h1 class="font-bold text-xl mb-2">Privacy policy</h1>
 
 <div>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	export const ssr = false; //Using a browser only API, can't SSR
 	import Geolocation from 'svelte-geolocation';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';

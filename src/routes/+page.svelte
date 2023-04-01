@@ -1,7 +1,3 @@
-<script lang="ts">
-	export const prerender = true;
-</script>
-
 <div class="grid w-full min-h-screen bg-base-200 pb-6 lg:grid-cols-2 gap-y-4 lg:gap-y-0">
   <div class="hero-content flex-col lg:flex-row place-self-start my-auto h-fit w-full">
 		<i class="bx bx-search-alt-2 bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
