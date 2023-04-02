@@ -4,11 +4,17 @@
 	import type { PageData } from './$types';
 	import Loading from './loading.svelte';
 	import Timer from './timer.svelte';
+	import type { stop } from '$lib/stop';
 
 	export let data: PageData;
 
+	let api = new Array<stop>;
+
 	//Refresh data every 5 seconds
-	onMount(() => setInterval(() => invalidate('stop'), 5000));
+	onMount(() => setInterval(async () => {
+		await invalidate('stop');	//Wait for page reload
+		api = await data.api.promise	//Then refresh the data
+	}, 5000));
 
 	function printLocale(d: Date) {
 		const formatter = Intl.DateTimeFormat('it-it', {
@@ -29,7 +35,7 @@
 
 <!-- Desktop -->
 <div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 min-[1900px]:grid-cols-4 gap-4 mt-2">
-	{#await data.api.promise}
+	{#if api.length === 0}
 		<Loading />
 		<Loading />
 		<span class="hidden xl:block">
@@ -38,7 +44,7 @@
 		<span class="hidden 2xl:block">
 			<Loading />
 		</span>
-	{:then api} 
+	{:else} 
 		{#key api}
 			{#each api as pass}
 				<a href="/route/{pass.route}" data-sveltekit-preload-data>
@@ -78,20 +84,20 @@
 				</a>
 			{/each}
 		{/key}
-	{/await}
+	{/if}
 </div>
 
 <!-- Mobile -->
 <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-6 mx-auto place-items-center">
-	{#await data.api.promise}
+	{#if api.length === 0}
 	<div class="mx-4 grid gap-y-4">
 		<Loading />
 		<Loading />
 		<Loading />
 		<Loading />
 	</div>
-	{:then api} 
-		{#key api}
+	{:else} 
+	{#key api}
 			{#each api as pass}
 				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 					<a href="/route/{pass.route}" data-sveltekit-preload-data>
@@ -130,5 +136,5 @@
 				</div>
 			{/each}
 		{/key}
-	{/await}
+	{/if}
 </div>
