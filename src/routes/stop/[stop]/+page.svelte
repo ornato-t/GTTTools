@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 
-	//Refresh data every seconds
+	//Refresh data every 5 seconds
 	onMount(() => setInterval(() => invalidate('stop'), 5000));
 
 	function printLocale(d: Date) {
@@ -29,9 +29,18 @@
 
 <!-- Desktop -->
 <div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 min-[1900px]:grid-cols-4 gap-4 mt-2">
-	{#if data.api.length !== 0}
-		{#key data.api}
-			{#each data.api as pass}
+	{#await data.api.promise}
+		<Loading />
+		<Loading />
+		<span class="hidden xl:block">
+			<Loading />
+		</span>
+		<span class="hidden 2xl:block">
+			<Loading />
+		</span>
+	{:then api} 
+		{#key api}
+			{#each api as pass}
 				<a href="/route/{pass.route}" data-sveltekit-preload-data>
 					<div class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
@@ -69,23 +78,21 @@
 				</a>
 			{/each}
 		{/key}
-	{:else}
-		<Loading />
-		<Loading />
-		<span class="hidden xl:block">
-			<Loading />
-		</span>
-		<span class="hidden 2xl:block">
-			<Loading />
-		</span>
-	{/if}
+	{/await}
 </div>
 
 <!-- Mobile -->
 <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-6 mx-auto place-items-center">
-	{#if data.api.length !== 0}
-		{#key data.api}
-			{#each data.api as pass}
+	{#await data.api.promise}
+	<div class="mx-4 grid gap-y-4">
+		<Loading />
+		<Loading />
+		<Loading />
+		<Loading />
+	</div>
+	{:then api} 
+		{#key api}
+			{#each api as pass}
 				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 					<a href="/route/{pass.route}" data-sveltekit-preload-data>
 						<div class="card-body p-6">
@@ -123,11 +130,5 @@
 				</div>
 			{/each}
 		{/key}
-	{:else}
-		<div class="mx-4 grid gap-y-4">
-			<Loading />
-			<Loading />
-			<Loading />
-			<Loading />
-		</div>{/if}
+	{/await}
 </div>
