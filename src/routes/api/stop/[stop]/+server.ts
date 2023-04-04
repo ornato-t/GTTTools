@@ -30,7 +30,7 @@ async function pollStop(stop: string) {
         }
     }) satisfies stop[];
 
-    stops.sort((a: stop, b: stop) => {
+    stops.sort((a, b) => {
         if (a.routeID < b.routeID) return -1;
         if (a.routeID > b.routeID) return 1;
         return 0;
@@ -49,17 +49,27 @@ function parseBusN(bus: string) {
 
 const MAX_MINUTES = 5;  //Maximum difference to discriminate between a real time trip
 const RETURNED_ENTRIES = 4; //Maximum number of timestamps to be returned
+const PAST_THRESHOLD = 2;
 //Assemble an array of passes, either in real time or not, in an arrays of size RETURNED_ENTRIES
 function getPasses(programmed: string[], realTime: string[]) {
-    
+
     //If no real time passages are found return the programmed ones
     if (realTime.length === 0)
-        return programmed.map(pass => { return { time: toDateTime(pass).toJSDate(), realTime: false } }).slice(0, RETURNED_ENTRIES) satisfies passage[];
+        return programmed
+            .map(pass => toDateTime(pass))  //Cast to DateTime
+            .filter(pass => isFuture(pass, PAST_THRESHOLD)) //Filter out ones in the past
+            .map(pass => { return { time: pass.toJSDate(), realTime: false } }) //Map to object
+            .slice(0, RETURNED_ENTRIES) satisfies passage[];    //Only take the first N
 
-    const rt = realTime.map(pass => toDateTime(pass));  //Cast to DateTime
-    const res: passage[] = rt.map(pass => { return { time: pass.toJSDate(), realTime: true } }).slice(0, RETURNED_ENTRIES);    //Create a returned object from real time
+    const rt = realTime.map(pass => toDateTime(pass))  //Cast to DateTime
 
-    //If the programmed ones aren't duplicates with the real time ones, add them, mark them as not real time
+    //Create returned object from real time in the future
+    const res: passage[] = rt
+        .filter(pass => isFuture(pass, PAST_THRESHOLD))
+        .map(pass => { return { time: pass.toJSDate(), realTime: true } })
+        .slice(0, RETURNED_ENTRIES);   
+
+    //If the programmed ones aren't duplicates of the real time ones, add them, mark them as not real time
     for (const pass of programmed) {
         if (res.length >= RETURNED_ENTRIES) {
             return res.sort((a, b) => {
@@ -81,8 +91,10 @@ function getPasses(programmed: string[], realTime: string[]) {
             }
         };
 
-        if (!isDup)
-            res.push({ time: date.toJSDate(), realTime: false });   //If the current programmed date is not a duplicate, push it
+        //If the current programmed date is not a duplicate, push it (only if it isn't in the future)
+        if (!isDup && isFuture(date, PAST_THRESHOLD))
+            res.push({ time: date.toJSDate(), realTime: false });
+
     }
 
     return res.sort((a, b) => {
@@ -92,7 +104,16 @@ function getPasses(programmed: string[], realTime: string[]) {
     });
 
 
+    //Cast a string date to DateTime
     function toDateTime(d: string) {
         return DateTime.fromFormat(d, 'H:m', { locale: 'it', zone: 'Europe/Rome' });
+    }
+
+    //Returns true if a DateTime is in the future or in the past within a certain tolerance [minutes]
+    function isFuture(d: DateTime, tolerance: number) {
+        const difference = d.diffNow('minutes').as('minutes');
+
+        if (difference > (tolerance * -1)) return true;
+        return false;
     }
 }
