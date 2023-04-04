@@ -56,25 +56,35 @@ function getPasses(programmed: string[], realTime: string[]) {
         return programmed.map(pass => { return { time: toDateTime(pass).toJSDate(), realTime: false } }).slice(0, RETURNED_ENTRIES) satisfies passage[];
 
     const rt = realTime.map(pass => toDateTime(pass));  //Cast to DateTime
-    const res: passage[] = rt.map(pass => { return { time: pass.toJSDate(), realTime: true } });    //Create a returned object from real time
+    const res: passage[] = rt.map(pass => { return { time: pass.toJSDate(), realTime: true } }).slice(0, RETURNED_ENTRIES);    //Create a returned object from real time
 
     //If the programmed ones aren't duplicates with the real time ones, add them, mark them as not real time
     for (const pass of programmed) {
-        if (res.length >= RETURNED_ENTRIES) return res;
+        if (res.length >= RETURNED_ENTRIES) {
+            return res.sort((a, b) => {
+                if (a.time < b.time) return -1;
+                if (a.time < b.time) return 1;
+                return 0;
+            });
+        }
 
         const date = toDateTime(pass);  //Cast current programmed trip to DateTime
         let isDup = false;
 
         for (const passRt of rt) {
             const diff = passRt.diff(date, 'minutes').as('minutes');    //Calculate difference in minutes4
-            
+
             if (Math.abs(diff) <= MAX_MINUTES) isDup = true;            //Difference absolute value
         };
 
         if (isDup) res.push({ time: date.toJSDate(), realTime: false });    //If the current programmed date is not a duplicate, push it
     }
 
-    return res;
+    return res.sort((a, b) => {
+        if (a.time < b.time) return -1;
+        if (a.time < b.time) return 1;
+        return 0;
+    });
 
 
     function toDateTime(d: string) {
