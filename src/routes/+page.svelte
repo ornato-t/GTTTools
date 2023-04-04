@@ -57,12 +57,12 @@
   <div class="hero-content flex-col lg:flex-row place-self-end my-auto h-fit w-full">
 		<i class="bx bx-train bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
-		<h1 class="text-5xl font-bold">Stazioni della metro</h1>
+		<h1 class="text-5xl font-bold">Metro</h1>
 		<span class="py-6">
 			<p>Cerca una stazione della metropolitana e visualizza i passaggi in programma.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="#" class="btn lg:btn-lg btn-primary lg:place-self-end">metro</a>
+	  <a href="/metro/0" class="btn lg:btn-lg btn-primary lg:place-self-end">metro</a>
 	</div>
   </div>
 	<div/>
@@ -75,7 +75,7 @@
 			<p>Sfrutta la linea ferroviaria e i treni SFM per attraversare rapidamente la città.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="#" class="btn lg:btn-lg btn-primary lg:place-self-start">treni</a>
+	  <a href="/sfm/0" class="btn lg:btn-lg btn-primary lg:place-self-start">treni</a>
 	</div>
   </div>
 	<div/>
