@@ -32,7 +32,7 @@ async function pollStop(stop: string) {
 
     stops.sort((a: stop, b: stop) => {
         if (a.routeID < b.routeID) return -1;
-        if (a.routeID < b.routeID) return 1;
+        if (a.routeID > b.routeID) return 1;
         return 0;
     })
 
@@ -51,6 +51,7 @@ const MAX_MINUTES = 5;  //Maximum difference to discriminate between a real time
 const RETURNED_ENTRIES = 4; //Maximum number of timestamps to be returned
 //Assemble an array of passes, either in real time or not, in an arrays of size RETURNED_ENTRIES
 function getPasses(programmed: string[], realTime: string[]) {
+    
     //If no real time passages are found return the programmed ones
     if (realTime.length === 0)
         return programmed.map(pass => { return { time: toDateTime(pass).toJSDate(), realTime: false } }).slice(0, RETURNED_ENTRIES) satisfies passage[];
@@ -63,7 +64,7 @@ function getPasses(programmed: string[], realTime: string[]) {
         if (res.length >= RETURNED_ENTRIES) {
             return res.sort((a, b) => {
                 if (a.time < b.time) return -1;
-                if (a.time < b.time) return 1;
+                if (a.time > b.time) return 1;
                 return 0;
             });
         }
@@ -74,15 +75,19 @@ function getPasses(programmed: string[], realTime: string[]) {
         for (const passRt of rt) {
             const diff = passRt.diff(date, 'minutes').as('minutes');    //Calculate difference in minutes4
 
-            if (Math.abs(diff) <= MAX_MINUTES) isDup = true;            //Difference absolute value
+            if (Math.abs(diff) <= MAX_MINUTES) {
+                isDup = true;
+                break;
+            }
         };
 
-        if (isDup) res.push({ time: date.toJSDate(), realTime: false });    //If the current programmed date is not a duplicate, push it
+        if (!isDup)
+            res.push({ time: date.toJSDate(), realTime: false });   //If the current programmed date is not a duplicate, push it
     }
 
     return res.sort((a, b) => {
         if (a.time < b.time) return -1;
-        if (a.time < b.time) return 1;
+        if (a.time > b.time) return 1;
         return 0;
     });
 
