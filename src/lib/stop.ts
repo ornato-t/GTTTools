@@ -17,6 +17,10 @@ export interface stop {
     route: string,
     routeID: string,
     direction: string,
-    pass: Date[],
-    realTime: boolean
+    pass: passage[],
+}
+
+export interface passage {
+    time: Date,
+    realTime: boolean,
 }
