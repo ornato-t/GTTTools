@@ -54,7 +54,7 @@
   </div>
 	<div/>
 	<div/>
-  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
+  <div class="hero-content flex-col lg:flex-row place-self-end my-auto h-fit w-full">
 		<i class="bx bx-train bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Stazioni della metro</h1>
@@ -62,7 +62,7 @@
 			<p>Cerca una stazione della metropolitana e visualizza i passaggi in programma.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="#" class="btn lg:btn-lg btn-primary lg:place-self-start">metro</a>
+	  <a href="#" class="btn lg:btn-lg btn-primary lg:place-self-end">metro</a>
 	</div>
   </div>
 	<div/>
@@ -80,7 +80,7 @@
   </div>
 	<div/>
 	<div/>
-  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
+  <div class="hero-content flex-col lg:flex-row place-self-end my-auto h-fit w-full">
 		<i class="bx bxs-flask bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Sperimentale</h1>
@@ -89,7 +89,7 @@
 			<p>Ci stiamo ancora lavorando, ma presto sarà perfetto.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="#" class="btn lg:btn-lg btn-primary lg:place-self-start">prova</a>
+	  <a href="/stop-experimental/search" class="btn lg:btn-lg btn-primary lg:place-self-end">prova</a>
 	</div>
   </div>
 </div>
