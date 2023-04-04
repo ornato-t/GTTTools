@@ -46,10 +46,50 @@
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Trova un veicolo</h1>
 		<span class="py-6">
-			<p>Trova la linea su cui è un servizio un veicolo, la sua posizione in tempo reale e - qualora disponibile - una sua immagine.</p>
+			<p>Trova la linea su cui è un servizio un veicolo, la sua posizione in tempo reale e una sua immagine.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
 	  <a href="/vehicle/search" class="btn lg:btn-lg btn-primary lg:place-self-start">trova</a>
+	</div>
+  </div>
+	<div/>
+	<div/>
+  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
+		<i class="bx bx-train bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+	<div class="grid">
+		<h1 class="text-5xl font-bold">Stazioni della metro</h1>
+		<span class="py-6">
+			<p>Cerca una stazione della metropolitana e visualizza i passaggi in programma.</p>
+			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
+		</span>
+	  <a href="#" class="btn lg:btn-lg btn-primary lg:place-self-start">metro</a>
+	</div>
+  </div>
+	<div/>
+	<div/>
+  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
+		<i class="bx bxs-train bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+	<div class="grid">
+		<h1 class="text-5xl font-bold">Servizio Ferroviario Metropolitano</h1>
+		<span class="py-6">
+			<p>Sfrutta la linea ferroviaria e i treni SFM per attraversare rapidamente la città.</p>
+			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
+		</span>
+	  <a href="#" class="btn lg:btn-lg btn-primary lg:place-self-start">treni</a>
+	</div>
+  </div>
+	<div/>
+	<div/>
+  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
+		<i class="bx bxs-flask bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+	<div class="grid">
+		<h1 class="text-5xl font-bold">Sperimentale</h1>
+		<span class="py-6">
+			<p>Un nuovo modo di visualizzare i passaggi in tempo reale.</p>
+			<p>Ci stiamo ancora lavorando, ma presto sarà perfetto.</p>
+			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
+		</span>
+	  <a href="#" class="btn lg:btn-lg btn-primary lg:place-self-start">prova</a>
 	</div>
   </div>
 </div>
