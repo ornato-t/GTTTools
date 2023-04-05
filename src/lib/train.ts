@@ -1,3 +1,13 @@
+/*  EXTERNAL USE    */
+
+//Represents a regional or SFM train
+export interface train extends trip {
+    platform?: platform,
+}
+
+/*  INTERNAL USE    */
+
+//Represents the relevant data, parsed from the "viaggiatreno" API
 export interface station {
     id: number,
     category: string,
@@ -11,6 +21,7 @@ export interface platform {
     confirmed: boolean,
 }
 
+//Represents the relevant data, parsed from the "lefrecce" API
 export interface trip {
     id: number,
     category: string,
@@ -19,6 +30,8 @@ export interface trip {
     departure: Date,
     name: string,
 }
+
+/*  RETURNED BY TRENITALIA  */
 
 //Represents a train in the "viaggiatreno" API
 //Commented fields are null, zero or empty strings

@@ -1,22 +1,25 @@
-import type { vt_train, solutions, trip, station, platform } from "$lib/train";
+import type { vt_train, solutions, trip, station, platform, train } from "$lib/train";
 import { getByCode, getByName } from "$lib/trainStations";
 import { error, type RequestHandler } from "@sveltejs/kit";
 import { DateTime } from "luxon";
 
+const RETURNED_ENTRIES = 4; //Maximum number of timestamps to be returned
+
 export const GET: RequestHandler = async ({ params }) => {
     const station = params.station || '';
-    const { code_vt, code_fr } = getByCode(Number.parseInt(station)) ?? { code_vt: null, code_fr: null };
+    const { code_vt, code_fr, name } = getByCode(Number.parseInt(station)) ?? { code_vt: null, code_fr: null };
 
     if (code_vt == null || code_fr == null) throw error(404, 'Undefined stop code');
 
     const [stationInfo, toPN, toLing, toStu] = await Promise.all([pollStation(code_vt), linkStations(code_fr, 'porta nuova'), linkStations(code_fr, 'lingotto'), linkStations(code_fr, 'stura')]);
 
     return new Response(JSON.stringify({
-        station,
-        current_station: stationInfo,
-        to_Porta_Nuova: toPN,
-        to_Lingotto: toLing,
-        to_Stura: toStu,
+        name,
+        departures: {
+            portaNuova: pair(stationInfo, toPN),
+            lingotto: pair(stationInfo, toLing),
+            stura: pair(stationInfo, toStu),
+        }
     }));
 }
 
@@ -98,11 +101,11 @@ async function linkStations(station: number, dest: string) {
         const out = json.solutions.map(sol => {
             return {
                 id: Number.parseInt(sol.solution.trains[0].name),
+                name: sol.solution.trains[0].logoId,
                 category: sol.solution.trains[0].trainCategory,
                 destination: cleanName(sol.solution.destination),
                 origin: cleanName(sol.solution.origin),
                 departure: sol.solution.departureTime,
-                name: sol.solution.trains[0].logoId
             } satisfies trip;
         });
 
@@ -120,4 +123,26 @@ async function linkStations(station: number, dest: string) {
     }
 }
 
-//TODO: match the results of the two endpoints in a single one
+function pair(stationInfo: station[], trains: trip[]) {
+    const out = trains.map(pass => {
+        const match = stationInfo.find(tr => tr.id === pass.id) ?? null;
+
+        if (match === null) return pass;
+
+        return {
+            id: pass.id,
+            name: pass.name,
+            category: pass.category,
+            destination: pass.destination,
+            origin: pass.origin,
+            departure: DateTime.fromISO(pass.departure.toString()).plus({ minutes: match.delay }).toJSDate(),   //Any delay is already factored in
+            platform: {
+                id: match.platform.id,
+                confirmed: match.platform.confirmed
+            } satisfies platform,
+        } satisfies train;
+    });
+
+    const blacklisted = [''];   //TODO: add IC and FR
+    return out.filter(train => !blacklisted.includes(train.category)).slice(0, RETURNED_ENTRIES);
+}
