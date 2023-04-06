@@ -4,7 +4,7 @@ import { error } from '@sveltejs/kit';
 
 //The data from the DB is passed to this load function. It depends by stop, so invalidating that (in .svelte) refreshes this
 export async function load({ data, depends }) {
-    depends('stop')
+    depends('sfm')
 
     return {
         code: data.code,
