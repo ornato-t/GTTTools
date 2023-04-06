@@ -74,10 +74,10 @@
 					<a href="/route/search" data-sveltekit-preload-data>Cerca linea</a>
 				</li>
 				<li>
-					<a href="/metro/search" data-sveltekit-preload-data>Stazioni metro</a>
+					<a href="/metro/search" data-sveltekit-preload-data>Cerca stazioni metro</a>
 				</li>
 				<li>
-					<a href="/sfm/search" data-sveltekit-preload-data>Stazioni SFM</a>
+					<a href="/sfm/search" data-sveltekit-preload-data>Cerca stazioni SFM</a>
 				</li>
 			</ul>
 
@@ -121,10 +121,10 @@
 				<a href="/route/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca linea</a>
 			</li>
 			<li>
-				<a href="/metro/search" data-sveltekit-preload-data on:click={toggleDrawer}>Stazioni metro</a>
+				<a href="/metro/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca stazioni metro</a>
 			</li>
 			<li>
-				<a href="/sfm/search" data-sveltekit-preload-data on:click={toggleDrawer}>Stazioni SFM</a>
+				<a href="/sfm/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca stazioni SFM</a>
 			</li>
 		</ul>
 	</div>

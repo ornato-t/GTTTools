@@ -1,9 +1,11 @@
 export interface stopDB{
-    code: number,
+    code?: number,
     name: string,
-    description: string,
+    description?: string,
     city: string,
-    coordinates: coordinates
+    coordinates: coordinates,
+    train?: boolean
+    metro?: boolean
 }
 
 interface coordinates {

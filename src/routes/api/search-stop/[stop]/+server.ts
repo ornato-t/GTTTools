@@ -45,7 +45,7 @@ export const GET: RequestHandler = async ({ params, locals, url }) => {
                     }
                 }
             },
-            { $match: { name: { $regex: /METRO [\w ]+/ } } },
+            { $match: { metro: true } },
             { $project: { _id: 0, coordinates: 0 } },
             { $addFields: { name: { $toUpper: "$name" }, description: { $toUpper: "$description" }, city: { $toUpper: "$city" } } },
             { $limit: STOP_NUM }
