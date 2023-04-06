@@ -1,4 +1,4 @@
-import type { stop } from '$lib/stop';
+import type { trainStation } from '$lib/train';
 import fetch from '$lib/proxyRequest';
 import { error } from '@sveltejs/kit';
 
@@ -16,12 +16,12 @@ export async function load({ data, depends }) {
 
 //We still need the internal API as a proxy to get around CORS
 async function getStop(stop: number) {
-    const station = await fetch(`/api/stop/${stop}`);
+    const station = await fetch(`/api/sfm/${stop}`);
 
     if (station.status !== 200) {
         const err = await station.json();
         throw error(err.status ?? 500, { message: err.message });
     }
 
-    return station.json() as Promise<stop[]>;
+    return station.json() as Promise<trainStation>;
 }

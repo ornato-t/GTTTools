@@ -7,12 +7,12 @@ export const load: PageServerLoad = async ({ params, locals, depends }) => {
     depends('stopDB')
 
     const { stops }: { stops: Collection<stopDB> } = locals;
-    const code = parseInt(params.stop);
+    const trainCode = parseInt(params.stop);
 
-    const res = stops.findOne({ code }, { projection: { _id: 0 } }) as Promise<stopDB>;
+    const res = stops.findOne({ trainCode }, { projection: { _id: 0 } }) as Promise<stopDB>;
 
     return {
-        code,
+        code: trainCode,
         db: res
     };
 }

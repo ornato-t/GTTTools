@@ -43,7 +43,7 @@
 		{#each stops as stop}
 			<a
 				class="my-1 card card-compact bg-base-200 btn h-fit animate-none"
-				href="/sfm/{stop.code}"
+				href="/sfm/{stop.trainCode}"
 				data-sveltekit-preload-data
 			>
 				<div class="card-body w-full grid grid-cols-4">

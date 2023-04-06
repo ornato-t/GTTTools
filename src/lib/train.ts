@@ -1,5 +1,15 @@
 /*  EXTERNAL USE    */
 
+export interface trainStation {
+    name: string,
+    departures: directions[],
+}
+
+export interface directions {
+    name: string,
+    trips: train[],
+}
+
 //Represents a regional or SFM train
 export interface train extends trip {
     platform?: platform,

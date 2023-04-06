@@ -4,8 +4,9 @@ export interface stopDB{
     description?: string,
     city: string,
     coordinates: coordinates,
-    train?: boolean
-    metro?: boolean
+    train?: boolean,
+    trainCode?: number,
+    metro?: boolean,
 }
 
 interface coordinates {

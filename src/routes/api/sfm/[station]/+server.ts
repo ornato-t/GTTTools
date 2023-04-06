@@ -1,4 +1,4 @@
-import type { vt_train, solutions, trip, station, platform, train } from "$lib/train";
+import type { vt_train, solutions, trip, station, platform, train, trainStation } from "$lib/train";
 import { getByCode, getByName } from "$lib/trainStations";
 import { error, type RequestHandler } from "@sveltejs/kit";
 import { DateTime } from "luxon";
@@ -18,14 +18,17 @@ export const GET: RequestHandler = async ({ params }) => {
         pollFR(code_fr, 'stura'),
     ]);
 
+    const out = [];
+    const [pn, ln, st] = await Promise.all([pair(stationInfo, toPN), pair(stationInfo, toLing), pair(stationInfo, toStu)])
+
+    if (pn.length !== 0) out.push({ name: 'Porta Nuova', trips: pn })
+    if (ln.length !== 0) out.push({ name: 'Lingotto', trips: ln })
+    if (st.length !== 0) out.push({ name: 'Stura', trips: st })
+
     return new Response(JSON.stringify({
         name,
-        departures: {
-            portaNuova: pair(stationInfo, toPN),
-            lingotto: pair(stationInfo, toLing),
-            stura: pair(stationInfo, toStu),
-        }
-    }));
+        departures: out,
+    } satisfies trainStation));
 }
 
 //Poll the "viaggiatreno" portal, get information on the current station
