@@ -26,7 +26,7 @@
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label class="label">
-		<span class="label-text">Inserisci il nome o il codice di una fermata</span>
+		<span class="label-text">Inserisci il nome di una stazione</span>
 	</label>
 	<Search
 		label=""
