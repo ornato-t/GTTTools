@@ -8,7 +8,7 @@
 
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
-			const res = await fetch(`/api/search-sfm/${stop}`);
+			const res = await fetch(`/api/search-stop/${stop}?filter=sfm`);
 			stops = await res.json();
 		}
 	}

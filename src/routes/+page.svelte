@@ -62,7 +62,7 @@
 			<p>Cerca una stazione della metropolitana e visualizza i passaggi in programma.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="/metro/0" class="btn lg:btn-lg btn-primary lg:place-self-end">metro</a>
+	  <a href="/metro/search" class="btn lg:btn-lg btn-primary lg:place-self-end">metro</a>
 	</div>
   </div>
 	<div/>
@@ -75,7 +75,7 @@
 			<p>Sfrutta la linea ferroviaria e i treni SFM per attraversare rapidamente la città.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="/sfm/0" class="btn lg:btn-lg btn-primary lg:place-self-start">treni</a>
+	  <a href="/sfm/search" class="btn lg:btn-lg btn-primary lg:place-self-start">treni</a>
 	</div>
   </div>
 	<div/>
