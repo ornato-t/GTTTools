@@ -11,10 +11,14 @@
 	let api = new Array<stop>;
 
 	//Refresh data every 5 seconds
-	onMount(() => setInterval(async () => {
-		await invalidate('stop');	//Wait for page reload
-		api = await data.api.promise	//Then refresh the data
-	}, 5000));
+	onMount(async () => {
+		api = await data.api.promise	//First refresh the data
+
+		setInterval(async () => {
+			await invalidate('stop');		//Wait for page reload
+			api = await data.api.promise	//Then refresh the data
+		}, 5000)
+	});
 
 	function printLocale(d: Date) {
 		const formatter = Intl.DateTimeFormat('it-it', {
@@ -50,14 +54,14 @@
 				<a href="/route/{pass.route}" data-sveltekit-preload-data>
 					<div class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
-							{#if pass.pass.length > 0}
-								<h2 class="card-title  mb-4 grid grid-cols-4">
-									<span class="text-2xl text-left">{pass.route}</span>
-									<span class="text-sm font-light text-right col-span-3">
-										{pass.direction}
-									</span>
-								</h2>
-								<div class="justify-end">
+							<h2 class="card-title  mb-4 grid grid-cols-4">
+								<span class="text-2xl text-left">{pass.route}</span>
+								<span class="text-sm font-light text-right col-span-3">
+									{pass.direction}
+								</span>
+							</h2>
+							<div class="justify-end">
+								{#if pass.pass.length > 0}
 									<div class="w-full grid grid-cols-3">
 										{#each pass.pass as time}
 											<div class="text-left {time.realTime ? '' : 'opacity-50'}">
@@ -68,10 +72,10 @@
 											</div>
 										{/each}
 									</div>
-								</div>
-							{:else}
-								<p>Nessuna informazione disponibile</p>
-							{/if}
+								{:else}
+									<p>Nessuna informazione disponibile</p>
+								{/if}
+							</div>
 						</div>
 					</div>
 				</a>
