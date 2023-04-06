@@ -11,7 +11,12 @@ export const GET: RequestHandler = async ({ params }) => {
 
     if (code_vt == null || code_fr == null) throw error(404, 'Undefined stop code');
 
-    const [stationInfo, toPN, toLing, toStu] = await Promise.all([pollStation(code_vt), linkStations(code_fr, 'porta nuova'), linkStations(code_fr, 'lingotto'), linkStations(code_fr, 'stura')]);
+    const [stationInfo, toPN, toLing, toStu] = await Promise.all([
+        pollVT(code_vt),
+        pollFR(code_fr, 'porta nuova'),
+        pollFR(code_fr, 'lingotto'),
+        pollFR(code_fr, 'stura'),
+    ]);
 
     return new Response(JSON.stringify({
         name,
@@ -23,7 +28,8 @@ export const GET: RequestHandler = async ({ params }) => {
     }));
 }
 
-async function pollStation(station: string) {
+//Poll the "viaggiatreno" portal, get information on the current station
+async function pollVT(station: string) {
     const date = DateTime.now().setLocale('en-GB').toFormat('ccc DD TT');
     const url = `http://www.viaggiatreno.it/infomobilita/resteasy/viaggiatreno/partenze/${station}/${date}`;
 
@@ -62,9 +68,12 @@ async function pollStation(station: string) {
     }
 }
 
-//TODO: find better way to get the stop name. I need to be able to detect station === dest and return an empty array
-async function linkStations(station: number, dest: string) {
+//Poll the "lefrecce" portal, get solution from the current station to the dest one
+async function pollFR(station: number, dest: string) {
     const destination = getByName(dest)?.code_fr;
+
+    if (destination === undefined) return [];
+    if (destination === station) return [];
 
     const date = DateTime.now().setZone('Europe/Rome').toString();
     const url = `https://www.lefrecce.it/Channels.Website.BFF.WEB/website/ticket/solutions`;
@@ -75,17 +84,13 @@ async function linkStations(station: number, dest: string) {
         "adults": 1,
         "children": 0,
         "criteria": {
-            "frecceOnly": false,
-            "regionalOnly": true,
-            "noChanges": false,
-            "order": "DEPARTURE_DATE",
-            "limit": 10,
-            "offset": 0
+            "frecceOnly": false, "regionalOnly": true,
+            "noChanges": false, "order": "DEPARTURE_DATE",
+            "limit": RETURNED_ENTRIES, "offset": 0
         },
-        "advancedSearchRequest": {
-            "bestFare": false
-        }
+        "advancedSearchRequest": { "bestFare": false }
     }
+
     try {
         const res = await fetch(
             url, {
@@ -97,7 +102,8 @@ async function linkStations(station: number, dest: string) {
             method: 'POST'
         });
 
-        const json = await res.json() as solutions;
+        const json: solutions = await res.json();
+
         const out = json.solutions.map(sol => {
             return {
                 id: Number.parseInt(sol.solution.trains[0].name),
@@ -115,6 +121,7 @@ async function linkStations(station: number, dest: string) {
         return [];
     }
 
+    //Remove "Torino " from a string containing a stop's name. Eg: "Torino Porta Nuova" -> "Porta Nuova"
     function cleanName(str: string) {
         const regex = /Torino ([\w ]+)/;
         const match = str.match(regex);
@@ -123,6 +130,7 @@ async function linkStations(station: number, dest: string) {
     }
 }
 
+//Match the VT and FR feed
 function pair(stationInfo: station[], trains: trip[]) {
     const out = trains.map(pass => {
         const match = stationInfo.find(tr => tr.id === pass.id) ?? null;
@@ -143,6 +151,5 @@ function pair(stationInfo: station[], trains: trip[]) {
         } satisfies train;
     });
 
-    const blacklisted = [''];   //TODO: add IC and FR
-    return out.filter(train => !blacklisted.includes(train.category)).slice(0, RETURNED_ENTRIES);
+    return out;
 }
