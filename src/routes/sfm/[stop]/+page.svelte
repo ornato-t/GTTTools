@@ -17,9 +17,7 @@
 		setInterval(async () => {
 			await invalidate('sfm');		//Wait for page reload
 			api = await data.api.promise	//Then refresh the data
-			// console.log(api)
-			// }, 5000));
-		}, 5000000)
+		}, 5000);
 	});
 
 	function printLocale(d: Date) {
