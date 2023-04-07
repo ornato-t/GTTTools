@@ -21,9 +21,9 @@ export const GET: RequestHandler = async ({ params }) => {
     const out = [];
     const [pn, ln, st] = await Promise.all([pair(stationInfo, toPN), pair(stationInfo, toLing), pair(stationInfo, toStu)])
 
-    if (pn.length !== 0) out.push({ name: 'Porta Nuova', trips: pn })
     if (ln.length !== 0) out.push({ name: 'Lingotto', trips: ln })
     if (st.length !== 0) out.push({ name: 'Stura', trips: st })
+    if (pn.length !== 0) out.push({ name: 'Porta Nuova', trips: pn })
 
     return new Response(JSON.stringify({
         name,
@@ -107,16 +107,19 @@ async function pollFR(station: number, dest: string) {
 
         const json: solutions = await res.json();
 
-        const out = json.solutions.map(sol => {
-            return {
-                id: Number.parseInt(sol.solution.trains[0].name),
-                name: sol.solution.trains[0].logoId,
-                category: sol.solution.trains[0].trainCategory,
-                destination: cleanName(sol.solution.destination),
-                origin: cleanName(sol.solution.origin),
-                departure: sol.solution.departureTime,
-            } satisfies trip;
-        });
+        const out: trip[] = [];
+        for (const sol of json.solutions) { //For of is better than .filter .map for performance reasons
+            if (sol.solution.trains.length === 1) { //No changes allowed, only accept single trips
+                out.push({
+                    id: Number.parseInt(sol.solution.trains[0].name),
+                    name: sol.solution.trains[0].logoId,
+                    category: sol.solution.trains[0].trainCategory,
+                    destination: cleanName(sol.solution.destination),
+                    origin: cleanName(sol.solution.origin),
+                    departure: sol.solution.departureTime,
+                });
+            }
+        }
 
         return out;
     } catch (e) {
