@@ -30,6 +30,14 @@
 
 		return formatter.format(new Date(d));
 	}
+
+	function cleanDirection(str: string){
+		const regex = /METRO ([\w ]+)/;
+		const match = str.match(regex);
+
+		if(match == null) return str;
+		return match[1];
+	}
 </script>
 
 <div class="p-4">
@@ -49,10 +57,8 @@
 					<div class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
 							<h2 class="card-title  mb-4 grid grid-cols-4">
-								<span class="text-2xl text-left">{pass.route}</span>
-								<span class="text-sm font-light text-right col-span-3">
-									{pass.direction}
-								</span>
+								<span class="text-2xl text-left  col-span-3">{cleanDirection(pass.direction)}</span>
+								<span class="text-sm font-light text-right">{pass.route}</span>
 							</h2>
 							<div class="justify-end">
 								{#if pass.pass.length > 0}
