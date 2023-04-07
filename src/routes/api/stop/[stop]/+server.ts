@@ -3,7 +3,15 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { DateTime } from "luxon"
 
 export const GET: RequestHandler = async ({ params }) => {
-    return new Response(JSON.stringify(await pollStop(params.stop as string)));
+    try {
+        return new Response(JSON.stringify(await pollStop(params.stop as string)));
+    } catch (e) {
+        if (e === 'noInfo') {
+            return new Response(JSON.stringify({error: 'No information available'}), { status: 404, statusText: "No information available" });
+        } else {
+            return new Response(JSON.stringify({error: 'GTT API offline'}), { status: 503, statusText: "GTT API offline" });
+        }
+    }
 }
 
 //Fetch all info regarding departing vehicles from a stop (by number)
@@ -20,7 +28,7 @@ async function pollStop(stop: string) {
     const stopsWeb: stopWeb[] = await response.json();
 
     const stops = stopsWeb.map(pass => {
-        if (pass.Linea === undefined) throw new Error('Undefined stop name');
+        if (pass.Linea === undefined) throw new Error('noInfo');
 
         return {
             route: parseBusN(pass.LineaAlias),
@@ -67,7 +75,7 @@ function getPasses(programmed: string[], realTime: string[]) {
     const res: passage[] = rt
         .filter(pass => isFuture(pass, PAST_THRESHOLD))
         .map(pass => { return { time: pass.toJSDate(), realTime: true } })
-        .slice(0, RETURNED_ENTRIES);   
+        .slice(0, RETURNED_ENTRIES);
 
     //If the programmed ones aren't duplicates of the real time ones, add them, mark them as not real time
     for (const pass of programmed) {
