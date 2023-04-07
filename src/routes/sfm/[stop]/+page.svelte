@@ -66,7 +66,7 @@
 											{time.name}
 										</div>
 										<div class="pl-3.5">
-											{#if time.platform !== undefined}
+											{#if time.platform != null}
 												<span class={time.platform.confirmed ? '' : 'opacity-50'}>{time.platform.id}</span>
 											{:else}
 												<span class="opacity-50">?</span>
