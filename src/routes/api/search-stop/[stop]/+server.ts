@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ params, locals, url }) => {
 
     const stop = params.stop as string;
     const code = parseInt(stop);
-    
+
     let aggr = [];
     if (filter === 'sfm') { //Filter only train stations
         aggr = [
@@ -63,6 +63,7 @@ export const GET: RequestHandler = async ({ params, locals, url }) => {
                     }
                 }
             },
+            { $match: { metro: { $ne: true }, train: { $ne: true } } },
             { $project: { _id: 0, coordinates: 0 } },
             { $addFields: { name: { $toUpper: "$name" }, description: { $toUpper: "$description" }, city: { $toUpper: "$city" } } },
             { $limit: STOP_NUM }
