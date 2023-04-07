@@ -67,7 +67,11 @@
 										</div>
 										<div class="pl-3.5">
 											{#if time.platform != null}
-												<span class={time.platform.confirmed ? '' : 'opacity-50'}>{time.platform.id}</span>
+												{#if time.platform.id != null}
+													<span class={time.platform.confirmed ? '' : 'opacity-50'}>{time.platform.id}</span>
+												{:else}
+													<span class="opacity-50">?</span>
+												{/if}
 											{:else}
 												<span class="opacity-50">?</span>
 											{/if}
@@ -122,7 +126,11 @@
 										</div>
 										<div class="pl-3.5">
 											{#if time.platform != null}
-												<span class={time.platform.confirmed ? '' : 'opacity-50'}>{time.platform.id}</span>
+												{#if time.platform.id != null}
+													<span class={time.platform.confirmed ? '' : 'opacity-50'}>{time.platform.id}</span>
+												{:else}
+													<span class="opacity-50">?</span>
+												{/if}
 											{:else}
 												<span class="opacity-50">?</span>
 											{/if}
