@@ -1,17 +1,28 @@
-<script>
-	import { onMount } from 'svelte';
+<script lang="ts">
 	import '../app.css';
+	import { browser } from '$app/environment';
 
 	let drawerVisible = false;
 	let manualTheme = '';
-	let dark = false;
 
-	onMount(() => {
-		if (window.matchMedia('(prefers-color-scheme: dark)').matches) dark = true;
-	});
+	const DARK = 'night';
+	const LIGHT = 'customLight';
+
+	if(browser){
+		const stored = window.localStorage.getItem('theme');	//Save theme from local storage
+
+		if(stored != null) updateTheme(stored);		//If a theme is saved switch to it
+		else if (window.matchMedia('(prefers-color-scheme: dark)').matches) updateTheme(DARK)	//If the user prefers dark mode swap to dark (only if nothing is saved)
+	}
 
 	function toggleDrawer() {
 		drawerVisible = !drawerVisible;
+	}
+
+	//Changee theme and save it to the local store
+	function updateTheme(val: string){
+		manualTheme = val;
+		window.localStorage.setItem('theme', val);
 	}
 </script>
 
@@ -36,14 +47,11 @@
 				</a>
 			</div>
 			<div class="navbar-end">
-				{#if dark}
+				{#if manualTheme === DARK}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
 						class="btn btn-square btn-ghost"
-						on:click={() => {
-							manualTheme = 'customLight';
-							dark = !dark;
-						}}
+						on:click={() => { updateTheme(LIGHT) }}
 					>
 						<i class="bx bx-sun bx-sm" />
 					</div>
@@ -51,10 +59,7 @@
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
 						class="btn btn-square btn-ghost"
-						on:click={() => {
-							manualTheme = 'night';
-							dark = !dark;
-						}}
+						on:click={() => { updateTheme(DARK) }}
 					>
 						<i class="bx bx-moon bx-sm" />
 					</div>
