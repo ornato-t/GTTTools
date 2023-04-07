@@ -33,14 +33,15 @@ export const GET: RequestHandler = async ({ params }) => {
 
 //Poll the "viaggiatreno" portal, get information on the current station
 async function pollVT(station: string) {
-    const date = DateTime.now().setLocale('en-GB').toFormat('ccc DD TT');
+    const date = DateTime.now().setLocale('en-GB').setZone('Europe/Rome').toFormat('ccc DD TT');
     const url = `http://www.viaggiatreno.it/infomobilita/resteasy/viaggiatreno/partenze/${station}/${date}`;
 
     try {
         const res = await fetch(url);
         const json = await res.json() as vt_train[];
 
-        const out = json.map(train => {
+        const out: station[] = [];
+        for(const train of json){
             let platform: platform;
 
             if (train.binarioEffettivoPartenzaDescrizione !== null) {
@@ -55,14 +56,14 @@ async function pollVT(station: string) {
                 }
             }
 
-            return {
+            out.push({
                 id: train.numeroTreno,
                 category: train.categoriaDescrizione,
                 destination: train.destinazione,
                 delay: train.ritardo,
                 platform: platform,
-            } satisfies station;
-        });
+            });
+        }
 
         return out;
     } catch (e) {
