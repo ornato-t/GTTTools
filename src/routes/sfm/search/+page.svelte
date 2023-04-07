@@ -2,9 +2,12 @@
 	import Search from 'svelte-search';
 	import type { stopDB } from '$lib/stopDB';
 	import fetch from '$lib/proxyRequest';
+	import type { PageServerData } from './$types';
+
+	export let data: PageServerData;
 
 	let value = '';
-	let stops = new Array<stopDB>();
+	let stops = data.db;
 
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
@@ -39,7 +42,7 @@
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
-	{#if stops != undefined && value.length > 0}
+	{#if stops != undefined}
 		{#each stops as stop}
 			<a
 				class="my-1 card card-compact bg-base-200 btn h-fit animate-none"
