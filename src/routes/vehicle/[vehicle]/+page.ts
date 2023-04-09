@@ -8,7 +8,7 @@ export const load = (async ({ params }) => {
     const res = getVehicle(code);
 
     if (res === null) throw error(404, 'No matching vehicle found');
-    console.log(res)
+    
     let outId: string;
     if (res?.modifier !== undefined) outId = res.modifier.replace('_', `${res.code}`);
     else outId = `${res.code}`;

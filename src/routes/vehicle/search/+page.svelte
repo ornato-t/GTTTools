@@ -10,6 +10,7 @@
 		<span class="label-text">Inserisci il codice di un veicolo</span>
 	</label>
 
+	<!-- For some reason not using the timeout here breaks everyting -->
 	<form on:submit={() => setTimeout(() => goto(`/vehicle/${value}`), 0)}>
 		<!-- svelte-ignore a11y-autofocus -->
 		<input type="text" bind:value class="input input-bordered w-full max-w-xs" placeholder="Cerca" autofocus>
