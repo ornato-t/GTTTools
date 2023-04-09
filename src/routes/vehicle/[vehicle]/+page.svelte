@@ -16,4 +16,8 @@
 	</span>
 </div>
 
-{data.info}
+{#if data.info !== undefined}
+	<div>
+		Maggiori informazioni al seguente <a class="link" href={data.info}>link</a>.
+	</div>
+{/if}

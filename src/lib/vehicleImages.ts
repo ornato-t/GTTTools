@@ -131,7 +131,7 @@ const vehicles = [
         idH: 8100,
         url: "https://www.tramditorino.it/img/tram8000.jpg",
         info: "https://www.tramditorino.it/tram_serie_8000.htm",
-        credits: "Tram di Torino via https://www.tramditorino.it/"
+        credits: "Tram di Torino via https://www.tramditorino.it"
     },
 ]satisfies vehicle[];
 
@@ -141,28 +141,28 @@ const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs
         idH: 1,
         url: "https://www.tramditorino.it/gallery/tram/D1-sassi2.jpg",
         info: "https://www.tramditorino.it/superga_D1.htm",
-        credits: "Tram di Torino via https://www.tramditorino.it/",
+        credits: "Tram di Torino via https://www.tramditorino.it",
         modifier: "D_"
     }, {
         idL: 2,
         idH: 3,
         url: "https://www.tramditorino.it/gallery/tram/D2-binario2.jpg",
         info: "https://www.tramditorino.it/superga_D2-D3.htm",
-        credits: "Tram di Torino via https://www.tramditorino.it/",
+        credits: "Tram di Torino via https://www.tramditorino.it",
         modifier: "D_"
     }, {
         idL: 11,
         idH: 12,
         url: "https://www.tramditorino.it/gallery/tram/D12sassi.jpg",
         info: "https://www.tramditorino.it/superga_D11-D14.htm",
-        credits: "Tram di Torino via https://www.tramditorino.it/",
+        credits: "Tram di Torino via https://www.tramditorino.it",
         modifier: "D_"
     }, {
         idL: 13,
         idH: 14,
         url: "https://www.tramditorino.it/gallery/tram/D14.jpg",
         info: "https://www.tramditorino.it/superga_D11-D14.htm",
-        credits: "Tram di Torino via https://www.tramditorino.it/",
+        credits: "Tram di Torino via https://www.tramditorino.it",
         modifier: "D_"
     }
 ]satisfies vehicle[];
