@@ -53,7 +53,7 @@
 	{:else} 
 		{#key api}
 			{#each api as pass}
-				<a href="/route/{pass.route}" data-sveltekit-preload-data>
+				<a href="/vehicle/metro" data-sveltekit-preload-data>
 					<div class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
 							<h2 class="card-title  mb-4 grid grid-cols-4">
@@ -97,7 +97,7 @@
 	{#key api}
 			{#each api as pass}
 				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
-					<a href="/route/{pass.route}" data-sveltekit-preload-data>
+					<a href="/vehicle/metro" data-sveltekit-preload-data>
 						<div class="card-body p-6">
 							{#if pass.pass.length > 0}
 								<h2 class="card-title mb-4 grid grid-cols-4">
