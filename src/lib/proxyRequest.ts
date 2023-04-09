@@ -1,11 +1,11 @@
-export default async function pfetch(url: string){
-    const prod = true;
+import { dev } from "$app/environment";
 
+export default async function pfetch(url: string){
     //Vercel dev environment
-    // const base = prod ? "https://tools.gtt.cx" : "https://gtt-tools-ornato-t.vercel.app";
+    // const base = "https://gtt-tools-ornato-t.vercel.app";
 
     //Localhost
-    const base = prod ? "https://tools.gtt.cx" : "http://localhost:5173";
+    const base = dev ? "http://localhost:5173" : "https://tools.gtt.cx";
 
     return fetch(base + url)
 }
