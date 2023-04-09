@@ -4,11 +4,16 @@
 	export let data: PageData;
 </script>
 
-{data.code}
-<br>
-{data.url}
-<br>
-{data.info}
-<br>
 
-<img src="/api/image/{data.url}" alt="Veicolo numero {data.code}" class="mx-auto h-full"/>
+<div>
+	Veicolo numero {data.code}
+</div>
+
+<div class="w-fit mx-auto">
+	<img src="/api/image?url={data.url}" alt="Veicolo numero {data.code}" class="max-h-96"/>
+	<span class="text-sm italic">
+		Foto a cura di {data.credits}
+	</span>
+</div>
+
+{data.info}
