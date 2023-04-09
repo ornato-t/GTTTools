@@ -7,6 +7,8 @@
 	//Refresh data every seconds
 	onMount(() => setInterval(() => invalidate('vehicle'), 1000));
 
+	$: numVehicles = data.api.length;
+
 	export let data: PageData;
 </script>
 
@@ -15,9 +17,13 @@
 	<h2 class="font-light">{data.db.name}</h2>
 </div>
 
+<div class="px-4 py-2">
+	<h4 class="font-normal">Numero di veicoli in servizio: {numVehicles}</h4>
+</div>
+
 <!-- Desktop -->
 <div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 min-[1900px]:grid-cols-4 gap-4 mt-2">
-	{#if data.api.length !== 0}
+	{#if numVehicles !== 0}
 		{#key data.api}
 			{#each data.api as vehicle}
 				<a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data>
@@ -57,7 +63,7 @@
 
 <!-- Mobile -->
 <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-6 mx-auto place-items-center">
-	{#if data.api.length !== 0}
+	{#if numVehicles !== 0}
 		{#key data.api}
 			{#each data.api as vehicle}
 				<div
