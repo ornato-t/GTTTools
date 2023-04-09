@@ -138,7 +138,7 @@ export function getVehicle(id: string): vehicleType | null {
 
     if (supRegex.test(id)) {  //Superga-Sassi
         for (const vc of vehiclesSup) {
-            if (vc.idL >= num && vc.idH <= num) {
+            if (num >= vc.idL && num <= vc.idH) {
                 return {
                     url: vc.url,
                     info: vc.info
@@ -147,7 +147,7 @@ export function getVehicle(id: string): vehicleType | null {
         }
     } else {    //Regular route
         for (const vc of vehicles) {
-            if (vc.idL >= num && vc.idH <= num) {
+            if (num >= vc.idL && num <= vc.idH) {
                 if (vc.info !== undefined) {
                     return {
                         url: vc.url,

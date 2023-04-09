@@ -4,6 +4,8 @@
 	export let data: PageData;
 </script>
 
-<!-- {data.code} -->
+{data.code}
+{data.url}
+{data.info}
 
-<img src="/api/image/{data.code}" alt="Cat" class="mx-auto h-full"/>
+<img src="/api/image/{data.url}" alt="Veicolo numero {data.code}" class="mx-auto h-full"/>
