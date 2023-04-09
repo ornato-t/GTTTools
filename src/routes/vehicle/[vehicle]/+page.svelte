@@ -5,7 +5,10 @@
 </script>
 
 {data.code}
+<br>
 {data.url}
+<br>
 {data.info}
+<br>
 
 <img src="/api/image/{data.url}" alt="Veicolo numero {data.code}" class="mx-auto h-full"/>
