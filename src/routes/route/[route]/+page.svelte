@@ -34,7 +34,7 @@
 							<h2 class="card-title mb-4 grid grid-cols-4">
 								<span class="text-2xl text-left">{vehicle.id}</span>
 								<span class="text-sm font-light text-right col-span-3">
-									{vehicle.vehicleType.toUpperCase()}
+									{vehicle.vehicleType?.toUpperCase()}
 								</span>
 							</h2>
 
@@ -74,7 +74,7 @@
 							<h2 class="card-title  mb-4 grid grid-cols-4">
 								<span class="text-2xl text-left">{vehicle.id}</span>
 								<span class="text-sm font-light text-right col-span-3">
-									{vehicle.vehicleType.toUpperCase()}
+									{vehicle.vehicleType?.toUpperCase()}
 								</span>
 							</h2>
 							<div class="mx-auto -mb-2">Posizione:</div>
