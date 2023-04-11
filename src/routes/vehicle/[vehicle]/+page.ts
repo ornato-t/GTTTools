@@ -3,7 +3,9 @@ import { getVehicle } from '$lib/vehicleImages';
 import { error } from '@sveltejs/kit';
 import type { vehicleSearched } from '$lib/vehicle';
 
-export const load = (async ({ params }) => {
+export const load = (async ({ params, depends }) => {
+    depends('vehicle');
+    
     const code = params.vehicle;
 
     const res = getVehicle(code);
