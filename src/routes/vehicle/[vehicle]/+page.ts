@@ -21,7 +21,7 @@ export const load = (async ({ params, depends }) => {
         code: outId,
         url: res.url,
         credits: res.credits,
-        info: res.info ?? '',
+        info: res.info ?? null,
         route: {
             promise: findRoute(outId)
         }
