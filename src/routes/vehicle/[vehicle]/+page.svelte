@@ -48,7 +48,6 @@
 	{#if data.info !== null}
 		<div class="mt-4 mb-6">
 			Maggiori informazioni al seguente <a class="link" href={data.info}>link</a>.
-			<!-- ERRORE: per i pullman reindirizza a un endpoint inesistente-->
 		</div>
 	{/if}
 
