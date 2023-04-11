@@ -25,6 +25,7 @@
 {#if data.info !== undefined}
 	<div>
 		Maggiori informazioni al seguente <a class="link" href={data.info}>link</a>.
+		<!-- ERRORE: per i pullman reindirizza a un endpoint inesistente-->
 	</div>
 {/if}
 
@@ -35,6 +36,16 @@
 				<div class="w-40 mt-4 text-xl font-light">Ricerca linea{dots}</div>
 			</div>
 	{:then route} 
-		<!-- {route} -->
+	{#if route === null}
+			Nessuna informazione in tempo reale disponibile
+	{:else}
+	<br>
+		<ul>
+			<li>Linea {route.route}</li>
+			<li>Lat {route.lat}</li>
+			<li>Lon {route.lon}</li>
+			<li>Aggiornato il {route.updated}</li>
+		</ul>
+	{/if}
 	{/await}
 </div>

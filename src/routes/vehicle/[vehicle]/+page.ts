@@ -1,6 +1,7 @@
 import type { PageLoad } from './$types';
 import { getVehicle } from '$lib/vehicleImages';
 import { error } from '@sveltejs/kit';
+import type { vehicleSearched } from '$lib/vehicle';
 
 export const load = (async ({ params }) => {
     const code = params.vehicle;
@@ -26,6 +27,13 @@ export const load = (async ({ params }) => {
 }) satisfies PageLoad;
 
 //TODO: poll every route of the vehicle API until a match is found. This is probably going to need a proxy of its own
-async function findRoute(id: string) {
-    return fetch('https://hub.dummyapis.com/delay?seconds=60');
+async function findRoute(code: string) {
+    try {
+        const res = await fetch(`/api/find-vehicle/${code}`);
+        const json = await res.json() as vehicleSearched | null;
+
+        return json;
+    } catch (e) {
+        return null;
+    }
 }
