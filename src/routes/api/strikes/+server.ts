@@ -9,7 +9,7 @@ export const GET: RequestHandler = async () => {
     const feed = await parser.parseURL('http://scioperi.mit.gov.it/mit2/public/scioperi/rss') as strikesFeed;   //Fetch strikes feed
 
     const out: Array<strike> = [];
-    const regex = /(.*): (.*)/;
+    const regex = /([\w à]+): (.*)/;
 
     for (const strike of feed.items) {
         const parsed = strike.contentSnippet.split('\n').map(line => {
