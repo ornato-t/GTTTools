@@ -22,7 +22,8 @@ export const GET: RequestHandler = async () => {
 
         const res = await JSON.parse('{' + parsed + '}') as strikeInfoFeed; //Add delimiters and parse as JSON
 
-        if ((res.Regione.toLowerCase() === 'piemonte' || res.Regione.toLowerCase() === ' italia') && res.Settore !== 'Aereo') {
+        const region = res.Regione.toLowerCase()
+        if ((region === 'piemonte' || region === ' italia' || region === 'italia') && res.Settore !== 'Aereo') {
             out.push({
                 mode: res.modalità,
                 dateEnd: DateTime.fromFormat(res["Data fine"], 'dd/MM/y').toJSDate(),
@@ -31,6 +32,7 @@ export const GET: RequestHandler = async () => {
                 unions: res.Sindacati,
                 category: res["Categoria interessata"],
                 dateSubmission: DateTime.fromFormat(res["Data proclamazione"], 'dd/MM/y').toJSDate(),
+                province: res.Provincia,
             });
         }
     }

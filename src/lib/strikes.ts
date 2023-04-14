@@ -3,7 +3,7 @@ export interface strike {
     dateEnd: Date,
     sector: string,
     scope: string,
-    // province: string,    //Only returning national ones and Piedmont ones
+    province: string,
     unions: string,
     category: string,
     dateSubmission: Date,

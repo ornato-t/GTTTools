@@ -39,6 +39,9 @@
                             <div class="text-left">
                                 Settore: <span class="font-mono">{strike.sector}</span> 
                             </div>
+                            <div class="text-left">
+                                Provincia: <span class="font-mono">{strike.province}</span> 
+                            </div>
                             <span class="text-xs grid grid-cols-2 mt-2">
                                 <div class="text-left">
                                     Proclamazione: <span class="font-mono">{printDate(strike.dateSubmission)}</span> 
