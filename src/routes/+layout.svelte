@@ -1,6 +1,10 @@
 <script lang="ts">
+	import type { strikeNotif } from '$lib/strikes';
 	import '../app.css';
-	import { browser } from '$app/environment';
+	import type { LayoutData } from './$types';
+	import { onMount } from 'svelte';
+
+	export let data: LayoutData;
 
 	let drawerVisible = false;
 	let manualTheme = '';
@@ -8,21 +12,46 @@
 	const DARK = 'night';
 	const LIGHT = 'customLight';
 
-	if(browser){
+	let toggleStrikePopup = false;
+	let strike: strikeNotif;
+
+	onMount(async() => {
 		const stored = window.localStorage.getItem('theme');	//Save theme from local storage
 
 		if(stored != null) updateTheme(stored);		//If a theme is saved switch to it
 		else if (window.matchMedia('(prefers-color-scheme: dark)').matches) updateTheme(DARK)	//If the user prefers dark mode swap to dark (only if nothing is saved)
-	}
 
-	function toggleDrawer() {
-		drawerVisible = !drawerVisible;
-	}
+		const strikes = await data.strike.promise;	//Await promise passed by load function
+		const lastNotif = window.localStorage.getItem('lastNotifiedStrike');	//Get last notification sent from local storage
+
+		if(strikes !== null){
+			if (lastNotif === null) {	//If no notification has been sent, notify the earliest strike
+				strike = strikes[0];
+				toggleStrikePopup = true;
+			}
+			else {
+				const lastNotifNum = Number.parseInt(lastNotif);
+				for(const strikeEl of strikes){
+					if(strikeEl.date.valueOf() > lastNotifNum){	//Notify the earliest strike after the last notification sent
+						strike = strikeEl;
+						toggleStrikePopup = true;
+					}
+				}
+			}
+		}
+	})
+
+	function toggleDrawer() { drawerVisible = !drawerVisible; }
 
 	//Changee theme and save it to the local store
 	function updateTheme(val: string){
 		manualTheme = val;
 		window.localStorage.setItem('theme', val);
+	}
+
+	function notifSeen(strike: strikeNotif){
+		const d = strike.date.valueOf();
+		window.localStorage.setItem('lastNotifiedStrike', d.toString());
 	}
 </script>
 
@@ -133,4 +162,23 @@
 			</li>
 		</ul>
 	</div>
+	
+	{#if strike !== undefined}
+		<input type="checkbox" id="strike-modal" class="modal-toggle" bind:checked={toggleStrikePopup}/>
+		<div class="modal modal-bottom sm:modal-middle">
+			<div class="modal-box">
+				<h3 class="font-bold text-lg">Attenzione! Possibile sciopero</h3>
+				<p class="mt-4 -mb-2">È in programma uno sciopero <span class="font-mono">{strike.sector.toLowerCase()}</span> per il giorno <span class="font-mono">{strike.date.toLocaleDateString()}</span>.</p>
+				<p class="mt-4 -mb-2">Maggiori informazioni disponibili alla <a class="link" href="/strikes" on:click={() => toggleStrikePopup = false}>pagina degli scioperi</a>.</p>
+				<div class="modal-action">
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<div class="btn mx-auto btn-wide"
+						on:click={() => {toggleStrikePopup = false; notifSeen(strike);}}
+					>
+					Capito
+					</div>
+				</div>
+			</div>
+		</div>
+	{/if}
 </div>

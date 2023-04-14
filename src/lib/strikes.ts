@@ -1,3 +1,8 @@
+export interface strikeNotif{
+    date: Date,
+    sector: string,
+}
+
 export interface strike {
     mode: string,
     dateEnd: Date,
