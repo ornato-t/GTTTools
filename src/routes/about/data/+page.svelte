@@ -4,12 +4,13 @@
 		<span class="italic">GTTTools</span> utilizza le seguenti fonti di dati:
 	</p>
 	<ol class="list-decimal ml-4 grid gap-y-4">
-		<li><span>Feed GTFS trasporti GTT</span> della Città di Torino, consultabile su <a href="http://aperto.comune.torino.it/dataset/feed-gtfs-trasporti-gtt" class="link">AperTO</a> con licenza <a href="https://creativecommons.org/licenses/by/4.0/legalcode.it" class="link">Creative Commons Attribuzione 4.0 (CC BY)</a>.</li>
-		<li><span>Feed GTFS Real-Time trasporti GTT</span> della Città di Torino, consultabile su <a href="http://aperto.comune.torino.it/dataset/feed-gtfs-trasporti-gtt" class="link">AperTO</a> con licenza <a href="https://creativecommons.org/licenses/by/4.0/legalcode.it" class="link">Creative Commons Attribuzione 4.0 (CC BY)</a>.</li>
-		<li><span>API pubblica arrivi in fermata</span> di GTT, consultabile su <a href="https://gtt.to.it/cms/percorari/arrivi?palina=&bacino=" class="link">www.gtt.to.it</a>.</li>
-		<li><span>API pubblica percorsi e orari</span> di GTT, consultabile su <a href="https://gtt.to.it/cms/percorari/urbano?view=linee&bacino=U" class="link">www.gtt.to.it</a>.</li>
-		<li><span>API "Viaggiatreno"</span> di Trenitalia, consultabile su <a href="http://www.viaggiatreno.it/infomobilita/index.jsp" class="link">www.viaggiatreno.it</a>.</li>
-		<li><span>API "Le Frecce"</span> di Trenitalia, consultabile su <a href="http://www.trenitalia.it/" class="link">www.trenitalia.it</a>.</li>
+		<li>Feed GTFS trasporti GTT della Città di Torino, consultabile su <a href="http://aperto.comune.torino.it/dataset/feed-gtfs-trasporti-gtt" class="link">AperTO</a> con licenza <a href="https://creativecommons.org/licenses/by/4.0/legalcode.it" class="link">Creative Commons Attribuzione 4.0 (CC BY)</a>.</li>
+		<li>Feed GTFS Real-Time trasporti GTT della Città di Torino, consultabile su <a href="http://aperto.comune.torino.it/dataset/feed-gtfs-trasporti-gtt" class="link">AperTO</a> con licenza <a href="https://creativecommons.org/licenses/by/4.0/legalcode.it" class="link">Creative Commons Attribuzione 4.0 (CC BY)</a>.</li>
+		<li>API pubblica arrivi in fermata di GTT, consultabile su <a href="https://gtt.to.it/cms/percorari/arrivi?palina=&bacino=" class="link">www.gtt.to.it</a>.</li>
+		<li>API pubblica percorsi e orari di GTT, consultabile su <a href="https://gtt.to.it/cms/percorari/urbano?view=linee&bacino=U" class="link">www.gtt.to.it</a>.</li>
+		<li>API "Viaggiatreno" di Trenitalia, consultabile su <a href="http://www.viaggiatreno.it/infomobilita/index.jsp" class="link">www.viaggiatreno.it</a>.</li>
+		<li>API "Le Frecce" di Trenitalia, consultabile su <a href="http://www.trenitalia.it/" class="link">www.trenitalia.it</a>.</li>
+		<li>Feed RSS del Ministero delle Infrastrutture e dei Trasporti, consultabile su <a href="http://scioperi.mit.gov.it/mit2/public/scioperi" class="link">scioperi.mit.gov.it</a>.</li>
 	</ol>
 
 	<h1 class="font-bold text-xl my-6">Proprietà delle immagini</h1>
