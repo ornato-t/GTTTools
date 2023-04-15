@@ -5,8 +5,12 @@
 	import { goto } from '$app/navigation';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
-
+	import { dev } from '$app/environment';
+	import { inject } from '@vercel/analytics';
+	
 	export let data: LayoutData;
+	
+	inject({ mode: dev ? 'development' : 'production' });
 
 	let drawerVisible = false;
 	let manualTheme = '';
