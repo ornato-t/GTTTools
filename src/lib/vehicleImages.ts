@@ -80,8 +80,8 @@ const vehicles = [
     }, {
         idL: 930,
         idH: 989,
-        url: "http://www.tplitalia.it/GTT/AutosnodUrbSub/930-989/966-03-800.jpg",
-        credits: "Alberto Schilirò via www.tplitalia.it"
+        url: "http://www.tplitalia.it/GTT/AutosnodUrbSub/930-989/947-06-800.jpg",
+        credits: "Fabrizio Moscatelli via www.tplitalia.it"
     }, {
         idL: 990,
         idH: 1014,
