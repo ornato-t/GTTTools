@@ -62,8 +62,9 @@
 
 	//Search a stop by its code
 	function searchStop(stop: string){
-		toggleDrawer();
-		goto(`/stop/${stop}`);
+		toggleDrawer();			//Close the drawer
+		stopCodeSearch = '';	//Reset the search string
+		goto(`/stop/${stop}`);	//Move to the requested stop page
 	}
 </script>
 
