@@ -34,7 +34,6 @@
 	<Search
 		label=""
 		placeholder="Cerca"
-		autofocus
 		bind:value
 		on:type={() => searchDB(value)}
 		class="input input-bordered w-full max-w-xs"
@@ -49,14 +48,13 @@
 				href="/sfm/{stop.trainCode}"
 				data-sveltekit-preload-data
 			>
-				<div class="card-body w-full grid grid-cols-4">
-					<span class=" text-primary col-span-3 card-title">{stop.name}</span>
-					<span class="text-secondary py-1"> {stop.code ?? ''}</span>
+				<div class="card-body w-full grid">
+					<span class=" text-primary card-title">{stop.name}</span>
 					{#if stop.description != undefined && stop.description != stop.name}
-						<span class="col-span-4 text-xs italic place-self-start">{stop.description}</span>
+						<span class="text-xs italic place-self-start">{stop.description}</span>
 					{/if}
 					{#if checkCity(stop)}
-						<span class="col-span-4 text-xs italic place-self-start">{stop.city}</span>
+						<span class="text-xs italic place-self-start">{stop.city}</span>
 					{/if}
 				</div>
 			</a>
