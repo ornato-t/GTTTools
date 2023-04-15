@@ -7,6 +7,12 @@
         "src": "logo-text.png",
         "type": "image/png",
         "sizes": "213x57"
+      },
+      {
+        "src": "maskable-icon.png",
+        "type": "image/png",
+        "sizes": "266x266",
+        "purpose": "maskable"
       }
     ],
     "background_color": "#F9FAFB",

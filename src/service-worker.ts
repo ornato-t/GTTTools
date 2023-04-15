@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-import { build, files, version } from '$service-worker';
+import { build, files, version } from '$service-worker';	//This isn't an error. Nothing is missing. It works.
 
 const worker = (self as unknown) as ServiceWorkerGlobalScope;
 const FILES = `cache${version}`;
