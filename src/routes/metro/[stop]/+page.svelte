@@ -41,7 +41,7 @@
 </script>
 
 <div class="p-4">
-	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
+	<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.name}</h1>
 	<h2 class="font-light">{data.db.description}</h2>
 </div>
 
@@ -101,9 +101,9 @@
 						<div class="card-body p-6">
 							{#if pass.pass.length > 0}
 								<h2 class="card-title mb-4 grid grid-cols-4">
-									<span class="text-2xl text-left">{pass.route}</span>
-									<span class="text-sm font-light text-right col-span-3">
-										{pass.direction}
+									<span class="text-2xl text-left col-span-3">{cleanDirection(pass.direction)}</span>
+									<span class="text-sm font-light text-right">
+										{pass.route}
 									</span>
 								</h2>
 								<div class="justify-end">
