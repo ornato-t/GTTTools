@@ -28,7 +28,7 @@
 		setInterval(async () => {
 			await invalidate('vehicle');		//Wait for page reload
 			api = await data.route.promise		//Then refresh the data
-		}, 1000);
+		}, 5000);
 	});
 	
 </script>
