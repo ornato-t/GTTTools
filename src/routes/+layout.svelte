@@ -3,9 +3,6 @@
 	import { onMount } from 'svelte';
 	import Search from 'svelte-search';
 	import { goto } from '$app/navigation';
-	import { webVitals } from '$lib/vitals';
-	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
 
@@ -21,15 +18,6 @@
 	let strike: strikeNotif;
 
 	let stopCodeSearch: string;
-
-	const analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
-	$: if (browser && analyticsId) {
-		webVitals({
-		path: $page.url.pathname,
-		params: $page.params,
-		analyticsId
-		})
-  	}	
 
 	onMount(async() => {
 		const stored = window.localStorage.getItem('theme');	//Save theme from local storage
