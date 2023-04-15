@@ -90,8 +90,6 @@
 	<div class="mx-4 grid gap-y-4">
 		<Loading />
 		<Loading />
-		<Loading />
-		<Loading />
 	</div>
 	{:else} 
 	{#key api}
