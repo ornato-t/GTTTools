@@ -1,8 +1,10 @@
 <script lang="ts">
-	import type { strikeNotif } from '$lib/strikes';
 	import '../app.css';
-	import type { LayoutData } from './$types';
 	import { onMount } from 'svelte';
+	import Search from 'svelte-search';
+	import type { strikeNotif } from '$lib/strikes';
+	import type { LayoutData } from './$types';
+	import { goto } from '$app/navigation';
 
 	export let data: LayoutData;
 
@@ -14,6 +16,8 @@
 
 	let toggleStrikePopup = false;
 	let strike: strikeNotif;
+
+	let stopCodeSearch: string;
 
 	onMount(async() => {
 		const stored = window.localStorage.getItem('theme');	//Save theme from local storage
@@ -41,6 +45,7 @@
 		}
 	})
 
+	//Open or close the drawer (mobile)
 	function toggleDrawer() { drawerVisible = !drawerVisible; }
 
 	//Changee theme and save it to the local store
@@ -49,9 +54,16 @@
 		window.localStorage.setItem('theme', val);
 	}
 
+	//Send a popup if there's an imminent strike
 	function notifSeen(strike: strikeNotif){
 		const d = strike.date.valueOf();
 		window.localStorage.setItem('lastNotifiedStrike', d.toString());
+	}
+
+	//Search a stop by its code
+	function searchStop(stop: string){
+		toggleDrawer();
+		goto(`/stop/${stop}`);
 	}
 </script>
 
@@ -108,10 +120,10 @@
 					<a href="/route/search" data-sveltekit-preload-data>Cerca linea</a>
 				</li>
 				<li>
-					<a href="/metro/search" data-sveltekit-preload-data>Cerca stazioni metro</a>
+					<a href="/metro/search" data-sveltekit-preload-data>Stazioni metro</a>
 				</li>
 				<li>
-					<a href="/sfm/search" data-sveltekit-preload-data>Cerca stazioni SFM</a>
+					<a href="/sfm/search" data-sveltekit-preload-data>Stazioni SFM</a>
 				</li>
 			</ul>
 
@@ -146,6 +158,16 @@
 		<label for="drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
 			<li>
+				<Search
+					hideLabel
+					placeholder="Cerca codice fermata"
+					class="input input-bordered rounded-2xl w-full max-w-xs -ml-2"
+					bind:value={stopCodeSearch}
+					on:submit={() => searchStop(stopCodeSearch)}
+					inputmode="numeric"
+				/>
+			</li>
+			<li>
 				<a href="/stop/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca fermata</a>
 			</li>
 			<li>
@@ -155,10 +177,10 @@
 				<a href="/route/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca linea</a>
 			</li>
 			<li>
-				<a href="/metro/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca stazioni metro</a>
+				<a href="/metro/search" data-sveltekit-preload-data on:click={toggleDrawer}>Stazioni metro</a>
 			</li>
 			<li>
-				<a href="/sfm/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca stazioni SFM</a>
+				<a href="/sfm/search" data-sveltekit-preload-data on:click={toggleDrawer}>Stazioni SFM</a>
 			</li>
 		</ul>
 	</div>
