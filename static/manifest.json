@@ -4,16 +4,22 @@
     "start_url": "/",
     "icons": [
       {
-        "src": "logo-text-square-maskable.png",
+        "src": "PWA_images/maskable_icon_x384.png",
         "type": "image/png",
-        "sizes": "512x512",
-        "purpose": "maskable splash"
+        "sizes": "384x384",
+        "purpose": "maskable"
       },
       {
-        "src": "maskable-icon.png",
+        "src": "PWA_images/maskable_icon_x512.png",
         "type": "image/png",
-        "sizes": "266x266",
-        "purpose": "maskable any"
+        "sizes": "512x512",
+        "purpose": "maskable"
+      },
+      {
+        "src": "PWA_images/maskable_icon_x1065.png",
+        "type": "image/png",
+        "sizes": "1065x1065",
+        "purpose": "maskable"
       }
     ],
     "background_color": "#F9FAFB",
@@ -71,13 +77,5 @@
         "icons": [{ "src": "/icons/logo.png", "sizes": "213x57" }]
       }
     ],
-    "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari.",
-    "splash_pages": {
-      "android": {
-        "theme_color": "#F9FAFB",
-        "background_color": "#F9FAFB",
-        "name": "GTTTools",
-        "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari."
-      }
-    }
+    "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari."
 }
