@@ -7,9 +7,9 @@
 	import type { LayoutData } from './$types';
 	
 	//Comment these out when running locally, analytics break the dev server
-	// import { inject } from '@vercel/analytics';
-	// import { dev } from '$app/environment';
-	// inject({ mode: dev ? 'development' : 'production' });
+	import { inject } from '@vercel/analytics';
+	import { dev } from '$app/environment';
+	inject({ mode: dev ? 'development' : 'production' });
 	
 	export let data: LayoutData;
 
@@ -234,10 +234,8 @@
 				<p class="mt-4 -mb-2">Maggiori informazioni disponibili alla <a class="link" href="/strikes" on:click={() => toggleStrikePopup = false}>pagina degli scioperi</a>.</p>
 				<div class="modal-action">
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div class="btn mx-auto btn-wide"
-						on:click={() => {toggleStrikePopup = false; notifSeen(strike);}}
-					>
-					Capito
+					<div class="btn mx-auto btn-wide" on:click={() => {toggleStrikePopup = false; notifSeen(strike);}}>
+						Capito
 					</div>
 				</div>
 			</div>
