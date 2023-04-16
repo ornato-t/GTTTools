@@ -32,6 +32,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Fermata numero {data.code}: {data.db.name ?? ''}</title>
+	<meta name="description" content="Prossimi passaggi di mezzi pubblici in tempo reale alla fermata {data.db.name ?? ''} numero {data.code} di Torino">
+</svelte:head>
+
 <div class="p-4">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
 	<h2 class="font-light">{data.db.description ?? ''}</h2>

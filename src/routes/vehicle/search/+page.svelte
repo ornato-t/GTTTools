@@ -4,6 +4,11 @@
 	let value = '';
 </script>
 
+<svelte:head>
+	<title>Ricerca veicoli</title>
+	<meta name="description" content="Pagina di ricerca dei mezzi pubblici di Torino. Possibilità di visualizzarne la posizione in tempo reale, la linea su cui sono in servizio, un'immagine e altre curiosità. Sono disponibili informazioni riguardo a bus, autosnodati, tram e treni">
+</svelte:head>
+
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label class="label">

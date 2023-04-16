@@ -8,6 +8,14 @@
         return new Date(d).toLocaleDateString()
     }
 </script>
+
+
+<svelte:head>
+	<title>Scioperi in programma a Torino e in Piemonte</title>
+	<meta name="description" content="Elenco dei prossimi scioperi del trasporto in programma nella città di Torino e nella regione Piemonte. Aggiornato in tempo reale con dati del Ministero dei Trasporti e delle Infrastrutture">
+</svelte:head>
+
+
 <div class="p-4">
 	<h1 class="mb-2 text-xl font-semibold">Scioperi programmati </h1>
 </div>

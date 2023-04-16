@@ -26,6 +26,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Ricerca stazioni ferroviarie</title>
+	<meta name="description" content="Pagina di ricerca per le stazioni ferroviarie di Torino. Possibilità di visualizzare i prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano">
+</svelte:head>
+
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label class="label">

@@ -40,6 +40,12 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Metro {data.db.name}</title>
+	<meta name="description" content="Prossimi passaggi in tempo reale alla fermata della metropolitana {data.db.name}">
+</svelte:head>
+
+
 <div class="p-4">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.name}</h1>
 	<h2 class="font-light">{data.db.description}</h2>

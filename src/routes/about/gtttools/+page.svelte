@@ -1,3 +1,8 @@
+<svelte:head>
+	<title>Perché GTTTools? Motivazioni e vantaggi</title>
+	<meta name="description" content="Elenco dei servizi che hanno ispirato la creazione di GTTTools e punti di forza">
+</svelte:head>
+
 <div class="mx-4 mb-10">
 	<h1 class="font-bold text-xl mb-2">Perché GTTTools?</h1>
 	<p class="mb-4 text-justify">

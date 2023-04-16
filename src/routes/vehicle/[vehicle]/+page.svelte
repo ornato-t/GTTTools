@@ -30,8 +30,13 @@
 			api = await data.route.promise		//Then refresh the data
 		}, 5000);
 	});
-	
 </script>
+
+<svelte:head>
+	<title>Informazioni sul veicolo {data.code}</title>
+	<meta name="description" content="Informazioni, immagine e posizione in tempo reale del veicolo numero {data.code}. Possibilità di seguirlo e osservare la linea su cui è in servizio. Sono disponibili informazioni riguardo a bus, autosnodati, tram e treni">
+</svelte:head>
+
 
 <div class="w-full mx-auto px-2">
 	<h1 class="text-xl mb-2">

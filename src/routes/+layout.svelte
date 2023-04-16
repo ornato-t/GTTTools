@@ -7,9 +7,9 @@
 	import type { LayoutData } from './$types';
 	
 	//Comment these out when running locally, analytics break the dev server
-	import { inject } from '@vercel/analytics';
-	import { dev } from '$app/environment';
-	inject({ mode: dev ? 'development' : 'production' });
+	// import { inject } from '@vercel/analytics';
+	// import { dev } from '$app/environment';
+	// inject({ mode: dev ? 'development' : 'production' });
 	
 	export let data: LayoutData;
 
@@ -74,7 +74,8 @@
 </script>
 
 <svelte:head>
-	<title>GTTTools</title>
+	<title>GTTTools: l'infomobilità reinventata</title>
+	<meta name="description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
 </svelte:head>
 
 <div class="drawer" data-theme={manualTheme}>

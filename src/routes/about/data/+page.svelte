@@ -1,3 +1,8 @@
+<svelte:head>
+	<title>Proprietà dei dati e crediti</title>
+	<meta name="description" content="Elenco delle API utilizzate e crediti per le immagini mostrate">
+</svelte:head>
+
 <div class="mx-4 mb-10">
 	<h1 class="font-bold text-xl mb-2">Proprietà dei dati</h1>
 	<p class="mb-4">

@@ -12,6 +12,11 @@
 	export let data: PageData;
 </script>
 
+<svelte:head>
+	<title>Linea {data.db.type.toLowerCase()} {data.code}: informazioni in tempo reale</title>
+	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui {data.db.type.toLowerCase()} della linea {data.code}">
+</svelte:head>
+
 <div class="p-4">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.type}</h1>
 	<h2 class="font-light">{data.db.name}</h2>

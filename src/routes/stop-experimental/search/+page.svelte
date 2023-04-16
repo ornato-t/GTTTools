@@ -23,6 +23,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Ricerca sperimentale fermate mezzi pubblici</title>
+	<meta name="description" content="Pagina di ricerca per le fermate dei mezzi pubblici di Torino. Possibilità di visualizzare i prossimi passaggi delle linee in tempo reale. Pagina sperimentale, più veloce ma meno esaustiva e non sempre funzionante">
+</svelte:head>
+
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label class="label">

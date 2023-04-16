@@ -1,3 +1,8 @@
+<svelte:head>
+	<title>Informativa sulla privacy</title>
+	<meta name="description" content="Breve informativa sulla privacy e sui dati raccolti dal sito">
+</svelte:head>
+
 <div class="mx-4 mb-10">
 	<h1 class="font-bold text-xl mb-2">Privacy policy</h1>
 	<p class="mb-4 text-justify">
