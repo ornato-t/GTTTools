@@ -74,7 +74,6 @@
 
 <svelte:head>
 	<title>GTTTools</title>
-	<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
 </svelte:head>
 
 <div class="drawer" data-theme={manualTheme}>
