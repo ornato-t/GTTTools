@@ -78,6 +78,7 @@
 </svelte:head>
 
 <div class="drawer" data-theme={manualTheme}>
+	<label for="drawer" class="h-0">Apri la barra laterale</label>
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content">
 		<nav class="navbar bg-base-100">
