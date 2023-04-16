@@ -89,7 +89,7 @@
 			</div>
 			<div class="navbar-center">
 				<a class="btn btn-ghost normal-case text-xl" href="/">
-					<img src="/logo-text.png" alt="GTTTools" class="h-10" />
+					<img src="/logo-text.webp" alt="GTTTools" width="165" height="40" />
 				</a>
 			</div>
 			<div class="navbar-end">
