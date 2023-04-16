@@ -4,9 +4,10 @@
     "start_url": "/",
     "icons": [
       {
-        "src": "logo-text-square.png",
+        "src": "logo-text-square-maskable.png",
         "type": "image/png",
-        "sizes": "512x512"
+        "sizes": "512x512",
+        "purpose": "maskable splash"
       },
       {
         "src": "maskable-icon.png",
