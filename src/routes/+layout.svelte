@@ -74,8 +74,29 @@
 </script>
 
 <svelte:head>
-	<title>GTTTools: l'infomobilità reinventata</title>
+	<!-- COMMON TAGS -->
+	<meta charset="utf-8">
+	<title>GTTTools: infomobilità reinventata</title>
+	<!-- Search Engine -->
 	<meta name="description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
+	<meta name="image" content="https://tools.gtt.cx/favicon.png">
+	<!-- Schema.org for Google -->
+	<meta itemprop="name" content="GTTTools">
+	<meta itemprop="description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
+	<meta itemprop="image" content="https://tools.gtt.cx/favicon.png">
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="GTTTools">
+	<meta name="twitter:description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
+	<meta name="twitter:image:src" content="https://tools.gtt.cx/favicon.png">
+	<!-- Open Graph general (Facebook, Pinterest & Google+) -->
+	<meta name="og:title" content="GTTTools">
+	<meta name="og:description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
+	<meta name="og:image" content="https://tools.gtt.cx/favicon.png">
+	<meta name="og:url" content="https://tools.gtt.cx">
+	<meta name="og:site_name" content="GTTTools">
+	<meta name="og:locale" content="it_IT">
+	<meta name="og:type" content="website">
 </svelte:head>
 
 <div class="drawer" data-theme={manualTheme}>
