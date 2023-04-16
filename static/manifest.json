@@ -6,8 +6,7 @@
       {
         "src": "logo-text-square.png",
         "type": "image/png",
-        "sizes": "512x512",
-        "purpose": "splash"
+        "sizes": "512x512"
       },
       {
         "src": "maskable-icon.png",
