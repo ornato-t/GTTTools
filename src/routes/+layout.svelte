@@ -7,9 +7,9 @@
 	import type { LayoutData } from './$types';
 	
 	//Comment these out when running locally, analytics break the dev server
-	import { inject } from '@vercel/analytics';
-	import { dev } from '$app/environment';
-	inject({ mode: dev ? 'development' : 'production' });
+	// import { inject } from '@vercel/analytics';
+	// import { dev } from '$app/environment';
+	// inject({ mode: dev ? 'development' : 'production' });
 	
 	export let data: LayoutData;
 
@@ -148,10 +148,16 @@
 					<a href="/route/search" data-sveltekit-preload-data>Cerca linea</a>
 				</li>
 				<li>
+					<a href="/vehicle/search" data-sveltekit-preload-data>Trova veicolo</a>
+				</li>
+				<li>
 					<a href="/metro/search" data-sveltekit-preload-data>Stazioni metro</a>
 				</li>
 				<li>
 					<a href="/sfm/search" data-sveltekit-preload-data>Stazioni SFM</a>
+				</li>
+				<li>
+					<a href="/strikes" data-sveltekit-preload-data>Scioperi in programma</a>
 				</li>
 			</ul>
 
@@ -205,10 +211,16 @@
 				<a href="/route/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca linea</a>
 			</li>
 			<li>
+				<a href="/vehicle/search" data-sveltekit-preload-data on:click={toggleDrawer}>Trova veicolo</a>
+			</li>
+			<li>
 				<a href="/metro/search" data-sveltekit-preload-data on:click={toggleDrawer}>Stazioni metro</a>
 			</li>
 			<li>
 				<a href="/sfm/search" data-sveltekit-preload-data on:click={toggleDrawer}>Stazioni SFM</a>
+			</li>
+			<li>
+				<a href="/strikes" data-sveltekit-preload-data on:click={toggleDrawer}>Scioperi in programma</a>
 			</li>
 		</ul>
 	</div>

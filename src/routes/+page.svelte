@@ -81,29 +81,29 @@
 	<div/>
 	<div/>
   <div class="hero-content flex-col lg:flex-row place-self-end my-auto h-fit w-full">
-		<i class="bx bxs-flask bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+	<i class="bx bx-error bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
-		<h1 class="text-5xl font-bold">Sperimentale</h1>
+		<h1 class="text-5xl font-bold">Scioperi</h1>
 		<span class="py-6">
-			<p>Un nuovo modo di visualizzare i passaggi in tempo reale.</p>
-			<p>Ci stiamo ancora lavorando, ma presto sarà perfetto.</p>
+			<p>Visualizza i prossimi scioperi in programma. </p>
+			<p>Aggiornato con dati ufficiali forniti dal Ministero dei Trasporti.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="/stop-experimental/search" class="btn lg:btn-lg btn-primary lg:place-self-end">prova</a>
+	  <a href="/stop-experimental/search" class="btn lg:btn-lg btn-primary lg:place-self-end">controlla</a>
 	</div>
   </div>
   <div/>
   <div/>
   <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
-    <i class="bx bx-error bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+	<i class="bx bxs-flask bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
     <div class="grid">
-        <h1 class="text-5xl font-bold">Scioperi</h1>
+        <h1 class="text-5xl font-bold">Sperimentale</h1>
         <span class="py-6">
-			<p>Visualizza i prossimi scioperi in programma. </p>
-			<p> Aggiornato con dati ufficiali forniti dal Ministero dei Trasporti.</p>
+			<p>Un nuovo modo di visualizzare i passaggi in tempo reale.</p>
+			<p>Ci stiamo ancora lavorando, ma presto sarà perfetto.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-      <a href="/strikes" class="btn lg:btn-lg btn-primary lg:place-self-start">controlla</a>
+      <a href="/strikes" class="btn lg:btn-lg btn-primary lg:place-self-start">prova</a>
     </div>
   </div>
 </div>
