@@ -13,7 +13,7 @@
         "src": "maskable-icon.png",
         "type": "image/png",
         "sizes": "266x266",
-        "purpose": "maskable"
+        "purpose": "maskable any"
       }
     ],
     "background_color": "#F9FAFB",
@@ -71,5 +71,13 @@
         "icons": [{ "src": "/icons/logo.png", "sizes": "213x57" }]
       }
     ],
-    "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari."
+    "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari.",
+    "splash_pages": {
+      "android": {
+        "theme_color": "#F9FAFB",
+        "background_color": "#F9FAFB",
+        "name": "GTTTools",
+        "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari."
+      }
+    }
 }
