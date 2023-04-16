@@ -4,6 +4,12 @@
     "start_url": "/",
     "icons": [
       {
+        "src": "PWA_images/maskable_icon_x96.png",
+        "type": "image/png",
+        "sizes": "96x96",
+        "purpose": "maskable"
+      },
+      {
         "src": "PWA_images/maskable_icon_x384.png",
         "type": "image/png",
         "sizes": "384x384",
@@ -32,49 +38,49 @@
         "short_name": "GPS",
         "description": "Usa il GPS del tuo dispositivo per trovare le fermate più vicine alla tua posizione",
         "url": "/stop/gps?source=pwa",
-        "icons": [{ "src": "/icons/maskable_icon_x1065.png", "sizes": "1065x1065" }]
+        "icons": [{ "src": "/icons/maskable_icon_x96.png", "sizes": "96x96" }]
       },
       {
         "name": "Cerca una fermata",
         "short_name": "Fermate",
         "description": "Cerca una fermata usando il suo nome, indirizzo o codice univoco",
         "url": "/stop/search?source=pwa",
-        "icons": [{ "src": "/icons/maskable_icon_x1065.png", "sizes": "1065x1065" }]
+        "icons": [{ "src": "/icons/maskable_icon_x96.png", "sizes": "96x96" }]
       },
       {
         "name": "Cerca una linea",
         "short_name": "Linee",
         "description": "Cerca una linea usando il suo identificativo, il tipo di mezzo o la destinazione",
         "url": "/route/search?source=pwa",
-        "icons": [{ "src": "/icons/maskable_icon_x1065.png", "sizes": "1065x1065" }]
+        "icons": [{ "src": "/icons/maskable_icon_x96.png", "sizes": "96x96" }]
       },
       {
         "name": "Trova un veicolo",
         "short_name": "Veicoli",
         "description": "Trova la linea su cui è un servizio un veicolo, la sua posizione in tempo reale e una sua immagine",
         "url": "/vehicle/search?source=pwa",
-        "icons": [{ "src": "/icons/maskable_icon_x1065.png", "sizes": "1065x1065" }]
+        "icons": [{ "src": "/icons/maskable_icon_x96.png", "sizes": "96x96" }]
       },
       {
         "name": "Stazioni metro",
         "short_name": "Metro",
         "description": "Cerca una stazione della metropolitana e visualizza i passaggi in programma",
         "url": "/metro/search?source=pwa",
-        "icons": [{ "src": "/icons/maskable_icon_x1065.png", "sizes": "1065x1065" }]
+        "icons": [{ "src": "/icons/maskable_icon_x96.png", "sizes": "96x96" }]
       },
       {
         "name": "Stazioni Servizio Ferroviario Metropolitano",
         "short_name": "SFM",
         "description": "Sfrutta la linea ferroviaria e i treni SFM per attraversare rapidamente la città",
         "url": "/sfm/search?source=pwa",
-        "icons": [{ "src": "/icons/maskable_icon_x1065.png", "sizes": "1065x1065" }]
+        "icons": [{ "src": "/icons/maskable_icon_x96.png", "sizes": "96x96" }]
       },
       {
         "name": "Scioperi",
         "short_name": "Scioperi",
         "description": "Visualizza i prossimi scioperi in programma",
         "url": "/strikes?source=pwa",
-        "icons": [{ "src": "/icons/maskable_icon_x1065.png", "sizes": "1065x1065" }]
+        "icons": [{ "src": "/icons/maskable_icon_x96.png", "sizes": "96x96" }]
       }
     ],
     "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari."
