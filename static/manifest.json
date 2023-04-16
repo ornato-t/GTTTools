@@ -6,7 +6,8 @@
       {
         "src": "logo-text-square.png",
         "type": "image/png",
-        "sizes": "512x512"
+        "sizes": "512x512",
+        "purpose": "splash"
       },
       {
         "src": "maskable-icon.png",
@@ -70,5 +71,5 @@
         "icons": [{ "src": "/icons/logo.png", "sizes": "213x57" }]
       }
     ],
-    "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. La nuova soluzione per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari."
+    "description": "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari."
 }
