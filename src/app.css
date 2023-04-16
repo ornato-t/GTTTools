@@ -1,3 +1,13 @@
+/* apply the font to your icon elements */
+[class^="bx-"], [class*=" bx-"] {
+  font-family: 'boxicons';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /* optionally set other properties */
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
