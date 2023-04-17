@@ -17,6 +17,7 @@
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "^1.0.0",
+		"@types/leaflet": "^1.9.3",
 		"@types/luxon": "^3.2.0",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
@@ -43,6 +44,7 @@
 		"daisyui": "^2.42.1",
 		"events": "^3.3.0",
 		"gtfs-realtime-bindings": "^1.1.1",
+		"leaflet": "^1.9.3",
 		"luxon": "^3.2.1",
 		"mongodb": "^4.12.1",
 		"rss-parser": "^3.13.0"
