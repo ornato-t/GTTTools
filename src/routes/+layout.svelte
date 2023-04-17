@@ -7,9 +7,9 @@
 	import type { LayoutData } from './$types';
 	
 	//Comment these out when running locally, analytics break the dev server
-	import { inject } from '@vercel/analytics';
-	import { dev } from '$app/environment';
-	inject({ mode: dev ? 'development' : 'production' });
+	// import { inject } from '@vercel/analytics';
+	// import { dev } from '$app/environment';
+	// inject({ mode: dev ? 'development' : 'production' });
 	
 	export let data: LayoutData;
 

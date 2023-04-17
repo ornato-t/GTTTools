@@ -3,13 +3,13 @@ export interface stopDB{
     name: string,
     description?: string,
     city: string,
-    coordinates: coordinates,
+    coordinates: number[],
     train?: boolean,
     trainCode?: number,
     metro?: boolean,
 }
 
-interface coordinates {
-    lat: number,
-    lon: number
-}
+// interface coordinates {
+//     lat: number,
+//     lon: number
+// }
