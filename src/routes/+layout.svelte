@@ -5,11 +5,7 @@
 	import { goto } from '$app/navigation';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
-	
-	//Comment these out when running locally, analytics break the dev server
-	// import { inject } from '@vercel/analytics';
-	// import { dev } from '$app/environment';
-	// inject({ mode: dev ? 'development' : 'production' });
+	import { dev } from '$app/environment';
 	
 	export let data: LayoutData;
 
@@ -25,6 +21,11 @@
 	let stopCodeSearch: string;
 
 	onMount(async() => {
+		if(!dev){
+			const { inject } = await import('@vercel/analytics');
+			inject({ mode: dev ? 'development' : 'production' });
+		}
+	
 		const stored = window.localStorage.getItem('theme');	//Save theme from local storage
 
 		if(stored != null) updateTheme(stored);		//If a theme is saved switch to it
