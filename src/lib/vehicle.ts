@@ -25,3 +25,11 @@ export interface vehicle {
 export interface vehicleSearched extends vehicle {
   route: string,  //Route on which the vehicle is in service
 }
+
+export interface vehicleMap {
+  route: string,
+  routeID: string,
+  vehicles: vehicle[],
+  colour: string,
+}
+

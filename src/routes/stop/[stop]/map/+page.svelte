@@ -3,15 +3,17 @@
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
     import type { PageData } from "./$types";
-    import type { LatLngExpression, LayerGroup, Map } from "leaflet";
+    import type { Map } from "leaflet";
     
     export let data: PageData;
 
-    const coords = [data.db.coordinates[1], data.db.coordinates[0]] as LatLngExpression;    //Need to swap coords, mongo wants [lon, lat]; leaflet wants [lat, lon]
+    const coords = data.coords;
+
+    //TODO: add invalidation for vehicle positions (and therefore stop passages). It will take a while
     
     let mapElement: HTMLElement;
     let map: Map;
-
+    
     onMount(async () => {
         if(browser) {
             const leaflet = await import('leaflet');
@@ -23,8 +25,7 @@
             }).addTo(map);
 
             leaflet.marker(coords).addTo(map)
-                .bindPopup(`${data.db.name} si trova qui:<br>${coords}`)
-                .openPopup();
+                .bindPopup(`<a href="/stop/${data.db.code}">${data.db.code} - ${data.db.name}</a>`)
         }
     });
 

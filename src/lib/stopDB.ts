@@ -2,7 +2,7 @@ export interface stopDB{
     code?: number,
     name: string,
     description?: string,
-    city: string,
+    city?: string,
     coordinates: number[],
     train?: boolean,
     trainCode?: number,
