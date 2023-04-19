@@ -5,12 +5,16 @@
     import type { PageData } from "./$types";
     import type { LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
+	import { invalidate } from '$app/navigation';
 
     export let data: PageData;
 
     const coords = data.coords;
 
-    //TODO: add invalidation for vehicle positions (and therefore stop passages). It will take a while
+    setTimeout(() =>{
+        console.log('Refreshing'); 
+        invalidate('stop_lines');
+    }, 10000);
     
     let mapElement: HTMLElement;
     let map: Map;
