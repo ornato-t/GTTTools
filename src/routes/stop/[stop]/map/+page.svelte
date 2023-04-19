@@ -4,7 +4,8 @@
     import { browser } from '$app/environment';
     import type { PageData } from "./$types";
     import type { LatLng, LatLngTuple, Map } from "leaflet";
-    
+    import type { stopDB } from "$lib/stopDB"
+
     export let data: PageData;
 
     const coords = data.coords;
@@ -38,16 +39,11 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        L.marker(coords, {icon: pinIcon})
-            .addTo(map)
+        L.marker(coords, {icon: pinIcon}).addTo(map)
             .bindPopup(`<a href="/stop/${data.db.code}">${data.db.code} - ${data.db.name}</a>`);
             
-            //TODO: different links and text, cases: metro, FS, regular (default)
-            for(const stop of data.near){
-                L.marker(stop.coordinates as LatLngTuple, {icon: otherPinIcon})
-                    .addTo(map)
-                    .bindPopup(`<a href="/stop/${stop.code}">${stop.code ?? 'Stazione FS'} - ${stop.name}</a>`);
-                
+        for(const stop of data.near){
+            L.marker(stop.coordinates as LatLngTuple, {icon: otherPinIcon}).addTo(map).bindPopup(getPopup(stop));    
         }
 
         const passages = await data.vehicles.promise;
@@ -66,12 +62,10 @@
             
             for(const vehicle of pass.vehicles){
                 if(vehicle.vehicleType === 'Tram'){
-                    L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon})
-                        .addTo(map)
+                    L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon}).addTo(map)
                         .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`);
                 } else {
-                    L.marker([vehicle.lat, vehicle.lon], {icon: busIcon})
-                        .addTo(map)
+                    L.marker([vehicle.lat, vehicle.lon], {icon: busIcon}).addTo(map)
                         .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`);
                 }
             }
@@ -81,6 +75,19 @@
     onDestroy(async () => {
         if(map) map.remove();
     });
+
+    //Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
+    function getPopup(stop: stopDB){
+        if(stop.metro){
+            return `<a href="/metro/${stop.code}">METRO ${stop.name}</a>`;
+
+        } else if (stop.train){
+            return `<a href="/sfm/${stop.trainCode}">${stop.name} FS</a>`;
+            
+        } else {
+            return `<a href="/stop/${stop.code}">${stop.code} - ${stop.name}</a>`;
+        }
+    }
 </script>
 
 <style>
@@ -89,6 +96,6 @@
     }
 </style>
 
-<main>
+<main class="select-none">
     <div bind:this={mapElement}></div>
 </main>

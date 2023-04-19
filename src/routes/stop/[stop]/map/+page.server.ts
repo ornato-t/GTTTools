@@ -16,7 +16,10 @@ export async function load({ locals, parent }) {
             code: r.code,
             name: r.name,
             description: r.description,
-            coordinates: [r.coordinates[1], r.coordinates[0]]
+            coordinates: [r.coordinates[1], r.coordinates[0]],
+            metro: r.metro,
+            train: r.train,
+            trainCode: r.trainCode
         }
     }) satisfies stopDB[];
 
