@@ -3,7 +3,7 @@
     import { onMount, onDestroy } from 'svelte';
     import { browser } from '$app/environment';
     import type { PageData } from "./$types";
-    import type { Map } from "leaflet";
+    import type { LatLng, LatLngTuple, Map } from "leaflet";
     
     export let data: PageData;
 
@@ -14,20 +14,69 @@
     let mapElement: HTMLElement;
     let map: Map;
     
-    onMount(async () => {
-        if(browser) {
-            const leaflet = await import('leaflet');
+    const pinColour = '#1b8ae8';
+    const otherPinColour = '#909090';
 
-            map = leaflet.map(mapElement).setView(coords, 30);
+    onMount(async () => { if(browser) {
+        const L = await import('leaflet');
 
-            leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+        const pinIcon = L.divIcon({
+            html: `<i class='bx bxs-map text-5xl' style='color: ${pinColour}'></i>`,
+            iconSize: [20, 20],
+            className: ''
+        });
+        const otherPinIcon = L.divIcon({
+            html: `<i class='bx bxs-map text-3xl' style='color: ${otherPinColour}'></i>`,
+            iconSize: [20, 20],
+            className: ''
+        });
 
-            leaflet.marker(coords).addTo(map)
-                .bindPopup(`<a href="/stop/${data.db.code}">${data.db.code} - ${data.db.name}</a>`)
+
+        map = L.map(mapElement).setView(coords, 30);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker(coords, {icon: pinIcon})
+            .addTo(map)
+            .bindPopup(`<a href="/stop/${data.db.code}">${data.db.code} - ${data.db.name}</a>`);
+            
+            //TODO: different links and text, cases: metro, FS, regular (default)
+            for(const stop of data.near){
+                L.marker(stop.coordinates as LatLngTuple, {icon: otherPinIcon})
+                    .addTo(map)
+                    .bindPopup(`<a href="/stop/${stop.code}">${stop.code ?? 'Stazione FS'} - ${stop.name}</a>`);
+                
         }
-    });
+
+        const passages = await data.vehicles.promise;
+        for(const pass of passages){
+            const busIcon = L.divIcon({
+                html: `<i class='bx bxs-bus bx-sm rounded-full p-1 bg-white border border-black' style='color: ${pass.colour}'></i>`,
+                iconSize: [20, 20],
+                className: ''
+            });
+
+            const tramIcon = L.divIcon({
+                html: `<i class='bx bxs-train bx-sm rounded-full p-1 bg-white border border-black' style='color: ${pass.colour}'></i>`,
+                iconSize: [20, 20],
+                className: ''
+            });
+            
+            for(const vehicle of pass.vehicles){
+                if(vehicle.vehicleType === 'Tram'){
+                    L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon})
+                        .addTo(map)
+                        .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`);
+                } else {
+                    L.marker([vehicle.lat, vehicle.lon], {icon: busIcon})
+                        .addTo(map)
+                        .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`);
+                }
+            }
+        }
+    }});
 
     onDestroy(async () => {
         if(map) map.remove();

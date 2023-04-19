@@ -3,7 +3,7 @@ import type { LatLngExpression } from "leaflet";
 import type { stop } from '$lib/stop.js';
 import type { vehicle, vehicleMap } from '$lib/vehicle.js';
 
-const COLOURS = ["#ff0000", "#f4ff00", "#0041ff", "#00ff33", "#ff00ef", "#00fffa"]
+const COLOURS = ["#ff0000", "#0041ff", "#23c043", "#c000b4", "#00deda", "#e8781a"]
 
 export async function load({ data, depends, fetch, parent }) {
     depends('stop_lines');
