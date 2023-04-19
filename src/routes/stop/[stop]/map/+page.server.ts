@@ -1,6 +1,6 @@
 import type { stopDB } from '$lib/stopDB.js';
 
-const STOP_NUM = 50;
+const STOP_NUM = 20;
 
 export async function load({ locals, parent }) {
     const parentData = await parent();
