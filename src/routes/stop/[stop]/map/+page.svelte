@@ -10,11 +10,6 @@
     export let data: PageData;
 
     const coords = data.coords;
-
-    setInterval(() =>{
-        console.log('Refreshing'); 
-        invalidate('stop_lines');
-    }, 5000);
     
     let mapElement: HTMLElement;
     let map: Map;
@@ -23,6 +18,11 @@
     const otherPinColour = '#909090';
 
     onMount(async () => { if(browser) {
+        setInterval(() =>{
+            console.log('Refreshing'); 
+            invalidate('stop_lines');
+        }, 5000);
+
         const L = await import('leaflet');
 
         const pinIcon = L.divIcon({
