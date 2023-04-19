@@ -11,10 +11,10 @@
 
     const coords = data.coords;
 
-    setTimeout(() =>{
+    setInterval(() =>{
         console.log('Refreshing'); 
         invalidate('stop_lines');
-    }, 10000);
+    }, 5000);
     
     let mapElement: HTMLElement;
     let map: Map;
