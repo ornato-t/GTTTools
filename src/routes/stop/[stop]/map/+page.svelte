@@ -2,7 +2,7 @@
     import 'leaflet/dist/leaflet.css';
     import { onMount } from 'svelte';
     import type { PageData } from "./$types";
-    import type { LatLngTuple, Map } from "leaflet";
+    import type { Marker, LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
 	import { invalidate } from '$app/navigation';
 
@@ -12,49 +12,73 @@
     
     let mapElement: HTMLElement;
     let map: Map;
+    const markers = new Array<{marker: Marker, code: number}>;
     
     const pinColour = '#1b8ae8';
     const otherPinColour = '#909090';
+    const REFRESH_TIME = 5000;
 
     onMount(async () => {
-        // setInterval(() =>{
-        //     //Regular invalidate does not work. If possible build a function to remove all pins and recreate them
-        //     console.log('Refreshing'); 
-        //     invalidate('stop_lines');
-        // }, 5000);
-
-        const L = await import('leaflet');
+        const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
 
         const { pinIcon, otherPinIcon } = getPinIcons(L);
 
         map = L.map(mapElement).setView(coords, 30);
 
+        //Place map tiles
         L.tileLayer('https://map.gtt.to.it/blossom/{z}/{x}/{y}.png', {
             attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        //Place icon of queried stop
         L.marker(coords, {icon: pinIcon}).addTo(map)
             .bindPopup(`<a href="/stop/${data.db.code}">${data.db.code} - ${data.db.name}</a>`);
-            
+        
+        //Place icons of nearby stops
         for(const stop of data.near){
             L.marker(stop.coordinates as LatLngTuple, {icon: otherPinIcon}).addTo(map).bindPopup(getPopup(stop));    
         }
 
-        const passages = await data.vehicles.promise;
-        for(const pass of passages){
+        const passages = await data.vehicles.promise;   //Wait for vehicle data to arrive
 
+        //Place vehicle icons
+        for(const pass of passages){
             for(const vehicle of pass.vehicles){
                 const { busIcon, tramIcon } = getVehicleIcons(L, pass.colour);
 
                 if(vehicle.vehicleType === 'Tram'){
-                    L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon}).addTo(map)
-                        .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`);
+                    markers.push({
+                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon}).addTo(map)
+                            .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
+                        code: vehicle.id
+                    });
                 } else {
-                    L.marker([vehicle.lat, vehicle.lon], {icon: busIcon}).addTo(map)
-                        .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`);
+                    markers.push({
+                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: busIcon}).addTo(map)
+                            .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
+                        code: vehicle.id
+                    });
                 }
             }
         }
+
+        //Refresh vehicles positions
+        setInterval(async() => {
+            invalidate('stop_lines');
+            const vehicles = await data.vehicles.promise;
+            
+            for(const route of vehicles){
+                for(const vehicle of route.vehicles){
+                    for(const marker of markers){
+                        if(marker.code === vehicle.id){
+                            marker.marker.setLatLng([vehicle.lat, vehicle.lon]);
+                        }
+                    }
+                }
+            }
+
+        }, REFRESH_TIME);
+
     });
 
     //Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
