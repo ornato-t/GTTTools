@@ -127,10 +127,10 @@
 
 <style>
     main div {
-        height: 800px;
+        height: 80vh;
     }
 </style>
 
 <main class="select-none mb-3">
-    <div bind:this={mapElement}/>
+    <div bind:this={mapElement} class="h-full"/>
 </main>
