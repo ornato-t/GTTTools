@@ -1,24 +1,22 @@
 <script lang="ts">
     import 'leaflet/dist/leaflet.css';
     import { onMount, onDestroy } from 'svelte';
-    import { browser } from '$app/environment';
     import type { PageData } from "./$types";
     import type { LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
 	import { invalidate } from '$app/navigation';
 
     export let data: PageData;
-    export const ssr = false;
 
     const coords = data.coords;
     
-    let mapElement = new HTMLElement;
+    let mapElement: HTMLElement;
     let map: Map;
     
     const pinColour = '#1b8ae8';
     const otherPinColour = '#909090';
 
-    (async () => {
+    onMount(async () => {
         setInterval(() =>{
             //Regular invalidate does not work. If possible build a function to remove all pins and recreate them
             console.log('Refreshing'); 
@@ -76,8 +74,7 @@
                 }
             }
         }
-    })();
-
+    });
 
     //Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
     function getPopup(stop: stopDB){
