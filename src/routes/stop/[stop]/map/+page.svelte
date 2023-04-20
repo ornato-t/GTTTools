@@ -1,6 +1,6 @@
 <script lang="ts">
     import 'leaflet/dist/leaflet.css';
-    import { onMount, onDestroy } from 'svelte';
+    import { onMount } from 'svelte';
     import type { PageData } from "./$types";
     import type { LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
@@ -17,25 +17,15 @@
     const otherPinColour = '#909090';
 
     onMount(async () => {
-        setInterval(() =>{
-            //Regular invalidate does not work. If possible build a function to remove all pins and recreate them
-            console.log('Refreshing'); 
-            invalidate('stop_lines');
-        }, 5000);
+        // setInterval(() =>{
+        //     //Regular invalidate does not work. If possible build a function to remove all pins and recreate them
+        //     console.log('Refreshing'); 
+        //     invalidate('stop_lines');
+        // }, 5000);
 
         const L = await import('leaflet');
 
-        const pinIcon = L.divIcon({
-            html: `<i class='bx bxs-map text-5xl' style='color: ${pinColour}'></i>`,
-            iconSize: [20, 20],
-            className: ''
-        });
-        const otherPinIcon = L.divIcon({
-            html: `<i class='bx bxs-map text-3xl' style='color: ${otherPinColour}'></i>`,
-            iconSize: [20, 20],
-            className: ''
-        });
-
+        const { pinIcon, otherPinIcon } = getPinIcons(L);
 
         map = L.map(mapElement).setView(coords, 30);
 
@@ -52,19 +42,10 @@
 
         const passages = await data.vehicles.promise;
         for(const pass of passages){
-            const busIcon = L.divIcon({
-                html: `<i class='bx bxs-bus bx-sm rounded-full p-1 bg-white border border-black' style='color: ${pass.colour}'></i>`,
-                iconSize: [20, 20],
-                className: ''
-            });
 
-            const tramIcon = L.divIcon({
-                html: `<i class='bx bxs-train bx-sm rounded-full p-1 bg-white border border-black' style='color: ${pass.colour}'></i>`,
-                iconSize: [20, 20],
-                className: ''
-            });
-            
             for(const vehicle of pass.vehicles){
+                const { busIcon, tramIcon } = getVehicleIcons(L, pass.colour);
+
                 if(vehicle.vehicleType === 'Tram'){
                     L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon}).addTo(map)
                         .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`);
@@ -87,6 +68,40 @@
         } else {
             return `<a href="/stop/${stop.code}">${stop.code} - ${stop.name}</a>`;
         }
+    }
+
+    //Returns a set of leaflet marker icons
+    function getPinIcons(L: any){
+        const pinIcon = L.divIcon({
+            html: `<i class='bx bxs-map text-5xl' style='color: ${pinColour}'></i>`,
+            iconSize: [20, 20],
+            className: ''
+        });
+
+        const otherPinIcon = L.divIcon({
+            html: `<i class='bx bxs-map text-3xl' style='color: ${otherPinColour}'></i>`,
+            iconSize: [20, 20],
+            className: ''
+        });
+
+        return { pinIcon, otherPinIcon }
+    }
+
+    //Return a set of coloured, leaflet marker icons
+    function getVehicleIcons(L: any, colour: string){
+        const busIcon = L.divIcon({
+            html: `<i class='bx bxs-bus bx-sm rounded-full p-1 bg-white border border-black' style='color: ${colour}'></i>`,
+            iconSize: [20, 20],
+            className: ''
+        });
+
+        const tramIcon = L.divIcon({
+            html: `<i class='bx bxs-train bx-sm rounded-full p-1 bg-white border border-black' style='color: ${colour}'></i>`,
+            iconSize: [20, 20],
+            className: ''
+        });
+
+        return {busIcon, tramIcon}
     }
 </script>
 
