@@ -16,7 +16,7 @@
     
     const pinColour = '#1b8ae8';
     const otherPinColour = '#909090';
-    const REFRESH_TIME = 5000;
+    const REFRESH_TIME = 1000;
 
     onMount(async () => {
         const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
@@ -76,7 +76,6 @@
                     }
                 }
             }
-
         }, REFRESH_TIME);
 
     });
