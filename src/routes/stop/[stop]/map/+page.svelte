@@ -47,12 +47,12 @@
 
                 if(vehicle.vehicleType === 'Tram'){
                     markers.push({
-                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon}).addTo(map).bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
+                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + pass.route}).addTo(map).bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
                         code: vehicle.id
                     });
                 } else {
                     markers.push({
-                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: busIcon}).addTo(map).bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
+                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: busIcon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + pass.route}).addTo(map).bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
                         code: vehicle.id
                     });
                 }
@@ -131,6 +131,6 @@
     }
 </style>
 
-<main class="select-none">
-    <div bind:this={mapElement}></div>
+<main class="select-none mb-3">
+    <div bind:this={mapElement}/>
 </main>
