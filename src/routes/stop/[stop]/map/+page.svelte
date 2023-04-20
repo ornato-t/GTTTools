@@ -1,10 +1,10 @@
 <script lang="ts">
     import 'leaflet/dist/leaflet.css';
     import { onMount } from 'svelte';
+	import { invalidate } from '$app/navigation';
     import type { PageData } from "./$types";
     import type { Marker, LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
-	import { invalidate } from '$app/navigation';
 
     export let data: PageData;
 
@@ -31,8 +31,7 @@
         }).addTo(map);
 
         //Place icon of queried stop
-        L.marker(coords, {icon: pinIcon}).addTo(map)
-            .bindPopup(`<a href="/stop/${data.db.code}">${data.db.code} - ${data.db.name}</a>`);
+        L.marker(coords, {icon: pinIcon}).addTo(map).bindPopup(`<a href="/stop/${data.db.code}">${data.db.code} - ${data.db.name}</a>`);
         
         //Place icons of nearby stops
         for(const stop of data.near){
@@ -48,14 +47,12 @@
 
                 if(vehicle.vehicleType === 'Tram'){
                     markers.push({
-                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon}).addTo(map)
-                            .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
+                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon}).addTo(map).bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
                         code: vehicle.id
                     });
                 } else {
                     markers.push({
-                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: busIcon}).addTo(map)
-                            .bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
+                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: busIcon}).addTo(map).bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
                         code: vehicle.id
                     });
                 }
