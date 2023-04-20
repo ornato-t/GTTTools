@@ -8,17 +8,19 @@
 	import { invalidate } from '$app/navigation';
 
     export let data: PageData;
+    export const ssr = false;
 
     const coords = data.coords;
     
-    let mapElement: HTMLElement;
+    let mapElement = new HTMLElement;
     let map: Map;
     
     const pinColour = '#1b8ae8';
     const otherPinColour = '#909090';
 
-    onMount(async () => { if(browser) {
+    (async () => {
         setInterval(() =>{
+            //Regular invalidate does not work. If possible build a function to remove all pins and recreate them
             console.log('Refreshing'); 
             invalidate('stop_lines');
         }, 5000);
@@ -74,11 +76,8 @@
                 }
             }
         }
-    }});
+    })();
 
-    onDestroy(async () => {
-        if(map) map.remove();
-    });
 
     //Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
     function getPopup(stop: stopDB){
