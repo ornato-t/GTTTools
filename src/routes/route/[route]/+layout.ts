@@ -1,5 +1,4 @@
 import type { vehicle } from '$lib/vehicle';
-import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
 
 export const load = (async ({ fetch, depends, data }) => {
@@ -10,7 +9,7 @@ export const load = (async ({ fetch, depends, data }) => {
         api: getRoute(data.code, fetch),
         db: data.db
     };
-}) satisfies PageLoad;
+});
 
 async function getRoute(code: string, fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>) {
     let route: Response;

@@ -7,6 +7,7 @@ export interface trip {
     dates?: days,
     stops: trip_stop[],
     type_it?: string,
+    shape: shape[]
 }
 
 interface days {
@@ -20,7 +21,12 @@ interface days {
 }
 
 export interface trip_stop {
-    id: string,
+    id: number,
     arrival: string,
     sequence: number,
+}
+
+export interface shape {
+    lat: number,
+    lon: number,
 }
