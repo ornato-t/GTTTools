@@ -10,7 +10,7 @@ export async function load({ locals, params }) {
     const tripData = await getTrip(route, trips);
 
     return {
-        trip: tripData,
+        shape: tripData.shape,
         stops: { promise: getStops(tripData.stops, stops) }
     };
 }

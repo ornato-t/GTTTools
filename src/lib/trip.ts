@@ -7,7 +7,8 @@ export interface trip {
     dates?: days,
     stops: trip_stop[],
     type_it?: string,
-    shape: shape[]
+    shape: number[][]
+    // shape: shape[]
 }
 
 interface days {
