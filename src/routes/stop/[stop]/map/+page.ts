@@ -20,7 +20,7 @@ export async function load({ data, depends, fetch, parent }) {
 }
 
 
-async function getVehicles(stopAPI: Promise<stop[]>, svelteFetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>) {
+async function getVehicles(stopAPI: Promise<stop[]>, fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>) {
     const stop = await stopAPI;
     const out: Array<vehicleMap> = [];
 
@@ -28,12 +28,7 @@ async function getVehicles(stopAPI: Promise<stop[]>, svelteFetch: (input: Reques
     for (const line of stop) {
         const code = line.routeID;
 
-        let route: Response;
-        try {   //Try to fetch from site first (faster)
-            route = await svelteFetch(`/api/route/${code}`, { signal: AbortSignal.timeout(1000) });   //Send timeout if request takes longer than a seconds
-        } catch (e) {   //If it fails, resort to experimental API
-            route = await svelteFetch(`/api/route-experimental/${code}`);
-        }
+        const route = await fetch(`/api/route/${code}`);
 
         if (!route.ok) {
             const err = await route.json();

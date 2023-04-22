@@ -29,11 +29,6 @@ export const handleError = (({ error, event }) => {
                 message: 'GTT API offline',
                 status: 503
             };
-        case '/api/route-experimental/[route]':
-            return {
-                message: 'GTT API offline',
-                status: 503
-            };
         case '/api/stop-experimental/[stop]':
             return {
                 message: 'GTT API offline',
