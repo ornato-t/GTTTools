@@ -28,7 +28,6 @@ export const load = (async ({ params, depends }) => {
     };
 }) satisfies PageLoad;
 
-//TODO: poll every route of the vehicle API until a match is found. This is probably going to need a proxy of its own
 async function findRoute(code: string) {
     try {
         const res = await fetch(`/api/find-vehicle/${code}`);
