@@ -1,10 +1,11 @@
-//TODO: figure out and do something with 
+//TODO: figure out and do something with "direction"
+
 import type { vehicle, vehicleWeb } from "$lib/vehicle";
 import type { RequestHandler } from "@sveltejs/kit";
 import { DateTime } from "luxon"
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 
-const TIMEOUT = 1000;   //If GTT query takes longer than this, switch to GTFS API
+const TIMEOUT = 500;   //If GTT query takes longer than this, switch to GTFS API
 
 export const GET: RequestHandler = async ({ params }) => {
     try {

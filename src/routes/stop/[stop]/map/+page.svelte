@@ -40,7 +40,7 @@
 
         const passages = await data.vehicles.promise;   //Wait for vehicle data to arrive
 
-        //Place vehicle icons
+        //Place vehicle icons - TODO: cut some redundancy (look at route map)
         for(const pass of passages){
             for(const vehicle of pass.vehicles){
                 const { busIcon, tramIcon } = getVehicleIcons(L, pass.colour);

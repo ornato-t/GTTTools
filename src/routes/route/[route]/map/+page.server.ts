@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { stopDB } from '$lib/stopDB.js';
 import type { trip, trip_stop } from '$lib/trip.js';
 import type { Collection } from 'mongodb';
+import type { LatLngTuple } from 'leaflet';
 
 export async function load({ locals, params }) {
     const route = params.route;
@@ -21,7 +22,7 @@ async function getTrip(route: string, trips: Collection<trip>) {
     const query = { route, "dates.friday": true };
     const projection = { _id: 0, stops: 1, shape: 1 };
 
-    const res = await trips.findOne(query, { projection });
+    const res = await trips.findOne<{stops: {arrival: string, sequence: number, id: number}[], shape: LatLngTuple[]}>(query, { projection });
 
     if (res === null) throw error(404, 'No matching route found');
 
@@ -35,8 +36,8 @@ async function getStops(stopList: trip_stop[], stops: Collection<stopDB>) {
     const aggr = [
         { $match: { code: { $in: ids } } },                                                                                 //Filter stops
         { $addFields: { coordinates: [{ $arrayElemAt: ["$coordinates", 1] }, { $arrayElemAt: ["$coordinates", 0] }] } },    //Reverse coords array (Mongo wants them saved as [lon, lat])
-        { $project: { _id: 0, name: 1, description: 1, coordinates: 1 } },                                                  //Project only necessary fields
+        { $project: { _id: 0, name: 1, description: 1, code: 1, coordinates: 1 } },                                                  //Project only necessary fields
     ]
 
-    return stops.aggregate(aggr).toArray();
+    return stops.aggregate<{name: string, description: string, code: number, coordinates: number[]}>(aggr).toArray();
 }
