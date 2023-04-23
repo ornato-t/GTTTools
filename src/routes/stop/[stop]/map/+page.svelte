@@ -5,6 +5,7 @@
     import type { PageData } from "./$types";
     import type { Marker, LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
+	import { encodeRoute } from '$lib/vehicle';
 
     export let data: PageData;
 
@@ -40,22 +41,16 @@
 
         const passages = await data.vehicles.promise;   //Wait for vehicle data to arrive
 
-        //Place vehicle icons - TODO: cut some redundancy (look at route map)
+        //Place vehicle icons
         for(const pass of passages){
+            const { busIcon, tramIcon } = getVehicleIcons(L, pass.colour);
             for(const vehicle of pass.vehicles){
-                const { busIcon, tramIcon } = getVehicleIcons(L, pass.colour);
+                const icon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
 
-                if(vehicle.vehicleType === 'Tram'){
-                    markers.push({
-                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: tramIcon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + pass.route}).addTo(map).bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
-                        code: vehicle.id
-                    });
-                } else {
-                    markers.push({
-                        marker: L.marker([vehicle.lat, vehicle.lon], {icon: busIcon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + pass.route}).addTo(map).bindPopup(`<a href="/route/${pass.routeID}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
-                        code: vehicle.id
-                    });
-                }
+                markers.push({
+                    marker: L.marker([vehicle.lat, vehicle.lon], {icon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + pass.route}).addTo(map).bindPopup(`<a href="/route/${encodeRoute(pass.routeID)}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
+                    code: vehicle.id
+                });
             }
         }
 

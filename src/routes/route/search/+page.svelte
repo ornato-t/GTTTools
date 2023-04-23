@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Search from 'svelte-search';
-	import type { routeDB } from '$lib/routeDB';
 	import fetch from '$lib/proxyRequest';
+	import { encodeRoute } from '$lib/vehicle';
+	import type { routeDB } from '$lib/routeDB';
 
 	let value = '';
 	let routes = new Array<routeDB>();
@@ -39,7 +40,7 @@
 		{#each routes as route}
 			<a
 				class="my-1 card card-compact bg-base-200 btn h-fit animate-none"
-				href="/route/{route.code}"
+				href="/route/{encodeRoute(route.code)}"
 				data-sveltekit-preload-data
 			>
 				<div class="card-body w-full grid grid-cols-4">

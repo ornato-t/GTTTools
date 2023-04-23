@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { LatLngExpression } from "leaflet";
 import type { stop } from '$lib/stop.js';
-import type { vehicle, vehicleMap } from '$lib/vehicle.js';
+import { encodeRoute, type vehicle, type vehicleMap } from '$lib/vehicle.js';
 
 const COLOURS = ["#ff0000", "#0041ff", "#23c043", "#c000b4", "#00deda", "#e8781a"]
 
@@ -28,7 +28,7 @@ async function getVehicles(stopAPI: Promise<stop[]>, fetch: (input: RequestInfo 
     for (const line of stop) {
         const code = line.routeID;
 
-        const route = await fetch(`/api/route/${code}`);
+        const route = await fetch(`/api/route/${encodeRoute(code)}`);
 
         if (!route.ok) {
             const err = await route.json();

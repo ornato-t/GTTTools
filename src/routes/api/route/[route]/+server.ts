@@ -11,11 +11,6 @@ export const GET: RequestHandler = async ({ params }) => {
     try {
         const res = await pollRoute(params.route as string);
         console.log('Answering from GTT API')
-        if (res.length === 0) {
-            console.log('No entries found for route:', params.route);
-            return new Response(JSON.stringify({ error: 'No information available' }), { status: 404, statusText: 'No information available' });
-
-        }
 
         return new Response(JSON.stringify(res));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,11 +18,6 @@ export const GET: RequestHandler = async ({ params }) => {
         try {
             const res = await pollGTFS(params.route as string);
             console.log('Answering from GTFS API')
-            if (res.length === 0) {
-                console.log('No entries found for route:', params.route);
-                return new Response(JSON.stringify({ error: 'No information available' }), { status: 404, statusText: 'No information available' });
-
-            }
 
             return new Response(JSON.stringify(res));
         } catch (_) {

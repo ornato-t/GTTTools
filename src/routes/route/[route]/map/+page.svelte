@@ -48,7 +48,6 @@
                 marker: L.marker([vehicle.lat, vehicle.lon], {icon: icon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + vehicle.id}).addTo(map).bindPopup(`<a href="/vehicle/${vehicle.id}"><div>${vehicle.id}</div></a>`),
                 code: vehicle.id
             });
-           
         }
 
         //Refresh vehicles positions
@@ -65,17 +64,6 @@
         }, REFRESH_TIME);
 
     });
-
-    function getAveragePos(vehicles: vehicle[]): LatLngTuple{
-        let totLat = 0, totLon = 0, size = vehicles.length;
-
-        for(const v of vehicles){
-            totLat += v.lat;
-            totLon += v.lon;
-        }
-
-        return [totLat/size, totLon/size]
-    }
 
     //Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
     function getPopup(stop: stopDB){

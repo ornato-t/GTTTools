@@ -1,4 +1,4 @@
-import type { vehicle } from '$lib/vehicle';
+import { encodeRoute, type vehicle } from '$lib/vehicle';
 import { error } from '@sveltejs/kit';
 
 export const load = (async ({ fetch, depends, data }) => {
@@ -12,7 +12,7 @@ export const load = (async ({ fetch, depends, data }) => {
 });
 
 async function getRoute(code: string, fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>) {
-    const route = await fetch(`/api/route/${code}`);
+    const route = await fetch(`/api/route/${encodeRoute(code)}`);
     
     if (route.status !== 200) {
         const err = await route.json();

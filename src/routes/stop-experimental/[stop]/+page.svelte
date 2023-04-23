@@ -3,6 +3,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Timer from './timer.svelte';
+	import { encodeRoute } from '$lib/vehicle';
 
 	export let data: PageData;
 
@@ -37,7 +38,7 @@
 	{#if data.api.length !== 0}
 		{#key data.api}
 			{#each data.api as pass}
-				<a href="/route/{pass.route}" data-sveltekit-preload-data>
+				<a href="/route/{encodeRoute(pass.route)}" data-sveltekit-preload-data>
 					<div class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
 							{#if pass.pass.length > 0}
@@ -85,7 +86,7 @@
 		{#key data.api}
 			{#each data.api as pass}
 				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
-					<a href="/route/{pass.route}" data-sveltekit-preload-data>
+					<a href="/route/{encodeRoute(pass.route)}" data-sveltekit-preload-data>
 						<div class="card-body p-6">
 							{#if pass.pass.length > 0}
 								<h2 class="card-title  mb-4 grid grid-cols-4">
