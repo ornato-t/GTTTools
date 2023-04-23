@@ -1,3 +1,5 @@
+//TODO: this isn't used anywhere, move it to regular stop and handle timeouts and complexity in there
+
 import type { vehicle } from "$lib/vehicle";
 import type { RequestHandler } from "@sveltejs/kit";
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";

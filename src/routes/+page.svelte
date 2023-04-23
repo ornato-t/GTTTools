@@ -89,7 +89,7 @@
 			<p>Aggiornato con dati ufficiali forniti dal Ministero dei Trasporti.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-	  <a href="/stop-experimental/search" class="btn lg:btn-lg btn-primary lg:place-self-end">controlla</a>
+	  <a href="/strikes" class="btn lg:btn-lg btn-primary lg:place-self-end">controlla</a>
 	</div>
   </div>
   <div/>
@@ -103,7 +103,7 @@
 			<p>Ci stiamo ancora lavorando, ma presto sarà perfetto.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
-      <a href="/strikes" class="btn lg:btn-lg btn-primary lg:place-self-start">prova</a>
+      <a href="/stop-experimental/search" class="btn lg:btn-lg btn-primary lg:place-self-start">prova</a>
     </div>
   </div>
 </div>

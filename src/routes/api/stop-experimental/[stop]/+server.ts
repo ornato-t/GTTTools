@@ -1,4 +1,4 @@
-//TODO: this isn't used anywhere, move it to regular stop and handle timeouts and complexity in there
+//TODO: fix typescript interfaces
 
 import type { stop } from "$lib/stop";
 // import type { stopDB } from "$lib/stopDB";
