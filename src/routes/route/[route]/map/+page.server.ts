@@ -31,6 +31,7 @@ async function getTrip(route: string, trips: Collection<trip>) {
 
 //Returns the position of all scheduled stops for a trip
 async function getStops(stopList: trip_stop[], stops: Collection<stopDB>) {
+    return []   //TEMP
     const ids = stopList.map(el => el.id);  //IDs of all the programmed stops for the queried line
 
     const aggr = [
