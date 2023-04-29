@@ -1,6 +1,7 @@
 export interface strikeNotif{
     date: Date,
     sector: string,
+    scope: string,
 }
 
 export interface strike {

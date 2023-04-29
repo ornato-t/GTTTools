@@ -72,6 +72,10 @@
 		stopCodeSearch = '';	//Reset the search string
 		goto(`/stop/${stop}`);	//Move to the requested stop page
 	}
+
+	function firstUppercase(str: string){
+		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+	}
 </script>
 
 <svelte:head>
@@ -231,8 +235,14 @@
 		<div class="modal modal-bottom sm:modal-middle">
 			<div class="modal-box">
 				<h3 class="font-bold text-lg">Attenzione! Possibile sciopero</h3>
-				<p class="mt-4 -mb-2">È in programma uno sciopero <span class="font-mono">{strike.sector.toLowerCase()}</span> per il giorno <span class="font-mono">{strike.date.toLocaleDateString()}</span>.</p>
-				<p class="mt-4 -mb-2">Maggiori informazioni disponibili alla <a class="link" href="/strikes" on:click={() => toggleStrikePopup = false}>pagina degli scioperi</a>.</p>
+				<p class="mt-4 -mb-2">È in programma uno sciopero il giorno <span class="font-mono">{strike.date.toLocaleDateString()}</span>.</p>
+				<div class="grid grid-cols-3 mt-6">
+					<div>Settore:</div>
+					<div class="font-mono text-end col-span-2">{firstUppercase(strike.sector)}</div>
+					<div>Ambito:</div>
+					<div class="font-mono text-end col-span-2">{firstUppercase(strike.scope)}</div>
+				</div>
+				<p class="mt-4 -mb-2">Maggiori informazioni alla <a class="link" href="/strikes" on:click={() => toggleStrikePopup = false}>pagina degli scioperi</a>.</p>
 				<div class="modal-action">
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div class="btn mx-auto btn-wide" on:click={() => {toggleStrikePopup = false; notifSeen(strike);}}>

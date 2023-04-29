@@ -32,6 +32,7 @@ async function pollStrikes() {
             return {
                 date: new Date(strike.dateEnd),
                 sector: strike.sector,
+                scope: strike.scope,
             } satisfies strikeNotif;
         });
 
