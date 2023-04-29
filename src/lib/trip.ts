@@ -2,13 +2,12 @@ export interface trip {
     trip_id: string,
     route: string,
     destination: string,
-    type?: number,
-    provider?: string,
-    dates?: days,
-    stops: trip_stop[],
-    type_it?: string,
+    type: number,
+    provider: string,
+    direction: number,
+    dates: days,
     shape: number[][]
-    // shape: shape[]
+    stops: trip_stop[],
 }
 
 interface days {
@@ -22,12 +21,6 @@ interface days {
 }
 
 export interface trip_stop {
-    id: number,
-    arrival: string,
+    code: number,
     sequence: number,
-}
-
-export interface shape {
-    lat: number,
-    lon: number,
 }

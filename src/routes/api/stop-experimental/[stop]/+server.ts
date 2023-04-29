@@ -1,7 +1,4 @@
-//TODO: fix typescript interfaces
-
 import type { stop } from "$lib/stop";
-// import type { stopDB } from "$lib/stopDB";
 import type { trip, trip_stop } from "$lib/trip";
 import type { RequestHandler } from "@sveltejs/kit";
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
@@ -17,7 +14,7 @@ export const GET: RequestHandler = async ({ params, locals }) => {
 async function pollStop(stop: string, db: Collection<trip>) {
     const url = 'http://percorsieorari.gtt.to.it/das_gtfsrt/trip_update.aspx';
 
-    const tripsDB = await db.find({ "stops.id": stop }).project({ _id: 0 }).toArray() as trip[];
+    const tripsDB = await db.find({ "stops.code": stop }).project({ _id: 0 }).toArray() as trip[];
 
     //Fetch and parse feed
     const res = await fetch(url);
@@ -35,7 +32,7 @@ async function pollStop(stop: string, db: Collection<trip>) {
             for (const el of returned) {    //Find the matching route and push
                 if (el.route === db.route) {
                     const time = matchStop(entity.tripUpdate?.stopTimeUpdate as stopTimeGTFS[], db.stops, stop);
-                    if (time != null) el.pass.push(getDate(time));
+                    if (time != null) el.pass.push({time: getDate(time), realTime: true});
                     break;
                 }
             }
@@ -48,8 +45,7 @@ async function pollStop(stop: string, db: Collection<trip>) {
                     route: db.route,
                     routeID: db.route,
                     direction: db.destination,
-                    pass: [getDate(time)],
-                    realTime: true,
+                    pass: [{time: getDate(time), realTime: true}],
                 })
             }
         }
@@ -57,9 +53,9 @@ async function pollStop(stop: string, db: Collection<trip>) {
 
     //Unfortunately the dates (passage times) aren't sorted in the feed, so we have to sort them manually
     for (const el of returned) {
-        el.pass.sort((a: Date, b: Date) => {
-            if (a < b) return -1;
-            if (a < b) return 1;
+        el.pass.sort((a, b) => {
+            if (a.time < b.time) return -1;
+            if (a.time > b.time) return 1;
             return 0;
         })
     }
@@ -86,7 +82,7 @@ function getDate(d: Long | number) {
 //Matches a queried stop with a route from the DB, then matches that with the feed entries
 //Returns either the passage time or null if no passage is found (too early or too late, hasn't been calculated yet)
 function matchStop(stopTimeArr: stopTimeGTFS[], stopTimeDBArr: trip_stop[], stopCode: string) {
-    const stop = stopTimeDBArr.filter(stop => stop.id === stopCode);
+    const stop = stopTimeDBArr.filter(stop => stop.code === Number.parseInt(stopCode));
 
     if (stop.length > 1) console.log('Warning, found multiple matches for the same stop:', stop);
     else if (stop.length === 0) return null;
@@ -105,7 +101,6 @@ function matchStop(stopTimeArr: stopTimeGTFS[], stopTimeDBArr: trip_stop[], stop
 function findIntersection(feed: GtfsRealtimeBindings.transit_realtime.IFeedEntity[], db: trip[]) {
     const set = new Set(db.map(obj => obj.trip_id));
     const intersection = [];
-
 
     for (const obj of feed) {
         if (set.has(obj.id)) {

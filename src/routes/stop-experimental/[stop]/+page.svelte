@@ -52,20 +52,13 @@
 									<div class="w-full grid grid-cols-3">
 										{#each pass.pass as time}
 											<div class="text-left">
-												{printLocale(time)}
+												{printLocale(time.time)}
 											</div>
 											<div class="justify-end col-span-2 countdown font-mono">
-												<Timer {time} />
+												<Timer time={time.time} />
 											</div>
 										{/each}
 									</div>
-
-									<!-- {#if !pass.realTime}
-										<div class="divider mb-0 mt-4" />
-										<div class="italic text-sm w-fit mx-auto opacity-60">
-											Informazioni in tempo reale non disponibili
-										</div>
-									{/if} -->
 								</div>
 							{:else}
 								<p>Nessuna informazione disponibile</p>
@@ -99,20 +92,13 @@
 									<div class="w-full grid grid-cols-3">
 										{#each pass.pass as time}
 											<div class="text-left">
-												{printLocale(time)}
+												{printLocale(time.time)}
 											</div>
 											<div class="justify-end col-span-2 countdown font-mono">
-												<Timer {time} />
+												<Timer time={time.time} />
 											</div>
 										{/each}
 									</div>
-
-									<!-- {#if !pass.realTime}
-										<div class="divider mb-0 mt-4" />
-										<div class="italic text-sm w-fit mx-auto opacity-60">
-											Informazioni in tempo reale non disponibili
-										</div>
-									{/if} -->
 								</div>
 							{:else}
 								<p>Nessuna informazione disponibile</p>
