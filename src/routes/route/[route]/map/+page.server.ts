@@ -2,7 +2,6 @@ import { error } from '@sveltejs/kit';
 import type { stopDB } from '$lib/stopDB.js';
 import type { trip, trip_stop } from '$lib/trip.js';
 import type { Collection } from 'mongodb';
-import type { LatLngTuple } from 'leaflet';
 
 export async function load({ locals, params }) {
     const route = params.route;
@@ -22,7 +21,7 @@ async function getTrip(route: string, trips: Collection<trip>) {
     const query = { route, "dates.friday": true };
     const projection = { _id: 0, stops: 1, shape: 1 };
 
-    const res = await trips.findOne<{stops: {arrival: string, sequence: number, id: number}[], shape: LatLngTuple[]}>(query, { projection });
+    const res = await trips.findOne<trip>(query, { projection });
 
     if (res === null) throw error(404, 'No matching route found');
 
@@ -31,8 +30,7 @@ async function getTrip(route: string, trips: Collection<trip>) {
 
 //Returns the position of all scheduled stops for a trip
 async function getStops(stopList: trip_stop[], stops: Collection<stopDB>) {
-    return []   //TEMP
-    const ids = stopList.map(el => el.id);  //IDs of all the programmed stops for the queried line
+    const ids = stopList.map(el => el.code);  //IDs of all the programmed stops for the queried line
 
     const aggr = [
         { $match: { code: { $in: ids } } },                                                                                 //Filter stops

@@ -10,14 +10,12 @@ const TIMEOUT = 500;   //If GTT query takes longer than this, switch to GTFS API
 export const GET: RequestHandler = async ({ params }) => {
     try {
         const res = await pollRoute(params.route as string);
-        console.log('Answering from GTT API')
 
         return new Response(JSON.stringify(res));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (_) {
         try {
             const res = await pollGTFS(params.route as string);
-            console.log('Answering from GTFS API')
 
             return new Response(JSON.stringify(res));
         } catch (_) {

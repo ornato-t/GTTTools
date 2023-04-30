@@ -29,7 +29,7 @@
         }).addTo(map);
 
         //Draw shape and center the map around it
-        const shape = L.polyline(data.shape, {color: 'red'}).addTo(map);
+        const shape = L.polyline(data.shape as LatLngTuple[], {color: 'red'}).addTo(map);
         map.fitBounds(shape.getBounds());
 
         //Wait for stops data, then place icons of nearby stops
