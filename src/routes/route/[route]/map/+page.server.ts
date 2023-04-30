@@ -17,35 +17,41 @@ export async function load({ locals, params }) {
 
 //Return an appropriate trip info for a rotue
 async function getTrip(route: string, trips: Collection<trip>) {
-    const query = getQuery(route);
-    const projection = { _id: 0, stops: 1, shape: 1 };
+    const aggr = [
+        { $match: { route, "dates.startDate": { $lte: new Date() }, "dates.endDate": { $gte: new Date() }, [getDay()]: true } },
+        { $facet: { one: [{ $match: { direction: 1 } }, { $sample: { size: 1 } }], zero: [{ $match: { direction: 0 } }, { $sample: { size: 1 } }] } },
+        { $project: { result: { $concatArrays: ['$one', '$zero'] } } },
+        { $unwind: '$result' },
+        { $replaceRoot: { newRoot: '$result' } },
+        { $project: { _id: 0, stops: 1, shape: 1, destination: 1 } }
+    ]
 
-    const res = await trips.findOne<trip>(query, { projection });
+    const res = await trips.aggregate<trip>(aggr).toArray();
 
     if (res === null) throw error(404, 'No matching route found');
+    console.log(res)
+    return res[0]       //TODO: handle both array entries instead of just one
 
-    return res
-
-    function getQuery(route: string) {
+    function getDay() {
         const d = new Date();
 
         switch (d.getDay()) {
             case 0:
-                return { route, "dates.sunday": true };
+                return "dates.sunday";
             case 1:
-                return { route, "dates.monday": true };
+                return "dates.monday";
             case 2:
-                return { route, "dates.tuesday": true };
+                return "dates.tuesday";
             case 3:
-                return { route, "dates.wednesday": true };
+                return "dates.wednesday";
             case 4:
-                return { route, "dates.thursday": true };
+                return "dates.thursday";
             case 5:
-                return { route, "dates.friday": true };
+                return "dates.friday";
             case 6:
-                return { route, "dates.saturday": true };
-            default:
-                return { route, dates: { "$exists": true } };
+                return "dates.saturday";
+            default:    //This shouldn't happen
+                return "dates.monday";
         }
     }
 }
