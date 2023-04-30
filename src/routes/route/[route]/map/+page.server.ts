@@ -16,9 +16,8 @@ export async function load({ locals, params }) {
 }
 
 //Return an appropriate trip info for a rotue
-//TODO: add date verification: week day / weekend day + is a holiday?
 async function getTrip(route: string, trips: Collection<trip>) {
-    const query = { route, "dates.friday": true };
+    const query = getQuery(route);
     const projection = { _id: 0, stops: 1, shape: 1 };
 
     const res = await trips.findOne<trip>(query, { projection });
@@ -26,6 +25,29 @@ async function getTrip(route: string, trips: Collection<trip>) {
     if (res === null) throw error(404, 'No matching route found');
 
     return res
+
+    function getQuery(route: string) {
+        const d = new Date();
+
+        switch (d.getDay()) {
+            case 0:
+                return { route, "dates.sunday": true };
+            case 1:
+                return { route, "dates.monday": true };
+            case 2:
+                return { route, "dates.tuesday": true };
+            case 3:
+                return { route, "dates.wednesday": true };
+            case 4:
+                return { route, "dates.thursday": true };
+            case 5:
+                return { route, "dates.friday": true };
+            case 6:
+                return { route, "dates.saturday": true };
+            default:
+                return { route, dates: { "$exists": true } };
+        }
+    }
 }
 
 //Returns the position of all scheduled stops for a trip
@@ -38,5 +60,5 @@ async function getStops(stopList: trip_stop[], stops: Collection<stopDB>) {
         { $project: { _id: 0, name: 1, description: 1, code: 1, coordinates: 1 } },                                         //Project only necessary fields
     ]
 
-    return stops.aggregate<{name: string, description: string, code: number, coordinates: number[]}>(aggr).toArray();
+    return stops.aggregate<{ name: string, description: string, code: number, coordinates: number[] }>(aggr).toArray();
 }
