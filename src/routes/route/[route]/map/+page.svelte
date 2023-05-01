@@ -2,25 +2,22 @@
     import 'leaflet/dist/leaflet.css';
     import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
-    import type { Marker, LatLngTuple, Map, LatLngExpression } from "leaflet";
+    import type { Marker, LatLngTuple, Map } from "leaflet";
     import type { PageData } from "./$types";
 	import type { stopDB } from '$lib/stopDB';
-	import type { vehicle } from '$lib/vehicle';
 
     export let data: PageData;
-    
+
     let mapElement: HTMLElement;
     let map: Map;
     const markers = new Array<{marker: Marker, code: number}>;
     
-    const otherPinColour = '#909090';
-    const vehicleColour = '#1b8ae8';
+    const vehicleColour = '#1cbb10';
     const REFRESH_TIME = 1000;
 
     //TODO: pick colours for indicators, vehicles, line. Remove junk text down below
     onMount(async () => {
         const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
-        const otherPinIcon = getPinIcon(L);
         map = L.map(mapElement);   //Center on Piazza Castello - symbolic value, really
 
         //Place map tiles
@@ -28,16 +25,20 @@
             attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        //Draw shape and center the map around it
-        const shape = L.polyline(data.shape as LatLngTuple[], {color: 'red'}).addTo(map);
-        map.fitBounds(shape.getBounds());
+        for(const route of data.routes){
+            const pinIcon = getPinIcon(L, route.pinColour);
 
-        //Wait for stops data, then place icons of nearby stops
-        data.stops.promise.then(stops => {
-            for(const stop of stops){
-                L.marker(stop.coordinates as LatLngTuple, {icon: otherPinIcon}).addTo(map).bindPopup(getPopup(stop));    
-            }
-        });
+            //Draw shape and center the map around it
+            const shape = L.polyline(route.shape as LatLngTuple[], {color: route.shapeColour}).addTo(map);
+            map.fitBounds(shape.getBounds());
+
+            //Wait for stops data, then place icons of nearby stops
+            route.stops.promise.then(stops => {
+                for(const stop of stops){
+                    L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
+                }
+            });
+        }
 
         //Place vehicle icons
         const { busIcon, tramIcon } = getVehicleIcons(L, vehicleColour);
@@ -53,7 +54,6 @@
         //Refresh vehicles positions
         setInterval(async() => {
             invalidate('vehicle');
-
             for(const vehicle of data.api){
                 for(const marker of markers){
                     if(marker.code === vehicle.id){
@@ -79,9 +79,9 @@
     }
 
     //Returns a set of leaflet marker icons
-    function getPinIcon(L: any){
+    function getPinIcon(L: any, colour: string){
         const otherPinIcon = L.divIcon({
-            html: `<i class='bx bxs-map text-3xl' style='color: ${otherPinColour}'></i>`,
+            html: `<i class='bx bxs-map text-3xl' style='color: ${colour}; transform: translateY(-50%);'></i>`,
             iconSize: [20, 20],
             className: ''
         });
@@ -126,16 +126,18 @@
     {#each data.api as vehicle}
         <div>{JSON.stringify(vehicle)}</div>
     {/each}
-    <div class="text-lg font-bold">Percorso (punti)</div>
-    <div>
-        {#each data.shape as point}
-            <div>{point}</div>
-        {/each}
-    </div>
-    {#await data.stops.promise then stops}
-        <div class="text-lg font-bold">Fermate:</div>
-        {#each stops as stop}
-            <div>{JSON.stringify(stop)}</div>
-        {/each}
-    {/await}
+    {#each data.routes as route}
+        <div class="text-lg font-bold">Percorso (punti)</div>
+        <div>
+            {#each route.shape as point}
+                <div>{point}</div>
+            {/each}
+        </div>
+        {#await route.stops.promise then stops}
+            <div class="text-lg font-bold">Fermate:</div>
+            {#each stops as stop}
+                <div>{JSON.stringify(stop)}</div>
+            {/each}
+        {/await}
+    {/each}
 </div>

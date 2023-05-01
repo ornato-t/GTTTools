@@ -6,13 +6,19 @@ import type { Collection } from 'mongodb';
 export async function load({ locals, params }) {
     const route = params.route;
     const { stops, trips } = locals;
+    const shapeColours = ['#fb3735', '#436cdc']
+    const pinColours = ['#fb7c7b', '#859fe3']
 
     const tripData = await getTrip(route, trips);
 
     return {
-        shape: tripData.shape,
-        stops: { promise: getStops(tripData.stops, stops) }
-    };
+        routes: tripData.map((el, i) => ({
+            shape: el.shape,
+            shapeColour: shapeColours[i],
+            stops: { promise: getStops(el.stops, stops) },
+            pinColour: pinColours[i]
+        }))
+    }
 }
 
 //Return an appropriate trip info for a rotue
@@ -24,14 +30,28 @@ async function getTrip(route: string, trips: Collection<trip>) {
         { $unwind: '$result' },
         { $replaceRoot: { newRoot: '$result' } },
         { $project: { _id: 0, stops: 1, shape: 1, destination: 1 } }
-    ]
+    ];
 
-    const res = await trips.aggregate<trip>(aggr).toArray();
+    const fallbackAggr = [
+        { $match: { route, "dates.startDate": { $lte: new Date() }, "dates.endDate": { $gte: new Date() } } },
+        { $facet: { one: [{ $match: { direction: 1 } }, { $sample: { size: 1 } }], zero: [{ $match: { direction: 0 } }, { $sample: { size: 1 } }] } },
+        { $project: { result: { $concatArrays: ['$one', '$zero'] } } },
+        { $unwind: '$result' },
+        { $replaceRoot: { newRoot: '$result' } },
+        { $project: { _id: 0, stops: 1, shape: 1, destination: 1 } }
+    ];
 
-    if (res === null) throw error(404, 'No matching route found');
-    console.log(res)
-    return res[0]       //TODO: handle both array entries instead of just one
+    let res = await trips.aggregate<trip>(aggr).toArray();  //First test with stricter match
 
+    if (res.length === 0) {    //Run query twice if it has yielded no results. This is more likely to succeed
+        res = await trips.aggregate<trip>(fallbackAggr).toArray();  //Then fallback to more lax query
+    }
+
+    if (res.length === 0) throw error(404, 'No matching route found');
+
+    return res
+
+    //Get the current weekday and return an appropriate date query
     function getDay() {
         const d = new Date();
 
