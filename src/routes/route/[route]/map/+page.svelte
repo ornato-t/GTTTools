@@ -15,9 +15,10 @@
     const vehicleColour = '#1cbb10';
     const REFRESH_TIME = 1000;
 
-    //TODO: pick colours for indicators, vehicles, line. Remove junk text down below
     onMount(async () => {
         const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
+        await import('leaflet-rotatedmarker');
+
         map = L.map(mapElement);   //Center on Piazza Castello - symbolic value, really
 
         //Place map tiles
@@ -46,7 +47,7 @@
             const icon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
             
             markers.push({
-                marker: L.marker([vehicle.lat, vehicle.lon], {icon: icon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + vehicle.id}).addTo(map).bindPopup(`<a href="/vehicle/${vehicle.id}"><div>${vehicle.id}</div></a>`),
+                marker: L.marker([vehicle.lat, vehicle.lon], {icon: icon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(`<a href="/vehicle/${vehicle.id}"><div>${vehicle.id}</div></a>`),
                 code: vehicle.id
             });
         }
@@ -58,6 +59,7 @@
                 for(const marker of markers){
                     if(marker.code === vehicle.id){
                         marker.marker.setLatLng([vehicle.lat, vehicle.lon]);
+                        marker.marker.setRotationAngle(vehicle.direction);
                     }
                 }
             }
@@ -92,13 +94,21 @@
     //Return a set of coloured, leaflet marker icons
     function getVehicleIcons(L: any, colour: string){
         const busIcon = L.divIcon({
-            html: `<i class='bx bxs-bus bx-sm rounded-full p-1 bg-white border border-black' style='color: ${colour}'></i>`,
+            html: `
+                <svg viewBox="0 0 24 24" class="h-10 fill-current text-white"stroke="black" stroke-width="0.3">
+                    <path d="M12 2.1c-5.5 4.8-6 9.4-6 11.4 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2-.5-6.6-6-11.4z"/>
+                </svg>
+                <i class='bx bxs-bus bx-xs translate-x-3 -translate-y-7' style='color: ${colour}'/>`,
             iconSize: [20, 20],
-            className: ''
+            className: '',
         });
 
         const tramIcon = L.divIcon({
-            html: `<i class='bx bxs-train bx-sm rounded-full p-1 bg-white border border-black' style='color: ${colour}'></i>`,
+            html: `
+                <svg viewBox="0 0 24 24" class="h-10 fill-current text-white"stroke="black" stroke-width="0.3">
+                    <path d="M12 2.1c-5.5 4.8-6 9.4-6 11.4 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2-.5-6.6-6-11.4z"/>
+                </svg>
+                <i class='bx bxs-train bx-xs translate-x-3 -translate-y-7' style='color: ${colour}'/>`,
             iconSize: [20, 20],
             className: ''
         });
@@ -117,27 +127,3 @@
     <div bind:this={mapElement} class="h-full"/>
 </main>
 
-<div class="mb-6">
-    <div class="text-lg font-bold">Codice:</div>
-    <div>{data.code}</div>
-    <div class="text-lg font-bold">Dati da database:</div>
-    <div>{JSON.stringify(data.db)}</div>
-    <div class="text-lg font-bold">Dati in tempo reale:</div>
-    {#each data.api as vehicle}
-        <div>{JSON.stringify(vehicle)}</div>
-    {/each}
-    {#each data.routes as route}
-        <div class="text-lg font-bold">Percorso (punti)</div>
-        <div>
-            {#each route.shape as point}
-                <div>{point}</div>
-            {/each}
-        </div>
-        {#await route.stops.promise then stops}
-            <div class="text-lg font-bold">Fermate:</div>
-            {#each stops as stop}
-                <div>{JSON.stringify(stop)}</div>
-            {/each}
-        {/await}
-    {/each}
-</div>

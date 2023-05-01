@@ -40,11 +40,13 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@types/leaflet-rotatedmarker": "^0.2.2",
 		"@vercel/analytics": "^0.1.11",
 		"daisyui": "^2.42.1",
 		"events": "^3.3.0",
 		"gtfs-realtime-bindings": "^1.1.1",
 		"leaflet": "^1.9.3",
+		"leaflet-rotatedmarker": "^0.2.0",
 		"luxon": "^3.2.1",
 		"mongodb": "^4.12.1",
 		"rss-parser": "^3.13.0"

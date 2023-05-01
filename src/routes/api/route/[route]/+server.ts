@@ -54,7 +54,7 @@ async function pollRoute(route: string) {
             lat: vehicle.lat,
             lon: vehicle.lon,
             updated: updatedDate(vehicle.aggiornamento),
-            // direction: null
+            direction: vehicle.direzione,
             // full: vehicle.occupazione,
         });
     }
@@ -97,8 +97,8 @@ async function pollGTFS(route: string) {
                 lat: doc.vehicle?.position?.latitude as number,
                 lon: doc.vehicle?.position?.longitude as number,
                 updated: updatedDate(doc.vehicle?.timestamp as number | null | undefined),
+                direction: doc.vehicle?.position?.bearing as number,
                 // full: doc.vehicle?.occupancyStatus as number,
-                // direction: doc.vehicle?.position?.bearing as number | null,
             });
         }
     }
