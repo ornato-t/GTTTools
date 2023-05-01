@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Used in route map page */
+.leaflet-div-icon {
+    background-color: transparent !important;
+    border: none !important;
+}

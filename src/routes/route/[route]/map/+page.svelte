@@ -10,7 +10,7 @@
 
     let mapElement: HTMLElement;
     let map: Map;
-    const markers = new Array<{marker: Marker, code: number}>;
+    const markers = new Array<{droplet: Marker, vehicle: Marker, code: number}>;
     
     const vehicleColour = '#1cbb10';
     const REFRESH_TIME = 1000;
@@ -19,7 +19,7 @@
         const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
         await import('leaflet-rotatedmarker');
 
-        map = L.map(mapElement);   //Center on Piazza Castello - symbolic value, really
+        map = L.map(mapElement);
 
         //Place map tiles
         L.tileLayer('https://map.gtt.to.it/blossom/{z}/{x}/{y}.png', {
@@ -42,12 +42,17 @@
         }
 
         //Place vehicle icons
-        const { busIcon, tramIcon } = getVehicleIcons(L, vehicleColour);
+        const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, vehicleColour);
         for(const vehicle of data.api){
-            const icon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
+            const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
+            
+            const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(`<a href="/vehicle/${vehicle.id}"><div>${vehicle.id}</div></a>`);
+
+            const vehicleMark = L.marker([vehicle.lat, vehicle.lon], {icon: vehicleIcon, zIndexOffset: 20}).addTo(map);
             
             markers.push({
-                marker: L.marker([vehicle.lat, vehicle.lon], {icon: icon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(`<a href="/vehicle/${vehicle.id}"><div>${vehicle.id}</div></a>`),
+                droplet: dropletMark,
+                vehicle: vehicleMark,
                 code: vehicle.id
             });
         }
@@ -58,8 +63,9 @@
             for(const vehicle of data.api){
                 for(const marker of markers){
                     if(marker.code === vehicle.id){
-                        marker.marker.setLatLng([vehicle.lat, vehicle.lon]);
-                        marker.marker.setRotationAngle(vehicle.direction);
+                        marker.droplet.setLatLng([vehicle.lat, vehicle.lon]);
+                        marker.vehicle.setLatLng([vehicle.lat, vehicle.lon]);
+                        marker.droplet.setRotationAngle(vehicle.direction);
                     }
                 }
             }
@@ -94,26 +100,26 @@
     //Return a set of coloured, leaflet marker icons
     function getVehicleIcons(L: any, colour: string){
         const busIcon = L.divIcon({
-            html: `
-                <svg viewBox="0 0 24 24" class="h-10 fill-current text-white"stroke="black" stroke-width="0.3">
-                    <path d="M12 2.1c-5.5 4.8-6 9.4-6 11.4 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2-.5-6.6-6-11.4z"/>
-                </svg>
-                <i class='bx bxs-bus bx-xs translate-x-3 -translate-y-7' style='color: ${colour}'/>`,
+            html: `<i class='bx bxs-bus bx-xs translate-x-[0.3rem] translate-y-[1.3rem]' style='color: ${colour}'/>`,
             iconSize: [20, 20],
-            className: '',
         });
 
         const tramIcon = L.divIcon({
-            html: `
-                <svg viewBox="0 0 24 24" class="h-10 fill-current text-white"stroke="black" stroke-width="0.3">
-                    <path d="M12 2.1c-5.5 4.8-6 9.4-6 11.4 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2-.5-6.6-6-11.4z"/>
-                </svg>
-                <i class='bx bxs-train bx-xs translate-x-3 -translate-y-7' style='color: ${colour}'/>`,
+            html: `<i class='bx bxs-train bx-xs' style='color: ${colour}'/>`,
             iconSize: [20, 20],
-            className: ''
+            iconAnchor: [6, 8]
         });
 
-        return {busIcon, tramIcon}
+        const dropletIcon = L.divIcon({
+            html: `
+                <svg viewBox="0 0 31 22" class="h-10 fill-current text-white"stroke="black" stroke-width="0.3">
+                    <path d="M12 2.1c-5.5 4.8-6 9.4-6 11.4 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2-.5-6.6-6-11.4z"/>
+                </svg>`,
+            iconSize: [20, 20],
+            iconAnchor: [22.5, 22]
+        });
+
+        return {busIcon, tramIcon, dropletIcon}
     }
 </script>
 
