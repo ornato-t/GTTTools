@@ -45,11 +45,11 @@
         const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, vehicleColour);
         for(const vehicle of data.api){
             const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
-            const popup = `<a href="/vehicle/${vehicle.id}"><div>${vehicle.id}</div></a>`;
+            const popup = `<a href="/vehicle/${vehicle.id}"><div>${vehicle.vehicleType} ${vehicle.id}</div></a>`;
 
-            const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(popup);
+            const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 100, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(popup);
 
-            const vehicleMark = L.marker([vehicle.lat, vehicle.lon], {icon: vehicleIcon, zIndexOffset: 20}).addTo(map).bindPopup(popup);
+            const vehicleMark = L.marker([vehicle.lat, vehicle.lon], {icon: vehicleIcon, zIndexOffset: 101}).addTo(map).bindPopup(popup);
             
             markers.push({
                 droplet: dropletMark,

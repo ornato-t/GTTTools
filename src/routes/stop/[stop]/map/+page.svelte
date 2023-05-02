@@ -5,7 +5,7 @@
     import type { PageData } from "./$types";
     import type { Marker, LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
-	import { encodeRoute } from '$lib/vehicle';
+	import { encodeRoute, type vehicleMap } from '$lib/vehicle';
 
     export let data: PageData;
 
@@ -14,6 +14,8 @@
     let mapElement: HTMLElement;
     let map: Map;
     const markers = new Array<{droplet: Marker, vehicle: Marker, code: number}>;
+    let loaded = false;
+    let routes = new Array<vehicleMap>;
     
     const pinColour = '#1b8ae8';
     const otherPinColour = '#909090';
@@ -41,6 +43,8 @@
         }
 
         const passages = await data.vehicles.promise;   //Wait for vehicle data to arrive
+        routes = passages;
+        loaded = true;
 
         //Place vehicle icons
         for(const pass of passages){
@@ -49,9 +53,9 @@
                 const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
                 const popup = `<a href="/route/${encodeRoute(pass.routeID)}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`;
 
-                const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(popup);
+                const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 100, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(popup);
 
-                const vehicleMark = L.marker([vehicle.lat, vehicle.lon], {icon: vehicleIcon, zIndexOffset: 20}).addTo(map).bindPopup(popup);
+                const vehicleMark = L.marker([vehicle.lat, vehicle.lon], {icon: vehicleIcon, zIndexOffset: 101}).addTo(map).bindPopup(popup);
                 
                 markers.push({
                     droplet: dropletMark,
@@ -65,6 +69,7 @@
         setInterval(async() => {
             invalidate('stop_lines');
             const vehicles = await data.vehicles.promise;
+            routes = vehicles;
             
             for(const route of vehicles){
                 for(const vehicle of route.vehicles){
@@ -72,7 +77,8 @@
                         if(marker.code === vehicle.id){
                             marker.droplet.setLatLng([vehicle.lat, vehicle.lon]);
                             marker.vehicle.setLatLng([vehicle.lat, vehicle.lon]);
-                            marker.droplet.setRotationAngle(vehicle.direction);                        }
+                            marker.droplet.setRotationAngle(vehicle.direction);                        
+                        }
                     }
                 }
             }
@@ -141,6 +147,27 @@
         height: 80vh;
     }
 </style>
+
+{#if !loaded }
+    Caricamento dei veicoli in corso...
+{:else}
+    Legenda:
+    <!-- A bit janky, assuming route's vehicle type from the first vehicle in the array -->
+    <div class="grid grid-cols-3 w-32 gap-y-1 my-1">
+        {#each routes as route}
+        <div class="place-self-center">
+            <i class='{route.vehicles[0].vehicleType === 'Tram' ? 'bxs-train' : 'bxs-bus'}
+                bx bx-xs rounded-full p-0.5 bg-base-200 border border-base-content'
+                style='color: {route.colour}'
+            />
+        </div>
+        <div class="col-span-2">
+            {route.vehicles[0].vehicleType}
+            {route.route}
+        </div>
+        {/each}
+    </div>
+{/if}
 
 <main class="select-none mb-3">
     <div bind:this={mapElement} class="h-full"/>
