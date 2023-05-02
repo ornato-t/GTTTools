@@ -100,7 +100,7 @@
     //Return a set of coloured, leaflet marker icons
     function getVehicleIcons(L: any, colour: string){
         const busIcon = L.divIcon({
-            html: `<i class='bx bxs-bus bx-xs translate-x-[0.3rem] translate-y-[1.3rem]' style='color: ${colour}'/>`,
+            html: `<i class='bx bxs-bus bx-xs' style='color: ${colour}'/>`,
             iconSize: [20, 20],
         });
 
