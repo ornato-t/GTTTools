@@ -13,7 +13,7 @@
     
     let mapElement: HTMLElement;
     let map: Map;
-    const markers = new Array<{marker: Marker, code: number}>;
+    const markers = new Array<{droplet: Marker, vehicle: Marker, code: number}>;
     
     const pinColour = '#1b8ae8';
     const otherPinColour = '#909090';
@@ -21,6 +21,7 @@
 
     onMount(async () => {
         const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
+        await import('leaflet-rotatedmarker');
 
         const { pinIcon, otherPinIcon } = getPinIcons(L);
 
@@ -43,12 +44,18 @@
 
         //Place vehicle icons
         for(const pass of passages){
-            const { busIcon, tramIcon } = getVehicleIcons(L, pass.colour);
+            const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, pass.colour);
             for(const vehicle of pass.vehicles){
-                const icon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
+                const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
+                const popup = `<a href="/route/${encodeRoute(pass.routeID)}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`;
 
+                const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(popup);
+
+                const vehicleMark = L.marker([vehicle.lat, vehicle.lon], {icon: vehicleIcon, zIndexOffset: 20}).addTo(map).bindPopup(popup);
+                
                 markers.push({
-                    marker: L.marker([vehicle.lat, vehicle.lon], {icon, zIndexOffset: 10, alt: vehicle.vehicleType + ' ' + pass.route}).addTo(map).bindPopup(`<a href="/route/${encodeRoute(pass.routeID)}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`),
+                    droplet: dropletMark,
+                    vehicle: vehicleMark,
                     code: vehicle.id
                 });
             }
@@ -63,8 +70,9 @@
                 for(const vehicle of route.vehicles){
                     for(const marker of markers){
                         if(marker.code === vehicle.id){
-                            marker.marker.setLatLng([vehicle.lat, vehicle.lon]);
-                        }
+                            marker.droplet.setLatLng([vehicle.lat, vehicle.lon]);
+                            marker.vehicle.setLatLng([vehicle.lat, vehicle.lon]);
+                            marker.droplet.setRotationAngle(vehicle.direction);                        }
                     }
                 }
             }
@@ -105,18 +113,26 @@
     //Return a set of coloured, leaflet marker icons
     function getVehicleIcons(L: any, colour: string){
         const busIcon = L.divIcon({
-            html: `<i class='bx bxs-bus bx-sm rounded-full p-1 bg-white border border-black' style='color: ${colour}'></i>`,
+            html: `<i class='bx bxs-bus bx-xs' style='color: ${colour}'/>`,
             iconSize: [20, 20],
-            className: ''
         });
 
         const tramIcon = L.divIcon({
-            html: `<i class='bx bxs-train bx-sm rounded-full p-1 bg-white border border-black' style='color: ${colour}'></i>`,
+            html: `<i class='bx bxs-train bx-xs' style='color: ${colour}'/>`,
             iconSize: [20, 20],
-            className: ''
+            iconAnchor: [6, 8]
         });
 
-        return {busIcon, tramIcon}
+        const dropletIcon = L.divIcon({
+            html: `
+                <svg viewBox="0 0 31 22" class="h-10 fill-current text-white"stroke="black" stroke-width="0.3">
+                    <path d="M12 2.1c-5.5 4.8-6 9.4-6 11.4 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2-.5-6.6-6-11.4z"/>
+                </svg>`,
+            iconSize: [20, 20],
+            iconAnchor: [22.5, 22]
+        });
+
+        return {busIcon, tramIcon, dropletIcon}
     }
 </script>
 
