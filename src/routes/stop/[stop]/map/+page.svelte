@@ -6,6 +6,7 @@
     import type { Marker, LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
 	import { encodeRoute, type vehicleMap } from '$lib/vehicle';
+    import Loading from './loading.svelte';
 
     export let data: PageData;
 
@@ -51,7 +52,7 @@
             const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, pass.colour);
             for(const vehicle of pass.vehicles){
                 const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
-                const popup = `<a href="/route/${encodeRoute(pass.routeID)}"><div>Linea ${pass.route}<br>${vehicle.vehicleType} ${vehicle.id}</div></a>`;
+                const popup = `<a href="/route/${encodeRoute(pass.routeID)}"><div>Linea ${pass.route}</a><br><a href="/vehicle/${vehicle.id}">${vehicle.vehicleType} ${vehicle.id}</div></a>`;
 
                 const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 100, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(popup);
 
@@ -148,12 +149,29 @@
     }
 </style>
 
-{#if !loaded }
-    Caricamento dei veicoli in corso...
-{:else}
-    Legenda:
+<div class="pt-4 p-3 grid grid-cols-2" id="top">
+	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
+    <a href="/stop/{data.db.code}" class="w-full lg:text-end link order-last lg:order-2 col-span-2 lg:col-span-1">
+        <i class='bx bx-arrow-back'></i>
+        Torna ai passaggi in tempo reale
+    </a>
+	<h2 class="font-light 2 col-span-2 lg:order-last">{data.db.description ?? ''}</h2>
+</div>
+
+
+<!-- Consider moving this on top of the map, takes too much space here -->
+<div class="grid grid-cols-3 w-36 min-h-[8rem] gap-y-1 my-1">
+    <div class="col-span-3 pl-2">
+        Linee passanti:
+    </div>
+
     <!-- A bit janky, assuming route's vehicle type from the first vehicle in the array -->
-    <div class="grid grid-cols-3 w-32 gap-y-1 my-1">
+    {#if !loaded }
+        <Loading/>
+        <Loading/>
+        <Loading/>
+        <Loading/>
+    {:else}
         {#each routes as route}
         <div class="place-self-center">
             <i class='{route.vehicles[0].vehicleType === 'Tram' ? 'bxs-train' : 'bxs-bus'}
@@ -162,12 +180,37 @@
             />
         </div>
         <div class="col-span-2">
-            {route.vehicles[0].vehicleType}
-            {route.route}
+            <a href="/route/{route.routeID}" class="link">
+                {route.vehicles[0].vehicleType}
+                {route.route}
+            </a>
         </div>
         {/each}
-    </div>
-{/if}
+        <!-- Adding padding to routes list, avoids  -->
+        {#if routes.length === 0}
+            <div class="col-span-3"/>
+            <div class="col-span-3"/>
+            <div class="col-span-3"/>
+            <div class="col-span-3"/>
+        {:else if routes.length === 1}
+            <div class="col-span-3"/>
+            <div class="col-span-3"/>
+            <div class="col-span-3"/>
+        {:else if routes.length === 2}
+            <div class="col-span-3"/>
+            <div class="col-span-3"/>
+        {:else if routes.length === 3}
+            <div class="col-span-3"/>
+        {/if}
+    {/if}
+</div>
+
+<!-- TODO: needs placing, should be moved over the top right corner of the map. Putting it inside the map makes it non interactable -->
+<!-- <button class="btn btn-active btn-accent btn-circle" style="z-index: 2000;">
+    <a href="#top">
+        <i class='bx bx-up-arrow-alt bx-md' ></i> 
+    </a>
+</button> -->
 
 <main class="select-none mb-3">
     <div bind:this={mapElement} class="h-full"/>
