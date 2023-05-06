@@ -161,7 +161,7 @@ const vehicles = [
     }, {
         idL: 5000,
         idH: 5053,
-        url: "/vehicles/5011.webp", //TODO: pick a different, horizzontal image
+        url: "/vehicles/5010.webp",
         info: "https://www.tramditorino.it/tram_serie_5000.htm",
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
