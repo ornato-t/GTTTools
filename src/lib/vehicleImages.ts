@@ -191,7 +191,7 @@ const vehicles = [
         link: "https://www.tramditorino.it/tram_serie_8000.htm",
         siteName: "tramditorino.it",
     },
-]satisfies vehicle[];
+] satisfies vehicle[];
 
 const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs start with the letter D, eg. D1
     {
@@ -231,7 +231,7 @@ const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs
         siteName: "tramditorino.it",
         modifier: "D_"
     }
-]satisfies vehicle[];
+] satisfies vehicle[];
 
 const specialTram = [   //Green trams of the 2800 series - TODO: add gustotram and ristocolor
     {
@@ -275,7 +275,7 @@ const specialTram = [   //Green trams of the 2800 series - TODO: add gustotram a
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
     }
-]satisfies vehicle[];
+] satisfies vehicle[];
 
 const vehicleMetro = {  //The (at the moment unique) metro line
     idL: NaN,
@@ -296,7 +296,9 @@ export function getVehicle(id: string): vehicleType | null {
             code: 1,
             url: vehicleMetro.url,
             info: vehicleMetro.info,
-            credits: vehicleMetro.credits ?? '',
+            credits: vehicleMetro.credits,
+            creditsLink: vehicleMetro.link,
+            creditsSiteName: vehicleMetro.siteName
         }
     } else if (supRegex.test(id)) {  //Superga-Sassi
         const match = id.match(supRegex) ?? [];
@@ -308,7 +310,9 @@ export function getVehicle(id: string): vehicleType | null {
                     code: num,
                     url: vc.url,
                     info: vc.info,
-                    credits: vc.credits ?? '',
+                    credits: vc.credits,
+                    creditsLink: vc.link,
+                    creditsSiteName: vc.siteName,
                     modifier: vc.modifier
                 } satisfies vehicleType;
             }
@@ -316,14 +320,16 @@ export function getVehicle(id: string): vehicleType | null {
     } else {    //Bus, articulated bus or tram
         const num = Number.parseInt(id);
         const green = [2807, 2815, 2848, 2852, 2855];
-        if(green.includes(num)) {   //Green tram
+        if (green.includes(num)) {   //Green tram
             for (const vc of specialTram) {
                 if (num >= vc.idL && num <= vc.idH) {
                     return {
                         code: num,
                         url: vc.url,
                         info: vc.info,
-                        credits: vc.credits ?? '',
+                        credits: vc.credits,
+                        creditsLink: vc.link,
+                        creditsSiteName: vc.siteName
                     } satisfies vehicleType;
                 }
             }
@@ -335,15 +341,19 @@ export function getVehicle(id: string): vehicleType | null {
                             code: num,
                             url: vc.url,
                             info: vc.info,
-                            credits: vc.credits ?? '',
-                            modifier: vc.modifier
+                            credits: vc.credits,
+                            modifier: vc.modifier,
+                            creditsLink: vc.link,
+                            creditsSiteName: vc.siteName
                         } satisfies vehicleType;
                     } else {
                         return {
                             code: num,
                             url: vc.url,
-                            credits: vc.credits ?? '',
-                            modifier: vc.modifier
+                            credits: vc.credits,
+                            modifier: vc.modifier,
+                            creditsLink: vc.link,
+                            creditsSiteName: vc.siteName
                         } satisfies vehicleType;
                     }
                 }
@@ -355,21 +365,22 @@ export function getVehicle(id: string): vehicleType | null {
 }
 
 interface vehicle {
-    idL: number,
-    idH: number,
-    modifier?: string,
-    url: string,
-    info?: string,           //Infos are only available for trams, thanks to www.tramditorino.it
-    credits?: string,
+    idL: number,            //Lower bound of the ID range
+    idH: number,            //Upper bound of the ID range
+    modifier?: string,      //Additional characters composing the vehicleID
+    url: string,            //URL to image
+    info?: string,          //Infos are only available for trams, thanks to www.tramditorino.it
+    credits: string,        //Credits to the photographer
     link: string            //Link to the photographer's site/profile
     siteName: string        //Name of the photographer's site
 }
 
-//TODO: pass link and siteName to user, consider making credits non optional
 interface vehicleType {
-    code: number,       //Code of the matched vehicle (int) - not necessarily what was searched
-    modifier?: string,  //Additional characters composing the vehicle ID
-    url: string,        //URL to image
-    info?: string       //URL to info - only available for trams
-    credits: string     //Credits to the photographer
+    code: number,           //Code of the matched vehicle (int) - not necessarily what was searched
+    modifier?: string,      //Additional characters composing the vehicle ID
+    url: string,            //URL to image
+    info?: string,          //URL to info - only available for trams
+    credits: string,        //Credits to the photographer
+    creditsLink: string,    //Link to the photographer's site/profile
+    creditsSiteName: string,//Name of the photographer's site
 }

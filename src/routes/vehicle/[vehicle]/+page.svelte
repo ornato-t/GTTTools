@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { PageData } from './$types';
-	import Counter from './counter.svelte';
 	import { invalidate } from '$app/navigation';
+	import Counter from './counter.svelte';
+	import type { PageData } from './$types';
 	import type { vehicleSearched } from '$lib/vehicle';
 
 	export let data: PageData;
@@ -52,13 +52,13 @@
 	<div class="w-fit mx-auto">
 		<img src={getImage(data.url)} alt="Veicolo numero {data.code}" class="max-h-96"/>
 		<span class="text-sm italic">
-			Foto a cura di {data.credits}
+			Foto a cura di {data.credits} tramite <a class="link" target="_blank" rel="noopener noreferrer" href={data.creditsLink}>{data.creditsSiteName}</a>
 		</span>
 	</div>
 
 	{#if data.info !== null}
 		<div class="mt-4 mb-6">
-			Maggiori informazioni al seguente <a class="link" href={data.info}>link</a>.
+			Maggiori informazioni sul sito di <a class="link" target="_blank" rel="noopener noreferrer" href={data.info}>Tram di Torino</a>.
 		</div>
 	{/if}
 

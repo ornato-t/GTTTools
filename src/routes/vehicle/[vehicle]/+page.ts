@@ -1,6 +1,6 @@
-import type { PageLoad } from './$types';
 import { getVehicle } from '$lib/vehicleImages';
 import { error } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
 import type { vehicleSearched } from '$lib/vehicle';
 
 export const load = (async ({ params, depends }) => {
@@ -21,6 +21,8 @@ export const load = (async ({ params, depends }) => {
         code: outId,
         url: res.url,
         credits: res.credits,
+        creditsLink: res.creditsLink,
+        creditsSiteName: res.creditsSiteName,
         info: res.info ?? null,
         route: {
             promise: findRoute(outId)
