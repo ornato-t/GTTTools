@@ -61,7 +61,7 @@ const vehicles = [
     }, {
         idL: 3000,
         idH: 3099,
-        url: "/vehicles/3010.webp", //TODO: resize image
+        url: "/vehicles/3010.webp",
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
@@ -153,7 +153,7 @@ const vehicles = [
     }, {
         idL: 2801,
         idH: 2902,
-        url: "/vehicles/2859.webp", //TODO: remove graffiti
+        url: "/vehicles/2859.webp",
         info: "https://www.tramditorino.it/tram_serie_2800.htm",
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
@@ -169,7 +169,7 @@ const vehicles = [
     }, {
         idL: 6000,
         idH: 6005,
-        url: "/vehicles/6001.webp", //TODO: resize image
+        url: "/vehicles/6001.webp",
         info: "https://www.tramditorino.it/tram_serie_6000.htm",
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
@@ -233,7 +233,7 @@ const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs
     }
 ] satisfies vehicle[];
 
-const specialTram = [   //Green trams of the 2800 series - TODO: add gustotram and ristocolor
+const specialTram = [   //Green trams of the 2800 series
     {
         idL: 2807,
         idH: 2807,

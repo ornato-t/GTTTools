@@ -58,7 +58,7 @@
 
 	{#if data.info !== null}
 		<div class="mt-4 mb-6">
-			Maggiori informazioni sul sito di <a class="link" target="_blank" rel="noopener noreferrer" href={data.info}>Tram di Torino</a>.
+			Maggiori informazioni e schede tecniche sul sito di <a class="link" target="_blank" rel="noopener noreferrer" href={data.info}>Tram di Torino</a>.
 		</div>
 	{/if}
 
