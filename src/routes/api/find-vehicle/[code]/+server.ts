@@ -25,6 +25,8 @@ async function searchVehicle(id: string) {
                 lat: doc.vehicle?.position?.latitude as number,
                 lon: doc.vehicle?.position?.longitude as number,
                 updated: updatedDate(doc.vehicle?.timestamp as number | null | undefined),
+                direction: doc.vehicle?.position?.bearing as number,
+                trip_id: doc.vehicle?.trip?.tripId as string
             } satisfies vehicleSearched;
         }
 

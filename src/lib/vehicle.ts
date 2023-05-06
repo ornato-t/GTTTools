@@ -24,6 +24,7 @@ export interface vehicle {
 
 export interface vehicleSearched extends vehicle {
     route: string,  //Route on which the vehicle is in service
+    trip_id: string //GTFS trip the vehicle is in service on
 }
 
 export interface vehicleMap {
