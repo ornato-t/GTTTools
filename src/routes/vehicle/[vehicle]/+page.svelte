@@ -30,6 +30,12 @@
 			api = await data.route.promise		//Then refresh the data
 		}, 5000);
 	});
+
+	//Fetch an image. Proxy the request if it comes from a remote host
+	function getImage(uri: string){
+		if(!uri.includes('http')) return uri;
+		return `/api/image?url=${uri}`;
+	}
 </script>
 
 <svelte:head>
@@ -44,7 +50,7 @@
 	</h1>
 
 	<div class="w-fit mx-auto">
-		<img src="/api/image?url={data.url}" alt="Veicolo numero {data.code}" class="max-h-96"/>
+		<img src={getImage(data.url)} alt="Veicolo numero {data.code}" class="max-h-96"/>
 		<span class="text-sm italic">
 			Foto a cura di {data.credits}
 		</span>
