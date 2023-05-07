@@ -1,8 +1,8 @@
 <script lang="ts">
 	import 'leaflet/dist/leaflet.css';
+	import Counter from './counter.svelte';
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
-	import Counter from './counter.svelte';
 	import type { PageServerData } from './$types';
 	import type { Marker, LatLngTuple, Map } from "leaflet";
 	import type { foundVehicle } from './+page.server';
@@ -11,7 +11,7 @@
 	export let data: PageServerData;
 
 	let dots = '...'
-	setInterval(() => {
+	const interval = setInterval(() => {
 		if(dots.length !== 3) dots+='.';
 		else dots = '';
 	}, 500);
@@ -20,11 +20,11 @@
 
 	let mapElement: HTMLElement;
     let map: Map;
-    const markers = new Array<{droplet: Marker, vehicle: Marker, code: number}>;
+    let marker: {droplet: Marker, vehicle: Marker, code: number};
 
 	const vehicleColour = '#436cdc';
-	const pinColour = '#fb7c7b';
-	const shapeColour = '#fb3735';
+	const pinColour = '#859fe3';
+	const shapeColour = '#436cdc';
     const REFRESH_TIME = 5000;
 
 	let loaded = false;
@@ -36,7 +36,8 @@
 
 		api = await data.route.promise	//First refresh the data
 		loaded = true	//Once data has been loaded for the first time stop loading animation
-		
+		clearInterval(interval);
+
 		if(api !== null) {
 			map.setView([api.lat, api.lon], 20);
 
@@ -45,15 +46,15 @@
 				attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(map);
 
-			const pinIcon = getPinIcon(L, pinColour);
-
-			// //Draw shape and center the map around it
+			//Draw shape and center the map around it
 			const shape = L.polyline(api.db.shape as LatLngTuple[], {color: shapeColour}).addTo(map);
 			map.fitBounds(shape.getBounds());
-
-			//Place icons of nearby stops
+			
+			//Place icons of stops for the current trip
+			const pinIcon = getPinIcon(L, pinColour);
 			for(const stop of api.db.stops){
-				L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
+				const res = L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
+				console.log(res)
 			}
 
 			//Place vehicle icons
@@ -62,17 +63,16 @@
 				if(data.type === 'tram' || data.type === 'tram a cremagliera' || data.type === 'metropolitana') return tramIcon;
 				return busIcon;
 			})();
+
 			const popup = `<a href="/vehicle/${api.id}"><div>${printType(data.type)} ${api.id}</div></a>`;
-
 			const dropletMark = L.marker([api.lat, api.lon], {icon: dropletIcon, zIndexOffset: 100, alt: api.vehicleType + ' ' + api.id, rotationAngle: api.direction}).addTo(map).bindPopup(popup);
-
 			const vehicleMark = L.marker([api.lat, api.lon], {icon: vehicleIcon, zIndexOffset: 101}).addTo(map).bindPopup(popup);
-			
-			markers.push({
+
+			marker = {
 				droplet: dropletMark,
 				vehicle: vehicleMark,
 				code: api.id
-			});
+			};
 			
 			setInterval(async () => {
 				await invalidate('vehicle');		//Wait for page reload
@@ -80,12 +80,10 @@
 				if(api !== null) {
 					// map.setView([api.lat, api.lon], 20);	//Only toggle if "follow" is active, TODO: add follow button
 
-					for(const marker of markers){
-						if(marker.code === api.id){
-							marker.droplet.setLatLng([api.lat, api.lon]);
-							marker.vehicle.setLatLng([api.lat, api.lon]);
-							marker.droplet.setRotationAngle(api.direction);
-						}
+					if(marker.code === api.id){
+						marker.droplet.setLatLng([api.lat, api.lon]);
+						marker.vehicle.setLatLng([api.lat, api.lon]);
+						marker.droplet.setRotationAngle(api.direction);
 					}
 				}
 			}, REFRESH_TIME);
@@ -118,13 +116,13 @@
 
     //Returns a set of leaflet marker icons
     function getPinIcon(L: any, colour: string){
-        const otherPinIcon = L.divIcon({
+        const icon = L.divIcon({
             html: `<i class='bx bxs-map text-3xl' style='color: ${colour}; transform: translateY(-50%);'></i>`,
             iconSize: [20, 20],
             className: ''
         });
 
-        return otherPinIcon;
+		return icon;
     }
 
     //Return a set of coloured, leaflet marker icons

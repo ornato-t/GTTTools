@@ -11,17 +11,15 @@ export async function load({ locals, parent }) {
     const projection = { _id: 0, city: 0 }
 
     const res = await stops.find(query).limit(STOP_NUM).project(projection).toArray() as stopDB[];
-    const near = res.map(r => {
-        return {
-            code: r.code,
-            name: r.name,
-            description: r.description,
-            coordinates: [r.coordinates[1], r.coordinates[0]],
-            metro: r.metro,
-            train: r.train,
-            trainCode: r.trainCode
-        }
-    }) satisfies stopDB[];
+    const near = res.map(r => ({
+        code: r.code,
+        name: r.name,
+        description: r.description,
+        coordinates: [r.coordinates[1], r.coordinates[0]],
+        metro: r.metro,
+        train: r.train,
+        trainCode: r.trainCode
+    })) satisfies stopDB[];
 
     return {
         near

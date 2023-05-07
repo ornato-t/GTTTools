@@ -50,7 +50,16 @@ async function findRoute(code: string, stops: Collection<stopDB>, trips: Collect
 async function getTripData(trip_id: string, stops: Collection<stopDB>, trips: Collection<trip>,) {
     const trip = await trips.findOne({ trip_id }, { projection: { _id: 0 } });
     const stopCodes = trip?.stops.map(el => el.code) ?? [];
-    const stopsArr = await stops.find({code: {$in: stopCodes}}, {projection: {_id: 0, city: 0, }}).toArray();
+    const res = await stops.find({ code: { $in: stopCodes } }, { projection: { _id: 0, city: 0, } }).toArray();
+    const stopsArr = res.map(r => ({
+        code: r.code,
+        name: r.name,
+        description: r.description,
+        coordinates: [r.coordinates[1], r.coordinates[0]],
+        metro: r.metro,
+        train: r.train,
+        trainCode: r.trainCode
+    })) satisfies stopDB[];
 
     return {
         destination: trip?.destination as string,
