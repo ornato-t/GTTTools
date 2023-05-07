@@ -1,9 +1,12 @@
 <script lang="ts">
+	import 'leaflet/dist/leaflet.css';
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import Counter from './counter.svelte';
 	import type { PageServerData } from './$types';
-	import type { vehicleSearched } from '$lib/vehicle';
+	import type { Marker, LatLngTuple, Map } from "leaflet";
+	import type { foundVehicle } from './+page.server';
+	import type { stopDB } from '$lib/stopDB';
 
 	export let data: PageServerData;
 
@@ -13,22 +16,80 @@
 		else dots = '';
 	}, 500);
 
-	let api: vehicleSearched | null;
+	let api: foundVehicle | null;
 
-	//Create dummy promise to use sveltekit's #await block
-	const container: Function[] = [];
-	const loader = new Promise((resolve, reject) => {
-		container.push(resolve);
-	})
+	let mapElement: HTMLElement;
+    let map: Map;
+    const markers = new Array<{droplet: Marker, vehicle: Marker, code: number}>;
 
-	//Refresh data every 5 seconds
+	const vehicleColour = '#436cdc';
+	const pinColour = '#fb7c7b';
+	const shapeColour = '#fb3735';
+    const REFRESH_TIME = 5000;
+
+	let loaded = false;
+
 	onMount(async () => {
+		const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
+		await import('leaflet-rotatedmarker');
+		map = L.map(mapElement);
+
 		api = await data.route.promise	//First refresh the data
-		container[0]();	//Once data has been loaded for the first time, resolve dummy promise
-		setInterval(async () => {
-			await invalidate('vehicle');		//Wait for page reload
-			api = await data.route.promise		//Then refresh the data
-		}, 5000);
+		loaded = true	//Once data has been loaded for the first time stop loading animation
+		
+		if(api !== null) {
+			map.setView([api.lat, api.lon], 20);
+
+			//Place map tiles
+			L.tileLayer('https://map.gtt.to.it/blossom/{z}/{x}/{y}.png', {
+				attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(map);
+
+			const pinIcon = getPinIcon(L, pinColour);
+
+			// //Draw shape and center the map around it
+			const shape = L.polyline(api.db.shape as LatLngTuple[], {color: shapeColour}).addTo(map);
+			map.fitBounds(shape.getBounds());
+
+			//Place icons of nearby stops
+			for(const stop of api.db.stops){
+				L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
+			}
+
+			//Place vehicle icons
+			const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, vehicleColour);
+			const vehicleIcon = (() => {
+				if(data.type === 'tram' || data.type === 'tram a cremagliera' || data.type === 'metropolitana') return tramIcon;
+				return busIcon;
+			})();
+			const popup = `<a href="/vehicle/${api.id}"><div>${printType(data.type)} ${api.id}</div></a>`;
+
+			const dropletMark = L.marker([api.lat, api.lon], {icon: dropletIcon, zIndexOffset: 100, alt: api.vehicleType + ' ' + api.id, rotationAngle: api.direction}).addTo(map).bindPopup(popup);
+
+			const vehicleMark = L.marker([api.lat, api.lon], {icon: vehicleIcon, zIndexOffset: 101}).addTo(map).bindPopup(popup);
+			
+			markers.push({
+				droplet: dropletMark,
+				vehicle: vehicleMark,
+				code: api.id
+			});
+			
+			setInterval(async () => {
+				await invalidate('vehicle');		//Wait for page reload
+				api = await data.route.promise		//Then refresh the data
+				if(api !== null) {
+					// map.setView([api.lat, api.lon], 20);	//Only toggle if "follow" is active, TODO: add follow button
+
+					for(const marker of markers){
+						if(marker.code === api.id){
+							marker.droplet.setLatLng([api.lat, api.lon]);
+							marker.vehicle.setLatLng([api.lat, api.lon]);
+							marker.droplet.setRotationAngle(api.direction);
+						}
+					}
+				}
+			}, REFRESH_TIME);
+		}
 	});
 
 	//Fetch an image. Proxy the request if it comes from a remote host
@@ -36,17 +97,76 @@
 		if(!uri.includes('http')) return uri;
 		return `/api/image?url=${uri}`;
 	}
+
+	//Returns a string with the first string capitalized
+	function printType(str: string){
+		return str.charAt(0).toUpperCase() + str.slice(1)
+	}
+
+	//Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
+    function getPopup(stop: stopDB){
+        if(stop.metro){
+            return `<a href="/metro/${stop.code}">METRO ${stop.name}</a>`;
+
+        } else if (stop.train){
+            return `<a href="/sfm/${stop.trainCode}">${stop.name} FS</a>`;
+            
+        } else {
+            return `<a href="/stop/${stop.code}">${stop.code} - ${stop.name}</a>`;
+        }
+    }
+
+    //Returns a set of leaflet marker icons
+    function getPinIcon(L: any, colour: string){
+        const otherPinIcon = L.divIcon({
+            html: `<i class='bx bxs-map text-3xl' style='color: ${colour}; transform: translateY(-50%);'></i>`,
+            iconSize: [20, 20],
+            className: ''
+        });
+
+        return otherPinIcon;
+    }
+
+    //Return a set of coloured, leaflet marker icons
+    function getVehicleIcons(L: any, colour: string){
+        const busIcon = L.divIcon({
+            html: `<i class='bx bxs-bus bx-xs' style='color: ${colour}'/>`,
+            iconSize: [20, 20],
+        });
+
+        const tramIcon = L.divIcon({
+            html: `<i class='bx bxs-train bx-xs' style='color: ${colour}'/>`,
+            iconSize: [20, 20],
+            iconAnchor: [6, 8]
+        });
+
+        const dropletIcon = L.divIcon({
+            html: `
+                <svg viewBox="0 0 31 22" class="h-10 fill-current text-white"stroke="black" stroke-width="0.3">
+                    <path d="M12 2.1c-5.5 4.8-6 9.4-6 11.4 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2-.5-6.6-6-11.4z"/>
+                </svg>`,
+            iconSize: [20, 20],
+            iconAnchor: [22.5, 22]
+        });
+
+        return {busIcon, tramIcon, dropletIcon}
+    }
 </script>
+
+<style>
+	main div {
+		height: 80vh;
+	}
+</style>
 
 <svelte:head>
 	<title>Informazioni sul veicolo {data.code}</title>
 	<meta name="description" content="Informazioni, immagine e posizione in tempo reale del veicolo numero {data.code}. Possibilità di seguirlo e osservare la linea su cui è in servizio. Sono disponibili informazioni riguardo a bus, autosnodati, tram e treni">
-</svelte:head>
-
+</svelte:head>		
 
 <div class="w-full mx-auto px-2">
 	<h1 class="text-xl mb-2">
-		Veicolo numero {data.code}
+		{printType(data.type)} numero {data.code}
 	</h1>
 
 	<div class="w-fit mx-auto">
@@ -62,23 +182,26 @@
 		</div>
 	{/if}
 
-	<div class="mb-16 mt-3">
-		{#await loader}
+	<div class="mb-6 mt-3">
+		<h2 class="text-lg mb-1.5">Informazioni in tempo reale</h2>
+		{#if !loaded}
 				<div class="mx-auto pt-44 w-fit text-center">
 					<i class='bx bx-loader-circle bx-spin text-8xl'/>
 					<div class="w-48 mt-4 text-xl font-light">Ricerca informazioni in tempo reale{dots}</div>
 				</div>
-		{:then _} 
-			<h2 class="text-lg mb-1.5">Informazioni in tempo reale</h2>
-			{#if api === null}
-				Nessuna informazione in tempo reale disponibile
-			{:else}
+		{:else} 
+			{#if api !== null}
 				<ul>
 					<li>In servizio sulla linea: <span class="font-mono">{api.route}</span></li>
-					<li>Posizione: <span class="font-mono">{api.lat.toFixed(5)};{api.lon.toFixed(5)}</span> </li>
 					<li>Aggiornato:  <span class="font-mono"> <Counter time={api.updated}/></span> <li>
 				</ul>
+			{:else}
+				Nessuna informazione in tempo reale disponibile
 			{/if}
-		{/await}
+		{/if}
 	</div>
+
+	<main class="select-none mb-3 {loaded && api !== null ? 'visible' : 'invisible'}">
+		<div bind:this={mapElement} class="h-full"/>
+	</main>
 </div>
