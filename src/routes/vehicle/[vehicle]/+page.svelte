@@ -189,10 +189,12 @@
 				</div>
 		{:else} 
 			{#if api !== null}
-				<ul>
-					<li>In servizio sulla linea: <span class="font-mono">{api.route}</span></li>
-					<li>Aggiornato:  <span class="font-mono"> <Counter time={api.updated}/></span> <li>
-				</ul>
+				<div class="grid grid-cols-2 md:w-1/3">
+					<div>In servizio sulla linea:</div>
+					<a class="font-mono link" href="/route/{api.route}">{api.route}</a>
+					<div>Ultimo aggiornamento: </div>
+					<div class="font-mono"> <Counter time={api.updated}/></div>
+				</div>
 			{:else}
 				Nessuna informazione in tempo reale disponibile
 			{/if}
