@@ -2,10 +2,10 @@
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import Counter from './counter.svelte';
-	import type { PageData } from './$types';
+	import type { PageServerData } from './$types';
 	import type { vehicleSearched } from '$lib/vehicle';
 
-	export let data: PageData;
+	export let data: PageServerData;
 
 	let dots = '...'
 	setInterval(() => {
