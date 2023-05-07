@@ -52,7 +52,7 @@
 	<div class="w-fit mx-auto">
 		<img src={getImage(data.url)} alt="Veicolo numero {data.code}" class="max-h-96"/>
 		<span class="text-sm italic">
-			Foto a cura di {data.credits} tramite <a class="link" target="_blank" rel="noopener noreferrer" href={data.creditsLink}>{data.creditsSiteName}</a>
+			Foto a cura di {data.credits} tramite <a class="link" target="_blank" rel="noopener noreferrer" href={data.link}>{data.siteName}</a>
 		</span>
 	</div>
 

@@ -24,9 +24,10 @@ export async function load({ locals, params, depends, fetch }) {
         code: outId,
         url: res.url,
         credits: res.credits,
-        creditsLink: res.creditsLink,
-        creditsSiteName: res.creditsSiteName,
+        link: res.link,
+        siteName: res.siteName,
         info: res.info ?? null,
+        type: res.type,
         route: {
             promise: findRoute(outId, stops, trips, fetch)
         }

@@ -6,7 +6,8 @@ const vehicles = [
         credits: "Matteo Spina",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
-        modifier: "_E"
+        modifier: "_E",
+        type: 'bus'
     }, {
         idL: 30,
         idH: 49,
@@ -14,7 +15,8 @@ const vehicles = [
         credits: "Alessandro Laronga",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
-        modifier: "_E"
+        modifier: "_E",
+        type: 'bus'
     }, {
         idL: 50,
         idH: 56,
@@ -22,7 +24,8 @@ const vehicles = [
         credits: "Fabrizio Moscatelli",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
-        modifier: "_E"
+        modifier: "_E",
+        type: 'bus'
     }, {
         idL: 85,
         idH: 89,
@@ -30,6 +33,7 @@ const vehicles = [
         credits: "Chandu Belletti",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 2300,
         idH: 2334,
@@ -37,6 +41,7 @@ const vehicles = [
         credits: "Christian Bizzi",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 2335,
         idH: 2349,
@@ -44,6 +49,7 @@ const vehicles = [
         credits: "Fabrizio Moscatelli",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 2400,
         idH: 2447,
@@ -51,6 +57,7 @@ const vehicles = [
         credits: "Lorenzo Libertazzi",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 2700,
         idH: 2787,
@@ -58,6 +65,7 @@ const vehicles = [
         credits: "Alberto Viscardi",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 3000,
         idH: 3099,
@@ -65,6 +73,7 @@ const vehicles = [
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'bus'
     }, {
         idL: 3300,
         idH: 3380,
@@ -72,6 +81,7 @@ const vehicles = [
         credits: "Fabrizio Moscatelli",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 3400,
         idH: 3440,
@@ -79,6 +89,7 @@ const vehicles = [
         credits: "Fabio Colbatello",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 9000,
         idH: 9099,
@@ -86,6 +97,7 @@ const vehicles = [
         credits: "Lorenzo Libertazzi",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 1150,
         idH: 1168,
@@ -93,6 +105,7 @@ const vehicles = [
         credits: "Andrea Antonello",
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
+        type: 'bus'
     }, {
         idL: 790,
         idH: 797,
@@ -100,6 +113,7 @@ const vehicles = [
         credits: "Fabrizio Moscatelli",
         link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
         siteName: "tplitalia.it",
+        type: 'autosnodato'
     }, {
         idL: 800,
         idH: 874,
@@ -107,6 +121,7 @@ const vehicles = [
         credits: "Fabrizio Moscatelli",
         link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
         siteName: "tplitalia.it",
+        type: 'autosnodato'
     }, {
         idL: 930,
         idH: 989,
@@ -114,6 +129,7 @@ const vehicles = [
         credits: "Fabrizio Moscatelli",
         link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
         siteName: "tplitalia.it",
+        type: 'autosnodato'
     }, {
         idL: 990,
         idH: 1014,
@@ -121,6 +137,7 @@ const vehicles = [
         credits: "Alessio Pedretti",
         link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
         siteName: "tplitalia.it",
+        type: 'autosnodato'
     }, {
         idL: 1020,
         idH: 1089,
@@ -128,6 +145,7 @@ const vehicles = [
         credits: "Alberto Viscardi",
         link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
         siteName: "tplitalia.it",
+        type: 'autosnodato'
     }, {
         idL: 1280,
         idH: 1306,
@@ -135,6 +153,7 @@ const vehicles = [
         credits: "Alessio Pedretti",
         link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
         siteName: "tplitalia.it",
+        type: 'autosnodato'
     }, {
         idL: 1350,
         idH: 1396,
@@ -142,6 +161,7 @@ const vehicles = [
         credits: "Lorenzo Libertazzi",
         link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
         siteName: "tplitalia.it",
+        type: 'autosnodato'
     }, {
         idL: 2800,
         idH: 2800,
@@ -150,6 +170,7 @@ const vehicles = [
         credits: "Tram di Torino",
         link: "https://www.tramditorino.it/prototipo_2800.htm",
         siteName: "tramditorino.it",
+        type: 'tram'
     }, {
         idL: 2801,
         idH: 2902,
@@ -158,6 +179,7 @@ const vehicles = [
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }, {
         idL: 5000,
         idH: 5053,
@@ -166,6 +188,7 @@ const vehicles = [
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }, {
         idL: 6000,
         idH: 6005,
@@ -174,6 +197,7 @@ const vehicles = [
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }, {
         idL: 6006,
         idH: 6054,
@@ -182,6 +206,7 @@ const vehicles = [
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }, {
         idL: 8000,
         idH: 8100,
@@ -190,8 +215,9 @@ const vehicles = [
         credits: "Tram di Torino",
         link: "https://www.tramditorino.it/tram_serie_8000.htm",
         siteName: "tramditorino.it",
+        type: 'tram'
     },
-] satisfies vehicle[];
+] satisfies vehicleInternal[];
 
 const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs start with the letter D, eg. D1
     {
@@ -202,7 +228,8 @@ const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
-        modifier: "D_"
+        modifier: "D_",
+        type: 'tram a cremagliera'
     }, {
         idL: 2,
         idH: 3,
@@ -211,7 +238,8 @@ const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
-        modifier: "D_"
+        modifier: "D_",
+        type: 'tram a cremagliera'
     }, {
         idL: 11,
         idH: 12,
@@ -220,7 +248,8 @@ const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs
         credits: "Tram di Torino",
         link: "https://www.tramditorino.it/superga_D11-D14.htm",
         siteName: "tramditorino.it",
-        modifier: "D_"
+        modifier: "D_",
+        type: 'tram a cremagliera'
     }, {
         idL: 13,
         idH: 14,
@@ -229,9 +258,10 @@ const vehiclesSup = [   //Vehicles on the Superga-Sassi special route, these IDs
         credits: "Tram di Torino",
         link: "https://www.tramditorino.it/superga_D11-D14.htm",
         siteName: "tramditorino.it",
-        modifier: "D_"
+        modifier: "D_",
+        type: 'tram a cremagliera'
     }
-] satisfies vehicle[];
+] satisfies vehicleInternal[];
 
 const specialTram = [   //Green trams of the 2800 series
     {
@@ -242,6 +272,7 @@ const specialTram = [   //Green trams of the 2800 series
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }, {
         idL: 2815,
         idH: 2815,
@@ -250,6 +281,7 @@ const specialTram = [   //Green trams of the 2800 series
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }, {
         idL: 2848,
         idH: 2848,
@@ -258,6 +290,7 @@ const specialTram = [   //Green trams of the 2800 series
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }, {
         idL: 2852,
         idH: 2852,
@@ -266,6 +299,7 @@ const specialTram = [   //Green trams of the 2800 series
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }, {
         idL: 2855,
         idH: 2855,
@@ -274,8 +308,9 @@ const specialTram = [   //Green trams of the 2800 series
         credits: "torino_tmt",
         link: "https://www.instagram.com/torino_tmt",
         siteName: "Instagram",
+        type: 'tram'
     }
-] satisfies vehicle[];
+] satisfies vehicleInternal[];
 
 const vehicleMetro = {  //The (at the moment unique) metro line
     idL: NaN,
@@ -285,10 +320,11 @@ const vehicleMetro = {  //The (at the moment unique) metro line
     credits: "Alstom",
     link: "https://www.alstom.com/it/alstom-italia",
     siteName: "alstom.com",
-} satisfies vehicle;
+    type: 'metropolitana'
+} satisfies vehicleInternal;
 
 //Return the matching image from a vehicle ID
-export function getVehicle(id: string): vehicleType | null {
+export function getVehicle(id: string): vehicle | null {
     const supRegex = /D([0-9]{1,2})/i;    //Match any vehicle in service on the Superga-Sassi special route
 
     if (id.toLowerCase() === 'metro') {
@@ -297,8 +333,9 @@ export function getVehicle(id: string): vehicleType | null {
             url: vehicleMetro.url,
             info: vehicleMetro.info,
             credits: vehicleMetro.credits,
-            creditsLink: vehicleMetro.link,
-            creditsSiteName: vehicleMetro.siteName
+            link: vehicleMetro.link,
+            siteName: vehicleMetro.siteName,
+            type: vehicleMetro.type
         }
     } else if (supRegex.test(id)) {  //Superga-Sassi
         const match = id.match(supRegex) ?? [];
@@ -311,10 +348,11 @@ export function getVehicle(id: string): vehicleType | null {
                     url: vc.url,
                     info: vc.info,
                     credits: vc.credits,
-                    creditsLink: vc.link,
-                    creditsSiteName: vc.siteName,
-                    modifier: vc.modifier
-                } satisfies vehicleType;
+                    link: vc.link,
+                    siteName: vc.siteName,
+                    modifier: vc.modifier,
+                    type: vc.type
+                } satisfies vehicle;
             }
         }
     } else {    //Bus, articulated bus or tram
@@ -328,9 +366,10 @@ export function getVehicle(id: string): vehicleType | null {
                         url: vc.url,
                         info: vc.info,
                         credits: vc.credits,
-                        creditsLink: vc.link,
-                        creditsSiteName: vc.siteName
-                    } satisfies vehicleType;
+                        link: vc.link,
+                        siteName: vc.siteName,
+                        type: vc.type
+                    } satisfies vehicle;
                 }
             }
         } else {    //Default case, regular route
@@ -343,18 +382,20 @@ export function getVehicle(id: string): vehicleType | null {
                             info: vc.info,
                             credits: vc.credits,
                             modifier: vc.modifier,
-                            creditsLink: vc.link,
-                            creditsSiteName: vc.siteName
-                        } satisfies vehicleType;
+                            link: vc.link,
+                            siteName: vc.siteName,
+                            type: vc.type
+                        } satisfies vehicle;
                     } else {
                         return {
                             code: num,
                             url: vc.url,
                             credits: vc.credits,
                             modifier: vc.modifier,
-                            creditsLink: vc.link,
-                            creditsSiteName: vc.siteName
-                        } satisfies vehicleType;
+                            link: vc.link,
+                            siteName: vc.siteName,
+                            type: vc.type
+                        } satisfies vehicle;
                     }
                 }
             }
@@ -364,23 +405,22 @@ export function getVehicle(id: string): vehicleType | null {
     return null;
 }
 
-interface vehicle {
-    idL: number,            //Lower bound of the ID range
-    idH: number,            //Upper bound of the ID range
+interface vehicleBase {
     modifier?: string,      //Additional characters composing the vehicleID
     url: string,            //URL to image
     info?: string,          //Infos are only available for trams, thanks to www.tramditorino.it
     credits: string,        //Credits to the photographer
     link: string            //Link to the photographer's site/profile
     siteName: string        //Name of the photographer's site
+    type: string            //Type of vehicle
 }
 
-interface vehicleType {
-    code: number,           //Code of the matched vehicle (int) - not necessarily what was searched
-    modifier?: string,      //Additional characters composing the vehicle ID
-    url: string,            //URL to image
-    info?: string,          //URL to info - only available for trams
-    credits: string,        //Credits to the photographer
-    creditsLink: string,    //Link to the photographer's site/profile
-    creditsSiteName: string,//Name of the photographer's site
+interface vehicleInternal extends vehicleBase{
+    idL: number,            //Lower bound of the ID range
+    idH: number,            //Upper bound of the ID range
 }
+
+interface vehicle  extends vehicleBase{
+    code: number,           //Code of the matched vehicle (int) - not necessarily what was searched
+}
+
