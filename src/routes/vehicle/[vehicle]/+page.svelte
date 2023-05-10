@@ -56,7 +56,6 @@
 				const pinIcon = getPinIcon(L, pinColour);
 				for(const stop of api.db.stops){
 					const res = L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
-					console.log(res)
 				}
 			}
 
