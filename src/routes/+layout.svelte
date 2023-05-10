@@ -2,7 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import Search from 'svelte-search';
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
 	import { dev } from '$app/environment';
@@ -68,9 +68,9 @@
 
 	//Search a stop by its code
 	function searchStop(stop: string){
-		toggleDrawer();			//Close the drawer
-		stopCodeSearch = '';	//Reset the search string
-		goto(`/stop/${stop}`);	//Move to the requested stop page
+		toggleDrawer();											//Close the drawer
+		stopCodeSearch = '';									//Reset the search string
+		goto(`/stop/${stop}`).then(() => location.reload());	//Move to the requested stop page, refresh page to replay loading animation
 	}
 
 	function firstUppercase(str: string){
