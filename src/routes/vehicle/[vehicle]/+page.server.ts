@@ -49,6 +49,8 @@ async function findRoute(code: string, stops: Collection<stopDB>, trips: Collect
 
 async function getTripData(trip_id: string, stops: Collection<stopDB>, trips: Collection<trip>,) {
     const trip = await trips.findOne({ trip_id }, { projection: { _id: 0 } });
+    if(trip === null) return null;
+  
     const stopCodes = trip?.stops.map(el => el.code) ?? [];
     const res = await stops.find({ code: { $in: stopCodes } }, { projection: { _id: 0, city: 0, } }).toArray();
     const stopsArr = res.map(r => ({
@@ -69,7 +71,7 @@ async function getTripData(trip_id: string, stops: Collection<stopDB>, trips: Co
 }
 
 export interface foundVehicle extends vehicleSearched {
-    db: dbData
+    db: dbData | null
 }
 
 interface dbData {

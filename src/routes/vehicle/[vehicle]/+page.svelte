@@ -46,15 +46,18 @@
 				attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(map);
 
-			//Draw shape and center the map around it
-			const shape = L.polyline(api.db.shape as LatLngTuple[], {color: shapeColour}).addTo(map);
-			map.fitBounds(shape.getBounds());
-			
-			//Place icons of stops for the current trip
-			const pinIcon = getPinIcon(L, pinColour);
-			for(const stop of api.db.stops){
-				const res = L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
-				console.log(res)
+			//Only place stop and shape icons if a matching trip is found
+			if(api.db !== null) {
+				//Draw shape and center the map around it
+				const shape = L.polyline(api.db.shape as LatLngTuple[], {color: shapeColour}).addTo(map);
+				map.fitBounds(shape.getBounds());
+				
+				//Place icons of stops for the current trip
+				const pinIcon = getPinIcon(L, pinColour);
+				for(const stop of api.db.stops){
+					const res = L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
+					console.log(res)
+				}
 			}
 
 			//Place vehicle icons
