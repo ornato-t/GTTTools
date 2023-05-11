@@ -2,7 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import Search from 'svelte-search';
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
 	import { dev } from '$app/environment';

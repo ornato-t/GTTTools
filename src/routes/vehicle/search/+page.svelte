@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import Search from 'svelte-search';
 
 	let value = '';
+
+	function navigate(value: string) {
+		setTimeout(() => goto(`/vehicle/${value}`), 0)
+	}
 </script>
 
 <svelte:head>
@@ -15,11 +20,14 @@
 		<span class="label-text">Inserisci il codice di un veicolo</span>
 	</label>
 
-	<!-- For some reason not using the timeout here breaks everyting -->
-	<form on:submit={() => setTimeout(() => goto(`/vehicle/${value}`), 0)}>
-		<!-- svelte-ignore a11y-autofocus -->
-		<input type="text" bind:value class="input input-bordered w-full max-w-xs" placeholder="Cerca" autofocus inputmode="numeric">
-		
-		<button class="btn mx-auto w-full mt-4" type="submit">Cerca</button>
-	</form>
+	<Search
+		autofocus
+		hideLabel
+		placeholder="Cerca"
+		class="input input-bordered w-full max-w-xs"
+		bind:value={value}
+		on:submit={() =>navigate(value)}
+		inputmode="numeric"
+	/>
+	<button class="btn mx-auto w-full mt-4" on:click={() =>navigate(value)}>Cerca</button>
 </div>
