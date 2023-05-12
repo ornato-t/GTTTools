@@ -3,10 +3,12 @@
 	import { onMount } from 'svelte';
 	import Search from 'svelte-search';
 	import { goto } from '$app/navigation';
+	import { dev } from '$app/environment';
+	import { swipe } from 'svelte-gestures';
+    import { page } from '$app/stores';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
-	import { dev } from '$app/environment';
-	
+
 	export let data: LayoutData;
 
 	let drawerVisible = false;
@@ -76,6 +78,16 @@
 	function firstUppercase(str: string){
 		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 	}
+
+	//Handles gestures on mobile
+	function gestureHandler(event: any){
+		const url = $page.url.toString();
+		if(url.includes('map') || url.includes('vehicle') && !url.includes('search')) return;	//Ignore slide events on map pages (vehicle and maps). Allow it in vehicle search pages
+
+		if(event.detail.direction === 'right' && drawerVisible === false) {
+			drawerVisible = true;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -104,7 +116,7 @@
 	<meta name="og:type" content="website">
 </svelte:head>
 
-<div class="drawer" data-theme={manualTheme}>
+<div class="drawer" data-theme={manualTheme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: "" }} on:swipe={gestureHandler}>
 	<label for="drawer" class="h-0">Apri la barra laterale</label>
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content">
