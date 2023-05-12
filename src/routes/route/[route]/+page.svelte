@@ -31,7 +31,7 @@
 	{#if numVehicles !== 0}
 		{#key data.api}
 			{#each data.api as vehicle}
-				<a href="/vehicle/{vehicle.id}">
+				<a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data>
 					<div
 						class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl"
 					>
@@ -71,10 +71,8 @@
 	{#if numVehicles !== 0}
 		{#key data.api}
 			{#each data.api as vehicle}
-				<div
-					class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl"
-				>
-					<a href="/vehicle/{vehicle.id}">
+				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
+					<a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data="hover">
 						<div class="card-body p-6">
 							<h2 class="card-title  mb-4 grid grid-cols-4">
 								<span class="text-2xl text-left">{vehicle.id}</span>

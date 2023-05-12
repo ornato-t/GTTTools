@@ -1,3 +1,5 @@
+import type { stopDB } from "./stopDB";
+
 //Represents a vehicle: either a bus or a tram. As provided by the GTT site
 export interface vehicleWeb {
     id: number,
@@ -25,6 +27,13 @@ export interface vehicle {
 export interface vehicleSearched extends vehicle {
     route: string,  //Route on which the vehicle is in service
     trip_id: string //GTFS trip the vehicle is in service on
+    db: dbData  //Data fetched from the trips and stops database collections
+}
+
+interface dbData {
+    destination: string,
+    shape: number[][],
+    stops: stopDB[],
 }
 
 export interface vehicleMap {
@@ -35,7 +44,7 @@ export interface vehicleMap {
 }
 
 export function encodeRoute(code: string) {
-    if(code.includes('/')){
+    if (code.includes('/')) {
         const num = Number.parseInt(code);
 
         return `${num}%2F`;

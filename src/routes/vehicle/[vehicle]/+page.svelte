@@ -3,12 +3,12 @@
 	import Counter from './counter.svelte';
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
-	import type { PageServerData } from './$types';
 	import type { Marker, LatLngTuple, Map } from "leaflet";
-	import type { foundVehicle } from './+page.server';
 	import type { stopDB } from '$lib/stopDB';
+	import type { vehicleSearched } from '$lib/vehicle';
+	import type { PageData } from './$types';
 
-	export let data: PageServerData;
+	export let data: PageData;
 
 	let dots = '...'
 	const interval = setInterval(() => {
@@ -16,7 +16,7 @@
 		else dots = '';
 	}, 500);
 
-	let api: foundVehicle | null;
+	let api: vehicleSearched | null;
 
 	let mapElement: HTMLElement;
     let map: Map;
