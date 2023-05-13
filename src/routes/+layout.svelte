@@ -81,8 +81,13 @@
 
 	//Handles gestures on mobile
 	function gestureHandler(event: any){
+		//Ignore slide events on desktop
+		const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+  		if (isDesktop) return;
+
+		//Ignore slide events on map pages (vehicle and maps). Allow it in vehicle search pages
 		const url = $page.url.toString();
-		if(url.includes('map') || url.includes('vehicle') && !url.includes('search')) return;	//Ignore slide events on map pages (vehicle and maps). Allow it in vehicle search pages
+		if(url.includes('map') || url.includes('vehicle') && !url.includes('search')) return;
 
 		if(event.detail.direction === 'right' && drawerVisible === false) {
 			drawerVisible = true;
