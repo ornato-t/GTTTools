@@ -91,7 +91,9 @@
 </div>
 
 <!-- Mobile -->
-<div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-6 mx-auto place-items-center">
+<div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 mx-auto place-items-center">
+	<a class="btn btn-primary place-self-start ml-3 rounded-lg" href="/stop/{data.code}/map"><i class='bx bx-map-alt bx-sm mr-2'/> Visualizza sulla mappa</a>
+
 	{#if api.length === 0}
 	<div class="mx-4 grid gap-y-4">
 		<Loading />
@@ -105,16 +107,16 @@
 				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 					<a href="/route/{encodeRoute(pass.route)}" data-sveltekit-preload-data>
 						<div class="card-body p-6">
-							{#if pass.pass.length > 0}
-								<h2 class="card-title mb-4 grid grid-cols-4">
-									<span class="text-2xl text-left">{pass.route}</span>
-									<span class="text-sm font-light text-right col-span-3">
-										{pass.direction}
-									</span>
-								</h2>
-								<div class="justify-end">
-									<div class="w-full grid grid-cols-3">
-										{#each pass.pass as time}
+							<h2 class="card-title mb-4 grid grid-cols-4">
+								<span class="text-2xl text-left">{pass.route}</span>
+								<span class="text-sm font-light text-right col-span-3">
+									{pass.direction}
+								</span>
+							</h2>
+							<div class="justify-end">
+								<div class="w-full grid grid-cols-3">
+									{#if pass.pass.length > 0}
+									{#each pass.pass as time}
 											<div class="text-left {time.realTime ? '' : 'opacity-50'}">
 												{printLocale(time.time)}
 											</div>
@@ -122,11 +124,11 @@
 												<Timer time={time.time} />
 											</div>
 										{/each}
+									{:else}
+										<p class="col-span-3">Nessuna informazione disponibile</p>
+									{/if}
 									</div>
 								</div>
-							{:else}
-								<p>Nessuna informazione disponibile</p>
-							{/if}
 						</div>
 					</a>
 				</div>

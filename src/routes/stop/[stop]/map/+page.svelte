@@ -149,14 +149,12 @@
     }
 </style>
 
-<div class="pt-4 p-3 grid grid-cols-2" id="top">
+<div class="p-4" id="top">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
-    <a href="/stop/{data.db.code}" class="w-full lg:text-end link order-last lg:order-2 col-span-2 lg:col-span-1">
-        <i class='bx bx-arrow-back'></i>
-        Torna ai passaggi in tempo reale
-    </a>
-	<h2 class="font-light 2 col-span-2 lg:order-last">{data.db.description ?? ''}</h2>
+	<h2 class="font-light">{data.db.description ?? ''}</h2>
 </div>
+
+<a class="btn btn-primary place-self-start rounded-lg ml-3" href="/stop/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
 
 
 <!-- Consider moving this on top of the map, takes too much space here -->
