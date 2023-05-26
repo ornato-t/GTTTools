@@ -149,12 +149,17 @@
     }
 </style>
 
-<div class="p-4" id="top">
+<div class="p-4 lg:grid lg:grid-cols-2" id="top">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
-	<h2 class="font-light">{data.db.description ?? ''}</h2>
+	<h2 class="font-light order-3">{data.db.description ?? ''}</h2>
+    
+    <!-- Back button desktop -->
+    <a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" href="/stop/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
 </div>
 
-<a class="btn btn-primary place-self-start rounded-lg ml-3" href="/stop/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
+<!-- Back button mobile -->
+<a class="lg:hidden block btn btn-primary place-self-start rounded-lg ml-3" href="/stop/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
+
 
 
 <!-- Consider moving this on top of the map, takes too much space here -->
