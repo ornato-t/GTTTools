@@ -154,59 +154,11 @@
 	<h2 class="font-light order-3">{data.db.description ?? ''}</h2>
     
     <!-- Back button desktop -->
-    <a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" href="/stop/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
+    <a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" href="/metro/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
 </div>
 
 <!-- Back button mobile -->
-<a class="lg:hidden inline-flex btn btn-primary place-self-start rounded-lg ml-3" href="/stop/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
-
-
-
-<!-- Consider moving this on top of the map, takes too much space here -->
-<div class="grid grid-cols-3 w-36 min-h-[8rem] gap-y-1 my-1">
-    <div class="col-span-3 pl-2">
-        Linee passanti:
-    </div>
-
-    <!-- A bit janky, assuming route's vehicle type from the first vehicle in the array -->
-    {#if !loaded }
-        <Loading/>
-        <Loading/>
-        <Loading/>
-        <Loading/>
-    {:else}
-        {#each routes as route}
-        <div class="place-self-center">
-            <i class='{route.vehicles[0].vehicleType === 'Tram' ? 'bxs-train' : 'bxs-bus'}
-                bx bx-xs rounded-full p-0.5 bg-base-200 border border-base-content'
-                style='color: {route.colour}'
-            />
-        </div>
-        <div class="col-span-2">
-            <a href="/route/{route.routeID}" class="link">
-                {route.vehicles[0].vehicleType}
-                {route.route}
-            </a>
-        </div>
-        {/each}
-        <!-- Adding padding to routes list, avoids  -->
-        {#if routes.length === 0}
-            <div class="col-span-3"/>
-            <div class="col-span-3"/>
-            <div class="col-span-3"/>
-            <div class="col-span-3"/>
-        {:else if routes.length === 1}
-            <div class="col-span-3"/>
-            <div class="col-span-3"/>
-            <div class="col-span-3"/>
-        {:else if routes.length === 2}
-            <div class="col-span-3"/>
-            <div class="col-span-3"/>
-        {:else if routes.length === 3}
-            <div class="col-span-3"/>
-        {/if}
-    {/if}
-</div>
+<a class="lg:hidden inline-flex btn btn-primary place-self-start rounded-lg ml-3 mt-2 mb-4" href="/metro/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
 
 <!-- TODO: needs placing, should be moved over the top right corner of the map. Putting it inside the map makes it non interactable -->
 <!-- <button class="btn btn-active btn-accent btn-circle" style="z-index: 2000;">

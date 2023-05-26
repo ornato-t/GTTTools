@@ -95,7 +95,7 @@
 
 <!-- Mobile -->
 <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 mx-auto place-items-center">
-	<!-- Map button desktop -->
+	<!-- Map button mobile -->
 	<a class="btn btn-primary place-self-start ml-3 rounded-lg col-span-1 md:col-span-2" href="/stop/{data.code}/map"><i class='bx bx-map-alt bx-sm mr-2'/> Visualizza sulla mappa</a>
 
 	{#if api.length === 0}
