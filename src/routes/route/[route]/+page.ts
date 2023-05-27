@@ -7,7 +7,8 @@ export const load = (async ({ fetch, depends, data }) => {
     return {
         code: data.code,
         api: getRoute(data.code, fetch),
-        db: data.db
+        db: data.db,
+        routes: data.routes
     };
 });
 

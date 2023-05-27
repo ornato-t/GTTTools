@@ -1,17 +1,22 @@
 import { error } from '@sveltejs/kit';
+import type { routeDB } from '$lib/routeDB';
+import type { Collection } from "mongodb";
 import type { stopDB } from '$lib/stopDB.js';
 import type { trip, trip_stop } from '$lib/trip.js';
-import type { Collection } from 'mongodb';
 
-export async function load({ locals, params }) {
-    const route = params.route;
+export const load = (async ({ params, locals, depends }) => {
+    depends('vehicleDB');
+
+    const code = params.route;
     const { stops, trips } = locals;
     const shapeColours = ['#fb3735', '#436cdc']
     const pinColours = ['#fb7c7b', '#859fe3']
 
-    const tripData = await getTrip(route, trips);
+    const tripData = await getTrip(code, trips);
 
     return {
+        code,
+        db: getDB(code, locals),
         routes: tripData.map((el, i) => ({
             shape: el.shape,
             shapeColour: shapeColours[i],
@@ -19,6 +24,15 @@ export async function load({ locals, params }) {
             pinColour: pinColours[i]
         }))
     }
+});
+
+
+async function getDB(code: string, locals: App.Locals) {
+    const { routes }: { routes: Collection<routeDB> } = locals;
+
+    const route = routes.findOne({ code }, { projection: { _id: 0, provider: 0 } }) as Promise<routeDB>;
+
+    return route;
 }
 
 //Return an appropriate trip info for a rotue
