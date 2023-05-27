@@ -90,13 +90,13 @@
     //Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
     function getPopup(stop: stopDB){
         if(stop.metro){
-            return `<a href="/metro/${stop.code}">METRO ${stop.name}</a>`;
+            return `<a href="/metro/${stop.code}/map">METRO ${stop.name}</a>`;
 
         } else if (stop.train){
-            return `<a href="/sfm/${stop.trainCode}">${stop.name} FS</a>`;
+            return `<a href="/sfm/${stop.trainCode}/map">${stop.name} FS</a>`;
             
         } else {
-            return `<a href="/stop/${stop.code}">${stop.code} - ${stop.name}</a>`;
+            return `<a href="/stop/${stop.code}/map">${stop.code} - ${stop.name}</a>`;
         }
     }
 

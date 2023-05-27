@@ -89,13 +89,13 @@
     //Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
     function getPopup(stop: stopDB){
         if(stop.metro){
-            return `<a href="/metro/${stop.code}">METRO ${stop.name}</a>`;
+            return `<a href="/metro/${stop.code}/map">METRO ${stop.name}</a>`;
 
         } else if (stop.train){
-            return `<a href="/sfm/${stop.trainCode}">${stop.name} FS</a>`;
+            return `<a href="/sfm/${stop.trainCode}/map">${stop.name} FS</a>`;
             
         } else {
-            return `<a href="/stop/${stop.code}">${stop.code} - ${stop.name}</a>`;
+            return `<a href="/stop/${stop.code}/map">${stop.code} - ${stop.name}</a>`;
         }
     }
 
@@ -149,8 +149,8 @@
 </style>
 
 <div class="p-4 lg:grid lg:grid-cols-2" id="top">
-	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
-	<h2 class="font-light order-3">{data.db.description ?? ''}</h2>
+	<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.name}</h1>
+	<h2 class="font-light order-3">{data.db.description}</h2>
     
     <!-- Back button desktop -->
     <a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" href="/metro/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
