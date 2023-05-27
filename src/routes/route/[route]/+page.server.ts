@@ -99,7 +99,7 @@ async function getStops(stopList: trip_stop[], stops: Collection<stopDB>) {
     const aggr = [
         { $match: { code: { $in: ids } } },                                                                                 //Filter stops
         { $addFields: { coordinates: [{ $arrayElemAt: ["$coordinates", 1] }, { $arrayElemAt: ["$coordinates", 0] }] } },    //Reverse coords array (Mongo wants them saved as [lon, lat])
-        { $project: { _id: 0, name: 1, description: 1, code: 1, coordinates: 1 } },                                         //Project only necessary fields
+        { $project: { _id: 0 } },                                                                                           //Project only necessary fields
     ]
 
     return stops.aggregate<{ name: string, description: string, code: number, coordinates: number[] }>(aggr).toArray();
