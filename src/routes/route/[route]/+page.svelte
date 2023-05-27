@@ -21,6 +21,8 @@
     onMount(async () => {
         const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
         await import('leaflet-rotatedmarker');
+        // @ts-ignore
+        await import('leaflet-polylineoffset'); //This is not an error
 
         map = L.map(mapElement);
 
@@ -33,7 +35,7 @@
             const pinIcon = getPinIcon(L, route.pinColour);
 
             //Draw shape and center the map around it
-            const shape = L.polyline(route.shape as LatLngTuple[], {color: route.shapeColour}).addTo(map);
+            const shape = L.polyline(route.shape as LatLngTuple[], {color: route.shapeColour, offset: 5}).addTo(map);   //This is not an error, see plugin
             map.fitBounds(shape.getBounds());
 
             //Wait for stops data, then place icons of nearby stops
