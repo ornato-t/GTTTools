@@ -164,10 +164,10 @@
 	<meta name="description" content="Informazioni, immagine e posizione in tempo reale del veicolo numero {data.code}. Possibilità di seguirlo e osservare la linea su cui è in servizio. Sono disponibili informazioni riguardo a bus, autosnodati, tram e treni">
 </svelte:head>		
 
-<div class="w-full mx-auto px-2">
-	<h1 class="text-xl mb-2">
-		{printType(data.type)} numero {data.code}
-	</h1>
+<div class="w-full mx-auto">
+	<div class="p-4">
+		<h1 class="mb-4 text-xl font-semibold uppercase">{printType(data.type)} {data.code}</h1>
+	</div>
 
 	<div class="w-fit mx-auto">
 		<img src={getImage(data.url)} alt="Veicolo numero {data.code}" class="max-h-96"/>
