@@ -29,6 +29,7 @@
 	on:error={(e) => {
 		//TODO: check for unsupported device error
 		errorFlag = true;
+		// @ts-ignore
 		errorCode = e.detail.code; //This isn't an error
 	}}
 	options={{ enableHighAccuracy: true }}
