@@ -147,40 +147,23 @@
 	<h2 class="font-light">{data.db.name}</h2>
 </div>
 
-<div class="px-4 py-2">
-	<h4 class="font-normal">Numero di veicoli in servizio: {numVehicles}</h4>
-</div>
-
 <!-- Desktop -->
-<div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 min-[1900px]:grid-cols-4 gap-4 mt-2">
+<div class="hidden lg:grid grid-cols-4 xl:grid-cols-5 min-[1900px]:grid-cols-6 gap-4 my-2 bg-base-300 p-3 rounded-xl">
+    <h4 class="font-mono col-span-full">Veicoli in servizio: {numVehicles}</h4>
+
 	{#if numVehicles !== 0}
 		{#key data.api}
 			{#each data.api as vehicle}
 				<a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data>
-					<div
-						class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl"
-					>
+					<div class="card card-compact h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
-							<h2 class="card-title mb-4 grid grid-cols-4">
-								<span class="text-2xl text-left">{vehicle.id}</span>
-								<span class="text-sm font-light text-right col-span-3">
-									{vehicle.vehicleType?.toUpperCase()}
-								</span>
-							</h2>
+							<h2 class="card-title mb-4 grid grid-cols-3">
+								<span class="text-xl text-left">{vehicle.id}</span>
 
-							<div class="mx-auto -mb-2">Posizione:</div>
-							<div class="mx-auto font-mono">
-								{vehicle.lat},{vehicle.lon}
-							</div>
-
-							<div class="justify-end mt-4">
-								<!-- {#if vehicle.full}
-									<div class="text-warning mx-auto w-fit my-2">Veicolo pieno!</div>
-								{/if} -->
-								<div class="font-mono text-sm text-end">
-									Aggiornato <Counter time={vehicle.updated}/>
+                                <div class="font-mono text-xs text-end col-span-2">
+									<Counter time={vehicle.updated}/>
 								</div>
-							</div>
+							</h2>
 						</div>
 					</div>
 				</a>
@@ -192,42 +175,36 @@
 </div>
 
 <!-- Mobile -->
-<div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-6 mx-auto place-items-center">
-	{#if numVehicles !== 0}
-		{#key data.api}
-			{#each data.api as vehicle}
-				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
-					<a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data="hover">
-						<div class="card-body p-6">
-							<h2 class="card-title  mb-4 grid grid-cols-4">
-								<span class="text-2xl text-left">{vehicle.id}</span>
-								<span class="text-sm font-light text-right col-span-3">
-									{vehicle.vehicleType?.toUpperCase()}
-								</span>
-							</h2>
-							<div class="mx-auto -mb-2">Posizione:</div>
-							<div class="mx-auto font-mono">
-								{vehicle.lat},{vehicle.lon}
-							</div>
-
-							<div class="justify-end mt-4">
-								<!-- {#if vehicle.full}
-									<div class="text-warning mx-auto w-fit my-2">Veicolo pieno!</div>
-								{/if} -->
-								<div class="font-mono text-sm text-end">
-									Aggiornato <Counter time={vehicle.updated}/>
-								</div>
-							</div>
-						</div>
-					</a>
-				</div>
-			{/each}
-		{/key}
-	{:else}
-		<div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
-	{/if}
+<div class="lg:hidden mx-2 rounded-lg collapse collapse-arrow bg-base-300">
+    <input type="checkbox"/>
+    <div class="collapse-title font-medium font-mono">
+        Veicoli in servizio: {numVehicles}
+    </div>
+    
+    <div class="collapse-content px-2 grid grid-cols-2 gap-2 place-items-center">
+        {#if numVehicles !== 0}
+            {#key data.api}
+                {#each data.api as vehicle}
+                    <div class="card card-compact h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
+                        <a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data="hover">
+                            <div class="card-body p-6">
+                                <h2 class="card-title mb-4 grid grid-cols-4">
+                                    <span class="text-xl text-left">{vehicle.id}</span>
+                                    <div class="font-mono text-sm text-end col-span-3">
+                                        <Counter time={vehicle.updated}/>
+                                    </div>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
+                {/each}
+            {/key}
+        {:else}
+            <div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
+        {/if}
+    </div>
 </div>
 
-<main class="select-none mb-3 mt-6">
+<main class="select-none my-3">
     <div bind:this={mapElement} class="h-full"/>
 </main>
