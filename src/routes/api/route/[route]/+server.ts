@@ -1,5 +1,3 @@
-//TODO: figure out and do something with "direction"
-
 import type { vehicle, vehicleWeb } from "$lib/vehicle";
 import type { RequestHandler } from "@sveltejs/kit";
 import { DateTime } from "luxon"
@@ -55,7 +53,6 @@ async function pollRoute(route: string) {
             lon: vehicle.lon,
             updated: updatedDate(vehicle.aggiornamento),
             direction: vehicle.direzione,
-            // full: vehicle.occupazione,
         });
     }
 
