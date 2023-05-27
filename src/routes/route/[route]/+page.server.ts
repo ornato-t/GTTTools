@@ -37,6 +37,8 @@ async function getDB(code: string, locals: App.Locals) {
 
 //Return an appropriate trip info for a rotue
 async function getTrip(route: string, trips: Collection<trip>) {
+    if(route === 'METRO') route = 'M1';
+
     const aggr = [
         { $match: { route, "dates.startDate": { $lte: new Date() }, "dates.endDate": { $gte: new Date() }, [getDay()]: true } },
         { $facet: { one: [{ $match: { direction: 1 } }, { $sample: { size: 1 } }], zero: [{ $match: { direction: 0 } }, { $sample: { size: 1 } }] } },
