@@ -1,11 +1,9 @@
 <script lang="ts">
     import 'leaflet/dist/leaflet.css';
     import { onMount } from 'svelte';
-	import { invalidate } from '$app/navigation';
     import type { PageData } from "./$types";
-    import type { Marker, LatLngTuple, Map } from "leaflet";
+    import type { LatLngTuple, Map } from "leaflet";
     import type { stopDB } from "$lib/stopDB"
-	import { encodeRoute, type vehicleMap } from '$lib/vehicle';
 
     export let data: PageData;
 
@@ -13,13 +11,9 @@
     
     let mapElement: HTMLElement;
     let map: Map;
-    const markers = new Array<{droplet: Marker, vehicle: Marker, code: number}>;
-    let loaded = false;
-    let routes = new Array<vehicleMap>;
     
     const pinColour = '#1b8ae8';
     const otherPinColour = '#909090';
-    const REFRESH_TIME = 1000;
 
     onMount(async () => {
         const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
@@ -41,48 +35,6 @@
         for(const stop of data.near){
             L.marker(stop.coordinates as LatLngTuple, {icon: otherPinIcon}).addTo(map).bindPopup(getPopup(stop));    
         }
-
-        const passages = await data.vehicles.promise;   //Wait for vehicle data to arrive
-        routes = passages;
-        loaded = true;
-
-        //Place vehicle icons
-        for(const pass of passages){
-            const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, pass.colour);
-            for(const vehicle of pass.vehicles){
-                const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
-                const popup = `<a href="/route/${encodeRoute(pass.routeID)}"><div>Linea ${pass.route}</a><br><a href="/vehicle/${vehicle.id}">${vehicle.vehicleType} ${vehicle.id}</div></a>`;
-
-                const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 100, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(popup);
-
-                const vehicleMark = L.marker([vehicle.lat, vehicle.lon], {icon: vehicleIcon, zIndexOffset: 101}).addTo(map).bindPopup(popup);
-                
-                markers.push({
-                    droplet: dropletMark,
-                    vehicle: vehicleMark,
-                    code: vehicle.id
-                });
-            }
-        }
-
-        //Refresh vehicles positions
-        setInterval(async() => {
-            invalidate('stop_lines');
-            const vehicles = await data.vehicles.promise;
-            routes = vehicles;
-            
-            for(const route of vehicles){
-                for(const vehicle of route.vehicles){
-                    for(const marker of markers){
-                        if(marker.code === vehicle.id){
-                            marker.droplet.setLatLng([vehicle.lat, vehicle.lon]);
-                            marker.vehicle.setLatLng([vehicle.lat, vehicle.lon]);
-                            marker.droplet.setRotationAngle(vehicle.direction);                        
-                        }
-                    }
-                }
-            }
-        }, REFRESH_TIME);
 
     });
 
@@ -149,15 +101,15 @@
 </style>
 
 <div class="p-4 lg:grid lg:grid-cols-2" id="top">
-	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
-	<h2 class="font-light order-3">{data.db.description ?? ''}</h2>
+	<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.name}</h1>
+	<h2 class="font-light order-3">{data.db.description}</h2>
     
     <!-- Back button desktop -->
-    <a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" href="/metro/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
+    <a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" href="/sfm/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
 </div>
 
 <!-- Back button mobile -->
-<a class="lg:hidden inline-flex btn btn-primary place-self-start rounded-lg ml-3 mt-2 mb-4" href="/metro/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
+<a class="lg:hidden inline-flex btn btn-primary place-self-start rounded-lg ml-3 mt-2 mb-4" href="/sfm/{data.code}"><i class='bx bx-arrow-back bx-sm mr-2'/>Torna ai passaggi</a>
 
 <!-- TODO: needs placing, should be moved over the top right corner of the map. Putting it inside the map makes it non interactable -->
 <!-- <button class="btn btn-active btn-accent btn-circle" style="z-index: 2000;">

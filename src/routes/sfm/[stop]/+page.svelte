@@ -37,9 +37,12 @@
 	<meta name="description" content="Prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano, alla stazione ferroviaria di TORINO {data.db.name}">
 </svelte:head>
 
-<div class="p-4">
+<div class="p-4 lg:grid lg:grid-cols-2">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.name}</h1>
-	<h2 class="font-light">{data.db.description}</h2>
+	<h2 class="font-light order-3">{data.db.description }</h2>
+    
+    <!-- Map button desktop -->
+    <a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" href="/sfm/{data.code}/map"><i class='bx bx-map-alt bx-sm mr-2'/>Visualizza sulla mappa</a>
 </div>
 
 <!-- Desktop -->
@@ -99,6 +102,9 @@
 
 <!-- Mobile -->
 <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-6 mx-auto place-items-center">
+	<!-- Map button mobile -->
+	<a class="btn btn-primary place-self-start ml-3 rounded-lg col-span-1 md:col-span-2" href="/sfm/{data.code}/map"><i class='bx bx-map-alt bx-sm mr-2'/> Visualizza sulla mappa</a>
+
 	{#if api == null}
 	<!-- {#if 1 == 1} -->
 	<div class="mx-4 grid gap-y-4">
