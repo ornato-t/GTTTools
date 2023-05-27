@@ -165,9 +165,7 @@
 </svelte:head>		
 
 <div class="w-full mx-auto">
-	<div class="p-4">
-		<h1 class="mb-4 text-xl font-semibold uppercase">{printType(data.type)} {data.code}</h1>
-	</div>
+	<h1 class="p-4 mb-4 text-xl font-semibold uppercase">{printType(data.type)} {data.code}</h1>
 
 	<div class="w-fit mx-auto">
 		<img src={getImage(data.url)} alt="Veicolo numero {data.code}" class="max-h-96"/>
