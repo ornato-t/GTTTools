@@ -3,8 +3,8 @@
 
 </script>
 <div class="grid w-full lg:min-h-screen bg-base-200 lg:pb-6 lg:grid-cols-2 gap-y-4 lg:gap-y-0 scrollable">
-  <div class="hero-content flex-col lg:flex-row place-self-start my-auto h-fit w-full">
-		<i class="bx bx-search-alt-2 bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+  <div class="hero-content flex-col lg:flex-row place-self-start lg:my-auto lg:h-fit w-full">
+		<i class="bx bx-search-alt-2 bx-tada-hover border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Cerca una fermata</h1>
 		<span class="py-6">
@@ -17,8 +17,8 @@
   </div>
 	<div class="hidden lg:block"/>
 	<div class="hidden lg:block"/>
-  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
-		<i class="bx bx-current-location bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+  <div class="hero-content flex-col lg:flex-row-reverse place-self-end lg:my-auto lg:h-fit w-full">
+		<i class="bx bx-current-location bx-tada-hover border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 	  <h1 class="text-5xl font-bold">Fermate vicino a te</h1>
 	  	<span class="py-6">
@@ -31,8 +31,8 @@
   </div>
   <div class="hidden lg:block"/>
   <div class="hidden lg:block"/>
-  <div class="hero-content flex-col lg:flex-row place-self-start my-auto h-fit w-full">
-		<i class="bx bx-map bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+  <div class="hero-content flex-col lg:flex-row place-self-start lg:my-auto lg:h-fit w-full">
+		<i class="bx bx-map bx-tada-hover border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Cerca una linea</h1>
 	  <span class="py-6">
@@ -45,8 +45,8 @@
   </div>
 	<div class="hidden lg:block"/>
 	<div class="hidden lg:block"/>
-  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
-		<i class="bx bx-bus bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+  <div class="hero-content flex-col lg:flex-row-reverse place-self-end lg:my-auto lg:h-fit w-full">
+		<i class="bx bx-bus bx-tada-hover border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Trova un veicolo</h1>
 		<span class="py-6">
@@ -58,8 +58,8 @@
   </div>
   <div class="hidden lg:block"/>
   <div class="hidden lg:block"/>
-  <div class="hero-content flex-col lg:flex-row place-self-end my-auto h-fit w-full">
-		<i class="bx bx-train bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+  <div class="hero-content flex-col lg:flex-row place-self-end lg:my-auto lg:h-fit w-full">
+		<i class="bx bx-train bx-tada-hover border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Metro</h1>
 		<span class="py-6">
@@ -71,8 +71,8 @@
   </div>
   <div class="hidden lg:block"/>
   <div class="hidden lg:block"/>
-  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
-		<i class="bx bxs-train bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+  <div class="hero-content flex-col lg:flex-row-reverse place-self-end lg:my-auto lg:h-fit w-full">
+		<i class="bx bxs-train bx-tada-hover border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Servizio Ferroviario Metropolitano</h1>
 		<span class="py-6">
@@ -84,8 +84,8 @@
   </div>
   <div class="hidden lg:block"/>
   <div class="hidden lg:block"/>
-  <div class="hero-content flex-col lg:flex-row place-self-end my-auto h-fit w-full">
-	<i class="bx bx-error bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+  <div class="hero-content flex-col lg:flex-row place-self-end lg:my-auto lg:h-fit w-full">
+	<i class="bx bx-error bx-tada-hover border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Scioperi</h1>
 		<span class="py-6">
@@ -98,8 +98,8 @@
   </div>
   <div class="hidden lg:block"/>
   <div class="hidden lg:block"/>
-  <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
-	<i class="bx bxs-flask bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
+  <div class="hero-content flex-col lg:flex-row-reverse place-self-end lg:my-auto lg:h-fit w-full">
+	<i class="bx bxs-flask bx-tada-hover border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
     <div class="grid">
         <h1 class="text-5xl font-bold">Sperimentale</h1>
         <span class="py-6">
