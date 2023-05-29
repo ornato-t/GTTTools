@@ -13,11 +13,17 @@
 .scrollMobile {
     scroll-snap-type: y mandatory;
     overflow-y: scroll;
-    height: 100vh;
+    height: calc(100vh - 4.5rem);
 }
 .scrollMobile > div {
     height: 100vh;
+    scroll-snap-align: center;
+}
+.scrollMobile > div:first-child {
     scroll-snap-align: start;
+}
+.scrollMobile > footer {
+    scroll-snap-align: end;
 }
 
 .noScrollDesktop {
