@@ -1,4 +1,4 @@
-<div class="grid w-full min-h-screen bg-base-200 pb-6 lg:grid-cols-2 gap-y-4 lg:gap-y-0">
+<div class="grid w-full min-h-screen bg-base-200 pb-6 lg:grid-cols-2 gap-y-4 lg:gap-y-0 scrollable">
   <div class="hero-content flex-col lg:flex-row place-self-start my-auto h-fit w-full">
 		<i class="bx bx-search-alt-2 bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
@@ -11,8 +11,8 @@
       <a href="/stop/search" class="btn lg:btn-lg btn-primary lg:place-self-end">cerca</a>
     </div>
   </div>
-	<div/>
-	<div/>
+	<div class="hidden lg:block"/>
+	<div class="hidden lg:block"/>
   <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
 		<i class="bx bx-current-location bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
@@ -25,8 +25,8 @@
 	  <a href="/stop/gps" class="btn lg:btn-lg btn-primary lg:place-self-start">posizione</a>
 	</div>
   </div>
-	<div/>
-	<div/>
+  <div class="hidden lg:block"/>
+  <div class="hidden lg:block"/>
   <div class="hero-content flex-col lg:flex-row place-self-start my-auto h-fit w-full">
 		<i class="bx bx-map bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
@@ -39,8 +39,8 @@
 	  <a href="/route/search" class="btn lg:btn-lg btn-primary lg:place-self-end">cerca</a>
 	</div>
   </div>
-	<div/>
-	<div/>
+	<div class="hidden lg:block"/>
+	<div class="hidden lg:block"/>
   <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
 		<i class="bx bx-bus bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
@@ -52,8 +52,8 @@
 	  <a href="/vehicle/search" class="btn lg:btn-lg btn-primary lg:place-self-start">trova</a>
 	</div>
   </div>
-	<div/>
-	<div/>
+  <div class="hidden lg:block"/>
+  <div class="hidden lg:block"/>
   <div class="hero-content flex-col lg:flex-row place-self-end my-auto h-fit w-full">
 		<i class="bx bx-train bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
@@ -65,8 +65,8 @@
 	  <a href="/metro/search" class="btn lg:btn-lg btn-primary lg:place-self-end">metro</a>
 	</div>
   </div>
-	<div/>
-	<div/>
+  <div class="hidden lg:block"/>
+  <div class="hidden lg:block"/>
   <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
 		<i class="bx bxs-train bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
@@ -78,8 +78,8 @@
 	  <a href="/sfm/search" class="btn lg:btn-lg btn-primary lg:place-self-start">treni</a>
 	</div>
   </div>
-	<div/>
-	<div/>
+  <div class="hidden lg:block"/>
+  <div class="hidden lg:block"/>
   <div class="hero-content flex-col lg:flex-row place-self-end my-auto h-fit w-full">
 	<i class="bx bx-error bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
 	<div class="grid">
@@ -92,8 +92,8 @@
 	  <a href="/strikes" class="btn lg:btn-lg btn-primary lg:place-self-end">controlla</a>
 	</div>
   </div>
-  <div/>
-  <div/>
+  <div class="hidden lg:block"/>
+  <div class="hidden lg:block"/>
   <div class="hero-content flex-col lg:flex-row-reverse place-self-end my-auto h-fit w-full">
 	<i class="bx bxs-flask bx-tada-hover  border-2 p-6 rounded-2xl border-base-content text-9xl text-base-content hover:bg-base-100 " />
     <div class="grid">
@@ -107,4 +107,3 @@
     </div>
   </div>
 </div>
-

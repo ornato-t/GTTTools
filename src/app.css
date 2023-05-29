@@ -7,3 +7,35 @@
     background-color: transparent !important;
     border: none !important;
 }
+
+/* Used in mobile home page */
+/*      Defining rules */
+.scrollMobile {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
+}
+.scrollMobile > div {
+    height: 100vh;
+    scroll-snap-align: start;
+}
+
+.noScrollDesktop {
+    scroll-snap-type: none;
+    overflow-y: hidden;
+    height: auto;
+}
+.noScrollDesktop > div {
+    height: auto;
+}
+
+/*      Applying rules */
+.scrollable {
+    @apply scrollMobile;
+  }
+  
+  @screen lg {
+    .scrollable {
+      @apply noScrollDesktop;
+    }
+  }
