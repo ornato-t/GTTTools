@@ -111,5 +111,6 @@
     </div>
   </div>
 
-  <Footer/>
+  	<!-- Hiding footer on desktop, it is added in the layout -->
+	<Footer css={"lg:hidden"}/>
 </div>

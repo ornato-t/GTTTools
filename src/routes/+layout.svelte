@@ -189,8 +189,10 @@
 			</div>
 		</div>
 
-		<!-- Hiding footer on base page layout, it is added as a child to the list of scrollable elements -->
-		{#if $page.url.pathname !== '/'}
+		<!-- Hiding footer on home page layout (mobile only), it is added as a child to the list of scrollable elements (see +page.svelte in this dir)-->
+		{#if $page.url.pathname === '/'}
+			<Footer css={"hidden lg:grid"}/>
+		{:else}
 			<Footer/>
 		{/if}
 	</div>
