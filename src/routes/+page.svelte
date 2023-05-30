@@ -8,7 +8,7 @@
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Cerca una fermata</h1>
 		<span class="py-6">
-			<p>Cerca una fermata usando il suo nome, indirizzo o codice univoco.</p>
+			<p>Cerca una fermata usando il suo nome, indirizzo o codice numerico.</p>
 			<p>Segui in tempo reale i passaggi di mezzi e linee.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
@@ -36,7 +36,7 @@
 	<div class="grid">
 		<h1 class="text-5xl font-bold">Cerca una linea</h1>
 	  <span class="py-6">
-		  <p>Cerca una linea usando il suo identificativo, il tipo di mezzo o la destinazione.</p>
+		  <p>Cerca una linea usando il suo numero, il tipo di mezzo impiegato o la destinazione.</p>
 		  <p>Osserva i movimenti dei mezzi in tempo reale su una mappa della Città.</p>
 		  <p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 	  </span>
@@ -103,7 +103,7 @@
     <div class="grid">
         <h1 class="text-5xl font-bold">Sperimentale</h1>
         <span class="py-6">
-			<p>Un nuovo modo di visualizzare i passaggi in tempo reale.</p>
+			<p>Un nuovo modo per visualizzare i passaggi in tempo reale.</p>
 			<p>Ci stiamo ancora lavorando, ma presto sarà perfetto.</p>
 			<p class="invisible h-0">This is a bunch of junk, useless placeholder test. You aren't supposed to see this. If you are seeing this please stop now. If you're wondering why I put this here, I have to otherwise the spacing on the page breaks and I'm too lazy to figure out an actual solution.</p>
 		</span>
