@@ -163,6 +163,22 @@ const vehicles = [
         siteName: "tplitalia.it",
         type: 'autosnodato'
     }, {
+        idL: 9000,
+        idH: 9119,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/9000-9099/9023-03-800.jpg",
+        credits: "Samuele Furia",
+        link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
+        siteName: "tplitalia.it",
+        type: 'bus'
+    }, {
+        idL: 9200,
+        idH: 9261,
+        url: "http://www.tplitalia.it/GTT/AutobusUrbSub/9200-9261/9206-03-800.jpg",
+        credits: "Lorenzo Libertazzi",
+        link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
+        siteName: "tplitalia.it",
+        type: 'bus'
+    }, {
         idL: 2800,
         idH: 2800,
         url: "https://www.tramditorino.it/gallery/tram/2800TUMB.jpg",
@@ -210,7 +226,7 @@ const vehicles = [
     }, {
         idL: 8000,
         idH: 8100,
-        url: "https://www.tramditorino.it/img/tram8000.jpg",
+        url: "https://tramditorino.it/gallery/tram/8001xviiidic.jpg",
         info: "https://www.tramditorino.it/tram_serie_8000.htm",
         credits: "Tram di Torino",
         link: "https://www.tramditorino.it/tram_serie_8000.htm",
@@ -415,12 +431,12 @@ interface vehicleBase {
     type: string            //Type of vehicle
 }
 
-interface vehicleInternal extends vehicleBase{
+interface vehicleInternal extends vehicleBase {
     idL: number,            //Lower bound of the ID range
     idH: number,            //Upper bound of the ID range
 }
 
-interface vehicle  extends vehicleBase{
+interface vehicle extends vehicleBase {
     code: number,           //Code of the matched vehicle (int) - not necessarily what was searched
 }
 
