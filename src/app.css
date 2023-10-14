@@ -18,7 +18,7 @@
 .scrollMobile > div {
     height: 100vh;
     scroll-snap-align: center;
-    margin-top: -4.5rem;
+    margin-top: -0.5rem;
 }
 .scrollMobile > div:first-child {
     scroll-snap-align: start;
