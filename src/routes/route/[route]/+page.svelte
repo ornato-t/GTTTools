@@ -19,6 +19,7 @@
     const REFRESH_TIME = 1000;
 
     onMount(async () => {
+        if(data.routes.length === 0) return;    //TODO: find a cleaner solution to handle this. Without routes (outdated trips DB) we can't draw the shape but we still can put the icons on the map
         const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
         await import('leaflet-rotatedmarker');
         // @ts-ignore
@@ -207,6 +208,8 @@
     </div>
 </div>
 
-<main class="select-none my-3">
-    <div bind:this={mapElement} class="h-full"/>
-</main>
+{#if data.routes.length !== 0}
+    <main class="select-none my-3">
+        <div bind:this={mapElement} class="h-full"/>
+    </main>
+{/if}

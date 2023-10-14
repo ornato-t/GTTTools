@@ -1,4 +1,3 @@
-import { error } from '@sveltejs/kit';
 import type { routeDB } from '$lib/routeDB';
 import type { Collection } from "mongodb";
 import type { stopDB } from '$lib/stopDB.js';
@@ -62,8 +61,6 @@ async function getTrip(route: string, trips: Collection<trip>) {
     if (res.length === 0) {    //Run query twice if it has yielded no results. This is more likely to succeed
         res = await trips.aggregate<trip>(fallbackAggr).toArray();  //Then fallback to more lax query
     }
-
-    if (res.length === 0) throw error(404, 'No matching route found');
 
     return res
 
