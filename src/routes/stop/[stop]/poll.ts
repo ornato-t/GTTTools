@@ -1,21 +1,8 @@
 import type { stop, stopWeb, passage } from "$lib/stop";
-import type { RequestHandler } from "@sveltejs/kit";
 import { DateTime } from "luxon"
 
-export const GET: RequestHandler = async ({ params }) => {
-    try {
-        return new Response(JSON.stringify(await pollStop(params.stop as string)));
-    } catch (e) {
-        if (e === 'noInfo') {
-            return new Response(JSON.stringify({error: 'No information available'}), { status: 404, statusText: "No information available" });
-        } else {
-            return new Response(JSON.stringify({error: 'GTT API offline'}), { status: 503, statusText: "GTT API offline" });
-        }
-    }
-}
-
 //Fetch all info regarding departing vehicles from a stop (by number)
-async function pollStop(stop: string) {
+export async function pollStop(stop: number) {
     const url = `https://www.gtt.to.it/cms/index.php?option=com_gtt&task=palina.getTransitiOld&palina=${stop}&realtime=true`;
     const options = {
         method: 'GET',
