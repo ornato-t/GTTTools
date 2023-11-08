@@ -1,13 +1,12 @@
 import type { vt_train, solutions, trip, station, platform, train, trainStation } from "$lib/train";
 import { getByCode, getByName } from "$lib/trainStations";
-import { error, type RequestHandler } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { DateTime } from "luxon";
 
 const RETURNED_ENTRIES = 4; //Maximum number of timestamps to be returned
 
-export const GET: RequestHandler = async ({ params }) => {
-    const station = params.station || '';
-    const { code_vt, code_fr, name } = getByCode(Number.parseInt(station)) ?? { code_vt: null, code_fr: null };
+export async function poll(station: number) {
+    const { code_vt, code_fr, name } = getByCode(station) ?? { code_vt: null, code_fr: null };
 
     if (code_vt == null || code_fr == null) throw error(404, 'Undefined stop code');
 
@@ -25,10 +24,10 @@ export const GET: RequestHandler = async ({ params }) => {
     if (st.length !== 0) out.push({ name: 'Stura', trips: st })
     if (pn.length !== 0) out.push({ name: 'Porta Nuova', trips: pn })
 
-    return new Response(JSON.stringify({
+    return {
         name,
-        departures: out,
-    } satisfies trainStation));
+        departures: out
+    } satisfies trainStation;
 }
 
 //Poll the "viaggiatreno" portal, get information on the current station
@@ -41,7 +40,7 @@ async function pollVT(station: string) {
         const json = await res.json() as vt_train[];
 
         const out: station[] = [];
-        for(const train of json){
+        for (const train of json) {
             let platform: platform;
 
             if (train.binarioEffettivoPartenzaDescrizione !== null) {
