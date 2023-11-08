@@ -1,17 +1,14 @@
 import type { stopDB } from "$lib/stopDB";
 import type { trip } from "$lib/trip";
 import type { vehicleSearched } from "$lib/vehicle";
-import type { RequestHandler } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 import type { Collection } from "mongodb";
 
-export const GET: RequestHandler = async ({ params, locals }) => {
-    try {
-        return new Response(JSON.stringify(await searchVehicle(params.code as string, locals)));
-    } catch (e) {
-        console.log(e);
-        return new Response(JSON.stringify({ error: "Internal error while performing vehicle search" }), { status: 500 });
-    }
+export async function load({ params, locals }) {
+    return {
+        route: { promise: searchVehicle(params.vehicle, locals) }
+    };
 }
 
 //Poll the GTFS-RT feed looking for the queried vehicle
@@ -99,7 +96,7 @@ async function getTrip(route: string, trips: Collection<trip>) {
         res = await trips.aggregate<trip>(fallbackAggr).toArray();  //Then fallback to more lax query
     }
 
-    if (res.length === 0) throw new Error('No matching route found');
+    if (res.length === 0) throw error(404, 'No matching route found');
 
     return res[0]
 
