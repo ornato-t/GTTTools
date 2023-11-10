@@ -3,16 +3,20 @@
 	import type { stopDB } from '$lib/stopDB';
 	import fetch from '$lib/proxyRequest';
 	import type { PageServerData } from './$types';
+	import { invalidate, preloadData } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	export let data: PageServerData;
 
 	let value = '';
-	let stops = data.db;
+	$: stops = data.db;
+	onMount(preload);
 
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
 			const res = await fetch(`/api/search-stop/${stop}?filter=sfm`);
 			stops = await res.json();
+			await preload();
 		}
 	}
 
@@ -23,6 +27,10 @@
 		if (stop.name.includes(stop.city)) return false;
 
 		return true;
+	}
+
+	function preload() {
+		if (stops.length > 0) return preloadData(`/sfm/${stops[0].trainCode}`);
 	}
 </script>
 
@@ -39,7 +47,14 @@
 	<label class="label">
 		<span class="label-text">Inserisci il nome di una stazione</span>
 	</label>
-	<Search label="" placeholder="Cerca" bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
+	<Search
+		label=""
+		placeholder="Cerca"
+		bind:value
+		on:type={() => searchDB(value)}
+		on:clear={() => invalidate('search').then(preload)}
+		class="input input-bordered w-full max-w-xs"
+	/>
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
