@@ -2,7 +2,7 @@ import type { routeDB } from '$lib/routeDB';
 import type { Collection } from "mongodb";
 import type { stopDB } from '$lib/stopDB.js';
 import type { trip, trip_stop } from '$lib/trip.js';
-import { poll } from './poll.js';
+import { poll } from '$lib/poll/route.js';
 
 export const load = (async ({ params, locals, depends }) => {
     depends('vehicle');
