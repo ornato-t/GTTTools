@@ -3,7 +3,7 @@
 
 	export let time: Date; //TS treats time as a Date but it's actually a string
 
-	const timeObj = DateTime.fromISO(time as unknown as string);
+	const timeObj = DateTime.fromJSDate(time);
 	const diff = timeObj
 		.diff(DateTime.local({ zone: 'Europe/Rome' }), ['hours', 'minutes', 'seconds'])
 		.toObject();
