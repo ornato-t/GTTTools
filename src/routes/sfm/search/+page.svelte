@@ -62,7 +62,7 @@
 		{#each stops as stop}
 			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/sfm/{stop.trainCode}">
 				<div class="card-body w-full grid">
-					<span class=" text-primary card-title">{stop.name}</span>
+					<span class="text-primary card-title">{stop.name}</span>
 					{#if stop.description != undefined && stop.description != stop.name}
 						<span class="text-xs italic place-self-start">{stop.description}</span>
 					{/if}
