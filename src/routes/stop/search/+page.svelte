@@ -25,7 +25,7 @@
 
 <svelte:head>
 	<title>Ricerca fermate mezzi pubblici</title>
-	<meta name="description" content="Pagina di ricerca per le fermate dei mezzi pubblici di Torino. Possibilità di visualizzare i prossimi passaggi delle linee in tempo reale">
+	<meta name="description" content="Pagina di ricerca per le fermate dei mezzi pubblici di Torino. Possibilità di visualizzare i prossimi passaggi delle linee in tempo reale" />
 </svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
@@ -33,24 +33,13 @@
 	<label class="label">
 		<span class="label-text">Inserisci il nome o il codice di una fermata</span>
 	</label>
-	<Search
-		label=""
-		placeholder="Cerca"
-		autofocus
-		bind:value
-		on:type={() => searchDB(value)}
-		class="input input-bordered w-full max-w-xs"
-	/>
+	<Search label="" placeholder="Cerca" autofocus bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
 	{#if stops != undefined && value.length > 0}
 		{#each stops as stop}
-			<a
-				class="my-1 card card-compact bg-base-200 btn h-fit animate-none"
-				href="/stop/{stop.code}"
-				data-sveltekit-preload-data
-			>
+			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/stop/{stop.code}">
 				<div class="card-body w-full grid grid-cols-4">
 					<span class=" text-primary col-span-3 card-title">{stop.name}</span>
 					<span class="text-secondary py-1"> {stop.code ?? ''}</span>

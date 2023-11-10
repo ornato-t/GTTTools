@@ -28,7 +28,10 @@
 
 <svelte:head>
 	<title>Ricerca stazioni ferroviarie</title>
-	<meta name="description" content="Pagina di ricerca per le stazioni ferroviarie di Torino. Possibilità di visualizzare i prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano">
+	<meta
+		name="description"
+		content="Pagina di ricerca per le stazioni ferroviarie di Torino. Possibilità di visualizzare i prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano"
+	/>
 </svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
@@ -36,23 +39,13 @@
 	<label class="label">
 		<span class="label-text">Inserisci il nome di una stazione</span>
 	</label>
-	<Search
-		label=""
-		placeholder="Cerca"
-		bind:value
-		on:type={() => searchDB(value)}
-		class="input input-bordered w-full max-w-xs"
-	/>
+	<Search label="" placeholder="Cerca" bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
 	{#if stops != undefined}
 		{#each stops as stop}
-			<a
-				class="my-1 card card-compact bg-base-200 btn h-fit animate-none"
-				href="/sfm/{stop.trainCode}"
-				data-sveltekit-preload-data
-			>
+			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/sfm/{stop.trainCode}">
 				<div class="card-body w-full grid">
 					<span class=" text-primary card-title">{stop.name}</span>
 					{#if stop.description != undefined && stop.description != stop.name}

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import '../app.css';
-	import Footer from "./footer.svelte"
+	import Footer from './footer.svelte';
 	import { onMount } from 'svelte';
 	import Search from 'svelte-search';
 	import { goto } from '$app/navigation';
 	import { dev } from '$app/environment';
 	import { swipe } from 'svelte-gestures';
-    import { page } from '$app/stores';
+	import { page } from '$app/stores';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
 
@@ -23,74 +23,77 @@
 
 	let stopCodeSearch: string;
 
-	onMount(async() => {
-		if(!dev){
+	onMount(async () => {
+		if (!dev) {
 			const { inject } = await import('@vercel/analytics');
 			inject({ mode: dev ? 'development' : 'production' });
 		}
-	
-		const stored = window.localStorage.getItem('theme');	//Save theme from local storage
 
-		if(stored != null) updateTheme(stored);		//If a theme is saved switch to it
-		else if (window.matchMedia('(prefers-color-scheme: dark)').matches) updateTheme(DARK)	//If the user prefers dark mode swap to dark (only if nothing is saved)
+		const stored = window.localStorage.getItem('theme'); //Save theme from local storage
 
-		const strikes = await data.strike.promise;	//Await promise passed by load function
-		const lastNotif = window.localStorage.getItem('lastNotifiedStrike');	//Get last notification sent from local storage
+		if (stored != null) updateTheme(stored); //If a theme is saved switch to it
+		else if (window.matchMedia('(prefers-color-scheme: dark)').matches) updateTheme(DARK); //If the user prefers dark mode swap to dark (only if nothing is saved)
 
-		if(strikes !== null){
-			if (lastNotif === null) {	//If no notification has been sent, notify the earliest strike
+		const strikes = await data.strike.promise; //Await promise passed by load function
+		const lastNotif = window.localStorage.getItem('lastNotifiedStrike'); //Get last notification sent from local storage
+
+		if (strikes !== null) {
+			if (lastNotif === null) {
+				//If no notification has been sent, notify the earliest strike
 				strike = strikes[0];
 				toggleStrikePopup = true;
-			}
-			else {
+			} else {
 				const lastNotifNum = Number.parseInt(lastNotif);
-				for(const strikeEl of strikes){
-					if(strikeEl.date.valueOf() > lastNotifNum){	//Notify the earliest strike after the last notification sent
+				for (const strikeEl of strikes) {
+					if (strikeEl.date.valueOf() > lastNotifNum) {
+						//Notify the earliest strike after the last notification sent
 						strike = strikeEl;
 						toggleStrikePopup = true;
 					}
 				}
 			}
 		}
-	})
+	});
 
 	//Open or close the drawer (mobile)
-	function toggleDrawer() { drawerVisible = !drawerVisible; }
+	function toggleDrawer() {
+		drawerVisible = !drawerVisible;
+	}
 
 	//Changee theme and save it to the local store
-	function updateTheme(val: string){
+	function updateTheme(val: string) {
 		manualTheme = val;
 		window.localStorage.setItem('theme', val);
 	}
 
 	//Send a popup if there's an imminent strike
-	function notifSeen(strike: strikeNotif){
+	function notifSeen(strike: strikeNotif) {
 		const d = strike.date.valueOf();
 		window.localStorage.setItem('lastNotifiedStrike', d.toString());
 	}
 
 	//Search a stop by its code
-	function searchStop(stop: string){
-		toggleDrawer();											//Close the drawer
-		stopCodeSearch = '';									//Reset the search string
-		goto(`/stop/${stop}`).then(() => location.reload());	//Move to the requested stop page, refresh page to replay loading animation
+	function searchStop(stop: string) {
+		toggleDrawer(); //Close the drawer
+		stopCodeSearch = ''; //Reset the search string
+		goto(`/stop/${stop}`).then(() => location.reload()); //Move to the requested stop page, refresh page to replay loading animation
 	}
 
-	function firstUppercase(str: string){
+	function firstUppercase(str: string) {
 		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 	}
 
 	//Handles gestures on mobile
-	function gestureHandler(event: any){
+	function gestureHandler(event: any) {
 		//Ignore slide events on desktop
-		const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-  		if (isDesktop) return;
+		const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+		if (isDesktop) return;
 
 		//Ignore slide events on map pages (vehicle and maps). Allow it in vehicle search pages
 		const url = $page.url.toString();
-		if(url.includes('map') || url.includes('vehicle') && !url.includes('search')) return;
+		if (url.includes('map') || (url.includes('vehicle') && !url.includes('search'))) return;
 
-		if(event.detail.direction === 'right' && drawerVisible === false) {
+		if (event.detail.direction === 'right' && drawerVisible === false) {
 			drawerVisible = true;
 		}
 	}
@@ -98,31 +101,43 @@
 
 <svelte:head>
 	<!-- COMMON TAGS -->
-	<meta charset="utf-8">
+	<meta charset="utf-8" />
 	<title>GTTTools: infomobilità reinventata</title>
 	<!-- Search Engine -->
-	<meta name="description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
-	<meta name="image" content="https://tools.gtt.cx/maskable_icon_x1065.png">
+	<meta
+		name="description"
+		content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari"
+	/>
+	<meta name="image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
 	<!-- Schema.org for Google -->
-	<meta itemprop="name" content="GTTTools">
-	<meta itemprop="description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
-	<meta itemprop="image" content="https://tools.gtt.cx/maskable_icon_x1065.png">
+	<meta itemprop="name" content="GTTTools" />
+	<meta
+		itemprop="description"
+		content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari"
+	/>
+	<meta itemprop="image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
 	<!-- Twitter -->
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="GTTTools">
-	<meta name="twitter:description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
-	<meta name="twitter:image:src" content="https://tools.gtt.cx/maskable_icon_x1065.png">
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="GTTTools" />
+	<meta
+		name="twitter:description"
+		content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari"
+	/>
+	<meta name="twitter:image:src" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
 	<!-- Open Graph general (Facebook, Pinterest & Google+) -->
-	<meta name="og:title" content="GTTTools">
-	<meta name="og:description" content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari">
-	<meta name="og:image" content="https://tools.gtt.cx/maskable_icon_x1065.png">
-	<meta name="og:url" content="https://tools.gtt.cx">
-	<meta name="og:site_name" content="GTTTools">
-	<meta name="og:locale" content="it_IT">
-	<meta name="og:type" content="website">
+	<meta name="og:title" content="GTTTools" />
+	<meta
+		name="og:description"
+		content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari"
+	/>
+	<meta name="og:image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
+	<meta name="og:url" content="https://tools.gtt.cx" />
+	<meta name="og:site_name" content="GTTTools" />
+	<meta name="og:locale" content="it_IT" />
+	<meta name="og:type" content="website" />
 </svelte:head>
 
-<div class="drawer" data-theme={manualTheme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: "" }} on:swipe={gestureHandler}>
+<div class="drawer" data-theme={manualTheme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: '' }} on:swipe={gestureHandler}>
 	<label for="drawer" class="h-0">Apri la barra laterale</label>
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content">
@@ -143,7 +158,9 @@
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
 						class="btn btn-square btn-ghost"
-						on:click={() => { updateTheme(LIGHT) }}
+						on:click={() => {
+							updateTheme(LIGHT);
+						}}
 					>
 						<i class="bx bx-sun bx-sm" />
 					</div>
@@ -151,7 +168,9 @@
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div
 						class="btn btn-square btn-ghost"
-						on:click={() => { updateTheme(DARK) }}
+						on:click={() => {
+							updateTheme(DARK);
+						}}
 					>
 						<i class="bx bx-moon bx-sm" />
 					</div>
@@ -162,25 +181,25 @@
 		<div class="lg:flex lg:flex-row min-h-[80vh]">
 			<ul class="hidden lg:block menu p-4 w-80 bg-base-300 text-base-content -mt-16">
 				<li>
-					<a href="/stop/search" data-sveltekit-preload-data>Cerca fermata</a>
+					<a href="/stop/search">Cerca fermata</a>
 				</li>
 				<li>
-					<a href="/stop/gps" data-sveltekit-preload-data>Fermate vicine</a>
+					<a href="/stop/gps">Fermate vicine</a>
 				</li>
 				<li>
-					<a href="/route/search" data-sveltekit-preload-data>Cerca linea</a>
+					<a href="/route/search">Cerca linea</a>
 				</li>
 				<li>
-					<a href="/vehicle/search" data-sveltekit-preload-data>Trova veicolo</a>
+					<a href="/vehicle/search">Trova veicolo</a>
 				</li>
 				<li>
-					<a href="/metro/search" data-sveltekit-preload-data>Stazioni metro</a>
+					<a href="/metro/search">Stazioni metro</a>
 				</li>
 				<li>
-					<a href="/sfm/search" data-sveltekit-preload-data>Stazioni SFM</a>
+					<a href="/sfm/search">Stazioni SFM</a>
 				</li>
 				<li>
-					<a href="/strikes" data-sveltekit-preload-data>Scioperi in programma</a>
+					<a href="/strikes">Scioperi in programma</a>
 				</li>
 			</ul>
 
@@ -191,9 +210,9 @@
 
 		<!-- Hiding footer on home page layout (mobile only), it is added as a child to the list of scrollable elements (see +page.svelte in this dir)-->
 		{#if $page.url.pathname === '/'}
-			<Footer css={"hidden lg:grid"}/>
+			<Footer css={'hidden lg:grid'} />
 		{:else}
-			<Footer/>
+			<Footer />
 		{/if}
 	</div>
 	<div class="drawer-side">
@@ -210,31 +229,31 @@
 				/>
 			</li>
 			<li>
-				<a href="/stop/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca fermata</a>
+				<a href="/stop/search" on:click={toggleDrawer}>Cerca fermata</a>
 			</li>
 			<li>
-				<a href="/stop/gps" data-sveltekit-preload-data on:click={toggleDrawer}>Fermate vicine</a>
+				<a href="/stop/gps" on:click={toggleDrawer}>Fermate vicine</a>
 			</li>
 			<li>
-				<a href="/route/search" data-sveltekit-preload-data on:click={toggleDrawer}>Cerca linea</a>
+				<a href="/route/search" on:click={toggleDrawer}>Cerca linea</a>
 			</li>
 			<li>
-				<a href="/vehicle/search" data-sveltekit-preload-data on:click={toggleDrawer}>Trova veicolo</a>
+				<a href="/vehicle/search" on:click={toggleDrawer}>Trova veicolo</a>
 			</li>
 			<li>
-				<a href="/metro/search" data-sveltekit-preload-data on:click={toggleDrawer}>Stazioni metro</a>
+				<a href="/metro/search" on:click={toggleDrawer}>Stazioni metro</a>
 			</li>
 			<li>
-				<a href="/sfm/search" data-sveltekit-preload-data on:click={toggleDrawer}>Stazioni SFM</a>
+				<a href="/sfm/search" on:click={toggleDrawer}>Stazioni SFM</a>
 			</li>
 			<li>
-				<a href="/strikes" data-sveltekit-preload-data on:click={toggleDrawer}>Scioperi in programma</a>
+				<a href="/strikes" on:click={toggleDrawer}>Scioperi in programma</a>
 			</li>
 		</ul>
 	</div>
-	
+
 	{#if strike !== undefined}
-		<input type="checkbox" id="strike-modal" class="modal-toggle" bind:checked={toggleStrikePopup}/>
+		<input type="checkbox" id="strike-modal" class="modal-toggle" bind:checked={toggleStrikePopup} />
 		<div class="modal modal-bottom sm:modal-middle">
 			<div class="modal-box">
 				<h3 class="font-bold text-lg">Attenzione! Possibile sciopero</h3>
@@ -245,10 +264,16 @@
 					<div>Ambito:</div>
 					<div class="font-mono text-end col-span-2">{firstUppercase(strike.scope)}</div>
 				</div>
-				<p class="mt-4 -mb-2">Maggiori informazioni alla <a class="link" href="/strikes" on:click={() => toggleStrikePopup = false}>pagina degli scioperi</a>.</p>
+				<p class="mt-4 -mb-2">Maggiori informazioni alla <a class="link" href="/strikes" on:click={() => (toggleStrikePopup = false)}>pagina degli scioperi</a>.</p>
 				<div class="modal-action">
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div class="btn mx-auto btn-wide" on:click={() => {toggleStrikePopup = false; notifSeen(strike);}}>
+					<div
+						class="btn mx-auto btn-wide"
+						on:click={() => {
+							toggleStrikePopup = false;
+							notifSeen(strike);
+						}}
+					>
 						Capito
 					</div>
 				</div>

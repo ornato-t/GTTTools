@@ -1,145 +1,145 @@
 <script lang="ts">
 	import 'leaflet/dist/leaflet.css';
 	import Counter from './counter.svelte';
-    import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
-    import type { Marker, LatLngTuple, Map } from "leaflet";
-    import type { PageData } from "./$types";
+	import type { Marker, LatLngTuple, Map } from 'leaflet';
+	import type { PageData } from './$types';
 	import type { stopDB } from '$lib/stopDB';
 
-    export let data: PageData;
+	export let data: PageData;
 
 	$: numVehicles = data.api.length;
 
-    let mapElement: HTMLElement;
-    let map: Map;
-    const markers = new Array<{droplet: Marker, vehicle: Marker, code: number}>;
-    
-    const vehicleColour = '#1cbb10';
-    const REFRESH_TIME = 1000;
+	let mapElement: HTMLElement;
+	let map: Map;
+	const markers = new Array<{ droplet: Marker; vehicle: Marker; code: number }>();
 
-    onMount(async () => {
-        if(data.routes.length === 0) return;    //TODO: find a cleaner solution to handle this. Without routes (outdated trips DB) we can't draw the shape but we still can put the icons on the map
-        const L = await import('leaflet');  //Leaflet has to be imported here, it needs window to be defined
-        await import('leaflet-rotatedmarker');
-        // @ts-ignore
-        await import('leaflet-polylineoffset'); //This is not an error
+	const vehicleColour = '#1cbb10';
+	const REFRESH_TIME = 1000;
 
-        map = L.map(mapElement);
+	onMount(async () => {
+		if (data.routes.length === 0) return; //TODO: find a cleaner solution to handle this. Without routes (outdated trips DB) we can't draw the shape but we still can put the icons on the map
+		const L = await import('leaflet'); //Leaflet has to be imported here, it needs window to be defined
+		await import('leaflet-rotatedmarker');
+		// @ts-ignore
+		await import('leaflet-polylineoffset'); //This is not an error
 
-        //Place map tiles
-        L.tileLayer('https://map.gtt.to.it/blossom/{z}/{x}/{y}.png', {
-            attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+		map = L.map(mapElement);
 
-        for(const route of data.routes){
-            const pinIcon = getPinIcon(L, route.pinColour);
+		//Place map tiles
+		L.tileLayer('https://map.gtt.to.it/blossom/{z}/{x}/{y}.png', {
+			attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
 
-            //Draw shape and center the map around it
-            const shape = L.polyline(route.shape as LatLngTuple[], {color: route.shapeColour, offset: 5}).addTo(map);   //This is not an error, see plugin
-            map.fitBounds(shape.getBounds());
+		for (const route of data.routes) {
+			const pinIcon = getPinIcon(L, route.pinColour);
 
-            //Wait for stops data, then place icons of nearby stops
-            route.stops.promise.then(stops => {
-                for(const stop of stops){
-                    L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
-                }
-            });
-        }
+			//Draw shape and center the map around it
+			const shape = L.polyline(route.shape as LatLngTuple[], { color: route.shapeColour, offset: 5 }).addTo(map); //This is not an error, see plugin
+			map.fitBounds(shape.getBounds());
 
-        //Place vehicle icons
-        const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, vehicleColour);
-        for(const vehicle of data.api){
-            const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
-            const popup = `<a href="/vehicle/${vehicle.id}"><div>${vehicle.vehicleType} ${vehicle.id}</div></a>`;
+			//Wait for stops data, then place icons of nearby stops
+			route.stops.promise.then((stops) => {
+				for (const stop of stops) {
+					L.marker(stop.coordinates as LatLngTuple, { icon: pinIcon })
+						.addTo(map)
+						.bindPopup(getPopup(stop));
+				}
+			});
+		}
 
-            const dropletMark = L.marker([vehicle.lat, vehicle.lon], {icon: dropletIcon, zIndexOffset: 100, alt: vehicle.vehicleType + ' ' + vehicle.id, rotationAngle: vehicle.direction}).addTo(map).bindPopup(popup);
+		//Place vehicle icons
+		const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, vehicleColour);
+		for (const vehicle of data.api) {
+			const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
+			const popup = `<a href="/vehicle/${vehicle.id}"><div>${vehicle.vehicleType} ${vehicle.id}</div></a>`;
 
-            const vehicleMark = L.marker([vehicle.lat, vehicle.lon], {icon: vehicleIcon, zIndexOffset: 101}).addTo(map).bindPopup(popup);
-            
-            markers.push({
-                droplet: dropletMark,
-                vehicle: vehicleMark,
-                code: vehicle.id
-            });
-        }
+			const dropletMark = L.marker([vehicle.lat, vehicle.lon], {
+				icon: dropletIcon,
+				zIndexOffset: 100,
+				alt: vehicle.vehicleType + ' ' + vehicle.id,
+				rotationAngle: vehicle.direction
+			})
+				.addTo(map)
+				.bindPopup(popup);
 
-        //Refresh vehicles positions
-        setInterval(async() => {
-            invalidate('vehicle');
-            for(const vehicle of data.api){
-                for(const marker of markers){
-                    if(marker.code === vehicle.id){
-                        marker.droplet.setLatLng([vehicle.lat, vehicle.lon]);
-                        marker.vehicle.setLatLng([vehicle.lat, vehicle.lon]);
-                        marker.droplet.setRotationAngle(vehicle.direction);
-                    }
-                }
-            }
-        }, REFRESH_TIME);
+			const vehicleMark = L.marker([vehicle.lat, vehicle.lon], { icon: vehicleIcon, zIndexOffset: 101 }).addTo(map).bindPopup(popup);
 
-    });
+			markers.push({
+				droplet: dropletMark,
+				vehicle: vehicleMark,
+				code: vehicle.id
+			});
+		}
 
-    //Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
-    function getPopup(stop: stopDB){
-        if(stop.metro){
-            return `<a href="/metro/${stop.code}">METRO ${stop.name}</a>`;
+		//Refresh vehicles positions
+		setInterval(async () => {
+			invalidate('vehicle');
+			for (const vehicle of data.api) {
+				for (const marker of markers) {
+					if (marker.code === vehicle.id) {
+						marker.droplet.setLatLng([vehicle.lat, vehicle.lon]);
+						marker.vehicle.setLatLng([vehicle.lat, vehicle.lon]);
+						marker.droplet.setRotationAngle(vehicle.direction);
+					}
+				}
+			}
+		}, REFRESH_TIME);
+	});
 
-        } else if (stop.train){
-            return `<a href="/sfm/${stop.trainCode}">${stop.name} FS</a>`;
-            
-        } else {
-            return `<a href="/stop/${stop.code}">${stop.code} - ${stop.name}</a>`;
-        }
-    }
+	//Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
+	function getPopup(stop: stopDB) {
+		if (stop.metro) {
+			return `<a href="/metro/${stop.code}">METRO ${stop.name}</a>`;
+		} else if (stop.train) {
+			return `<a href="/sfm/${stop.trainCode}">${stop.name} FS</a>`;
+		} else {
+			return `<a href="/stop/${stop.code}">${stop.code} - ${stop.name}</a>`;
+		}
+	}
 
-    //Returns a set of leaflet marker icons
-    function getPinIcon(L: any, colour: string){
-        const otherPinIcon = L.divIcon({
-            html: `<i class='bx bxs-map text-3xl' style='color: ${colour}; transform: translateY(-50%);'></i>`,
-            iconSize: [20, 20],
-            className: ''
-        });
+	//Returns a set of leaflet marker icons
+	function getPinIcon(L: any, colour: string) {
+		const otherPinIcon = L.divIcon({
+			html: `<i class='bx bxs-map text-3xl' style='color: ${colour}; transform: translateY(-50%);'></i>`,
+			iconSize: [20, 20],
+			className: ''
+		});
 
-        return otherPinIcon;
-    }
+		return otherPinIcon;
+	}
 
-    //Return a set of coloured, leaflet marker icons
-    function getVehicleIcons(L: any, colour: string){
-        const busIcon = L.divIcon({
-            html: `<i class='bx bxs-bus bx-xs' style='color: ${colour}'/>`,
-            iconSize: [20, 20],
-        });
+	//Return a set of coloured, leaflet marker icons
+	function getVehicleIcons(L: any, colour: string) {
+		const busIcon = L.divIcon({
+			html: `<i class='bx bxs-bus bx-xs' style='color: ${colour}'/>`,
+			iconSize: [20, 20]
+		});
 
-        const tramIcon = L.divIcon({
-            html: `<i class='bx bxs-train bx-xs' style='color: ${colour}'/>`,
-            iconSize: [20, 20],
-            iconAnchor: [6, 8]
-        });
+		const tramIcon = L.divIcon({
+			html: `<i class='bx bxs-train bx-xs' style='color: ${colour}'/>`,
+			iconSize: [20, 20],
+			iconAnchor: [6, 8]
+		});
 
-        const dropletIcon = L.divIcon({
-            html: `
+		const dropletIcon = L.divIcon({
+			html: `
                 <svg viewBox="0 0 31 22" class="h-10 fill-current text-white"stroke="black" stroke-width="0.3">
                     <path d="M12 2.1c-5.5 4.8-6 9.4-6 11.4 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2-.5-6.6-6-11.4z"/>
                 </svg>`,
-            iconSize: [20, 20],
-            iconAnchor: [22.5, 22]
-        });
+			iconSize: [20, 20],
+			iconAnchor: [22.5, 22]
+		});
 
-        return {busIcon, tramIcon, dropletIcon}
-    }
+		return { busIcon, tramIcon, dropletIcon };
+	}
 </script>
 
 <svelte:head>
 	<title>Linea {data.db.type.toLowerCase()} {data.code}: informazioni in tempo reale</title>
-	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui {data.db.type.toLowerCase()} della linea {data.code}">
+	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui {data.db.type.toLowerCase()} della linea {data.code}" />
 </svelte:head>
-
-<style>
-    main div {
-        height: 80vh;
-    }
-</style>
 
 <div class="p-4">
 	{#if data.code.toLowerCase() === data.db.type.toLowerCase()}
@@ -152,19 +152,19 @@
 
 <!-- Desktop -->
 <div class="hidden lg:grid grid-cols-4 xl:grid-cols-5 min-[1900px]:grid-cols-6 gap-4 my-2 bg-base-300 p-3 rounded-xl">
-    <h4 class="font-mono col-span-full">Veicoli in servizio: {numVehicles}</h4>
+	<h4 class="font-mono col-span-full">Veicoli in servizio: {numVehicles}</h4>
 
 	{#if numVehicles !== 0}
 		{#key data.api}
 			{#each data.api as vehicle}
-				<a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data>
+				<a href="/vehicle/{vehicle.id}">
 					<div class="card card-compact h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
 							<h2 class="card-title mb-4 grid grid-cols-3">
 								<span class="text-xl text-left">{vehicle.id}</span>
 
-                                <div class="font-mono text-xs text-end col-span-2">
-									<Counter time={vehicle.updated}/>
+								<div class="font-mono text-xs text-end col-span-2">
+									<Counter time={vehicle.updated} />
 								</div>
 							</h2>
 						</div>
@@ -179,37 +179,43 @@
 
 <!-- Mobile -->
 <div class="lg:hidden mx-2 rounded-lg collapse collapse-arrow bg-base-300">
-    <input type="checkbox"/>
-    <div class="collapse-title font-medium font-mono">
-        Veicoli in servizio: {numVehicles}
-    </div>
-    
-    <div class="collapse-content px-2 grid grid-cols-2 gap-2 place-items-center">
-        {#if numVehicles !== 0}
-            {#key data.api}
-                {#each data.api as vehicle}
-                    <div class="card card-compact h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
-                        <a href="/vehicle/{vehicle.id}" data-sveltekit-preload-data="hover">
-                            <div class="card-body p-6">
-                                <h2 class="card-title mb-4 grid grid-cols-4">
-                                    <span class="text-xl text-left">{vehicle.id}</span>
-                                    <div class="font-mono text-sm text-end col-span-3">
-                                        <Counter time={vehicle.updated}/>
-                                    </div>
-                                </h2>
-                            </div>
-                        </a>
-                    </div>
-                {/each}
-            {/key}
-        {:else}
-            <div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
-        {/if}
-    </div>
+	<input type="checkbox" />
+	<div class="collapse-title font-medium font-mono">
+		Veicoli in servizio: {numVehicles}
+	</div>
+
+	<div class="collapse-content px-2 grid grid-cols-2 gap-2 place-items-center">
+		{#if numVehicles !== 0}
+			{#key data.api}
+				{#each data.api as vehicle}
+					<div class="card card-compact h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
+						<a href="/vehicle/{vehicle.id}">
+							<div class="card-body p-6">
+								<h2 class="card-title mb-4 grid grid-cols-4">
+									<span class="text-xl text-left">{vehicle.id}</span>
+									<div class="font-mono text-sm text-end col-span-3">
+										<Counter time={vehicle.updated} />
+									</div>
+								</h2>
+							</div>
+						</a>
+					</div>
+				{/each}
+			{/key}
+		{:else}
+			<div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
+		{/if}
+	</div>
 </div>
 
 {#if data.routes.length !== 0}
-    <main class="select-none my-3">
-        <div bind:this={mapElement} class="h-full"/>
-    </main>
+	<main class="select-none my-3">
+		<div bind:this={mapElement} class="h-full" />
+	</main>
 {/if}
+
+<style>
+	main div {
+		height: 80vh;
+	}
+</style>
