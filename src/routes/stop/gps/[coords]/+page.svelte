@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { preloadData } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
+
+	onMount(() => preloadData(`/stop/${data.stops[0].code}`));
 </script>
 
 <div>Precisione: <span class="italic">{data.accuracy}m</span></div>

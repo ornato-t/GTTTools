@@ -2,14 +2,16 @@
 	import Search from 'svelte-search';
 	import type { stopDB } from '$lib/stopDB';
 	import fetch from '$lib/proxyRequest';
+	import { preloadData } from '$app/navigation';
 
 	let value = '';
-	let stops = new Array<stopDB>();
+	$: stops = new Array<stopDB>();
 
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
 			const res = await fetch(`/api/search-stop/${stop}`);
 			stops = await res.json();
+			await preload();
 		}
 	}
 
@@ -20,6 +22,10 @@
 		if (stop.name.includes(stop.city)) return false;
 
 		return true;
+	}
+
+	function preload() {
+		if (stops.length > 0) console.log('Now loading', stops[0].code, stops[0].name); return preloadData(`/metro/${stops[0].code}`);
 	}
 </script>
 
@@ -33,7 +39,14 @@
 	<label class="label">
 		<span class="label-text">Inserisci il nome o il codice di una fermata</span>
 	</label>
-	<Search label="" placeholder="Cerca" autofocus bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
+	<Search
+		label=""
+		placeholder="Cerca"
+		autofocus
+		bind:value
+		on:type={() => searchDB(value)}
+		class="input input-bordered w-full max-w-xs"
+	/>
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
