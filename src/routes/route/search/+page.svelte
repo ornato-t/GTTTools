@@ -3,15 +3,21 @@
 	import fetch from '$lib/proxyRequest';
 	import { encodeRoute } from '$lib/vehicle';
 	import type { routeDB } from '$lib/routeDB';
+	import { preloadData } from '$app/navigation';
 
 	let value = '';
-	let routes = new Array<routeDB>();
+	$: routes = new Array<routeDB>();
 
 	async function searchDB(route: string) {
 		if (route.length > 0) {
 			const res = await fetch(`/api/search-route/${route}`);
 			routes = await res.json();
+			await preload();
 		}
+	}
+
+	function preload() {
+		if (routes.length > 0) return preloadData(`/metro/${routes[0].code}`);
 	}
 </script>
 

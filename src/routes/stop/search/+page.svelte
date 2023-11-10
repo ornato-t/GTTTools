@@ -25,7 +25,7 @@
 	}
 
 	function preload() {
-		if (stops.length > 0) console.log('Now loading', stops[0].code, stops[0].name); return preloadData(`/metro/${stops[0].code}`);
+		if (stops.length > 0) return preloadData(`/metro/${stops[0].code}`);
 	}
 </script>
 
