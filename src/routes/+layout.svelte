@@ -2,13 +2,13 @@
 	import '../app.css';
 	import Footer from './footer.svelte';
 	import { onMount } from 'svelte';
-	import Search from 'svelte-search';
-	import { goto } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import { dev } from '$app/environment';
 	import { swipe } from 'svelte-gestures';
 	import { page } from '$app/stores';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
+	import { enhance } from '$app/forms';
 
 	export let data: LayoutData;
 
@@ -70,13 +70,6 @@
 	function notifSeen(strike: strikeNotif) {
 		const d = strike.date.valueOf();
 		window.localStorage.setItem('lastNotifiedStrike', d.toString());
-	}
-
-	//Search a stop by its code
-	function searchStop(stop: string) {
-		toggleDrawer(); //Close the drawer
-		stopCodeSearch = ''; //Reset the search string
-		goto(`/stop/${stop}`).then(() => location.reload()); //Move to the requested stop page, refresh page to replay loading animation
 	}
 
 	function firstUppercase(str: string) {
@@ -219,14 +212,28 @@
 		<label for="drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
 			<li>
-				<Search
-					hideLabel
-					placeholder="Cerca codice fermata"
-					class="input input-bordered rounded-2xl w-full max-w-xs -ml-2"
-					bind:value={stopCodeSearch}
-					on:submit={() => searchStop(stopCodeSearch)}
-					inputmode="numeric"
-				/>
+				<form
+					method="POST"
+					action="/?"
+					use:enhance
+					on:submit={() => {
+						toggleDrawer();
+						stopCodeSearch = '';
+					}}
+				>
+					<input
+						name="stop"
+						placeholder="Cerca codice fermata"
+						class="input input-bordered rounded-2xl w-full max-w-xs -ml-2"
+						type="text"
+						required
+						pattern="\d+"
+						autocomplete="off"
+						autocapitalize="off"
+						inputmode="numeric"
+						bind:value={stopCodeSearch}
+					/>
+				</form>
 			</li>
 			<li>
 				<a href="/stop/search" on:click={toggleDrawer}>Cerca fermata</a>
