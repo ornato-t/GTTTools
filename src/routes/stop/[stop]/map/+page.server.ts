@@ -47,12 +47,12 @@ async function getVehicles(stopAPI: Promise<stop[]>) {
 
     let i = 0;
     for (const line of stop) {
-        const data = await poll(line.routeID);
+        const data = await poll(line.route);
 
         if (data.length > 0) {
             out.push({
                 route: line.route,
-                routeID: line.routeID,
+                routeID: line.route,
                 vehicles: data,
                 colour: getColour(i)
             });

@@ -1,140 +1,114 @@
-import { DateTime } from "luxon"
+const RETURNED_ENTRIES = 5; //Maximum number of timestamps to be returned
 
-//Fetch all info regarding departing vehicles from a stop (by number)
-export async function pollStop(stop: number) {
-    const url = `https://www.gtt.to.it/cms/index.php?option=com_gtt&task=palina.getTransitiOld&palina=${stop}&realtime=true`;
-    const options = {
-        method: 'GET',
-        mode: 'no-cors' as RequestMode
+export async function pollStop(stop: number): Promise<stop[]> {
+    const query = `
+        query ConsolidatedQuery($id: String!, $startTime: Long!, $timeRange: Int!, $numberOfDepartures: Int!) {
+            stop(id: $id) {
+                ... on Stop {
+                    stops: stoptimesWithoutPatterns(
+                        startTime: $startTime
+                        timeRange: $timeRange
+                        numberOfDepartures: $numberOfDepartures
+                        omitCanceled: true
+                    ) {
+                        serviceDay
+                        realtimeDeparture
+                        realtime
+                        trip {
+                            tripHeadsign
+                            wheelchairAccessible
+                            occupancyStatus
+                            pattern {
+                                route {
+                                    shortName
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }  
+    `;
+    const variables = {
+        id: `gtt:${stop}`,
+        startTime: `${Math.round(new Date().valueOf() / 1000)}`,
+        timeRange: 3600000,
+        numberOfDepartures: 100
     };
 
-    const response = await fetch(url, options);
-    if (response.status !== 200) throw new Error();
+    const response = await fetch('https://plan.muoversiatorino.it/otp/routers/mato/index/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        mode: 'no-cors',
+        body: JSON.stringify({ query, variables }),
+    });
 
-    const stopsWeb: stopWeb[] = await response.json();
+    const api = await response.json() as GraphQL;
+    if (!api.data.stop) throw new Error('noInfo');  //Stop not found
 
-    const stops = stopsWeb.map(pass => {
-        if (pass.Linea === undefined) throw new Error('noInfo');
+    const clean = new Array<stop>();
+    for (const stop of api.data.stop.stops) {
+        const index = clean.findIndex(s => s.route === stop.trip.pattern.route.shortName);
 
-        return {
-            route: parseBusN(pass.LineaAlias),
-            routeID: pass.Linea,
-            direction: pass.Direzione,
-            pass: getPasses(pass.PassaggiPR, pass.PassaggiRT),
+        if (index === -1) { //Stop hasn't been added yet
+            clean.push({
+                route: stop.trip.pattern.route.shortName,
+                direction: stop.trip.tripHeadsign,
+                pass: [{
+                    time: new Date((stop.serviceDay + stop.realtimeDeparture) * 1000),
+                    realTime: stop.realtime,
+                    full: stop.trip.occupancyStatus === 'FULL' || stop.trip.occupancyStatus === 'NOT_ACCEPTING_PASSENGERS',
+                    wheelchair: stop.trip.wheelchairAccessible === 'POSSIBLE'
+                }],
+            });
+        } else if (clean[index].pass.length < RETURNED_ENTRIES) {   //Add to already existing stop, at most RETURNED_ENTRIES
+            clean[index].pass.push({
+                time: new Date((stop.serviceDay + stop.realtimeDeparture) * 1000),
+                realTime: stop.realtime,
+                full: stop.trip.occupancyStatus === 'FULL' || stop.trip.occupancyStatus === 'NOT_ACCEPTING_PASSENGERS',
+                wheelchair: stop.trip.wheelchairAccessible === 'POSSIBLE'
+            });
         }
-    }) satisfies stop[];
+    }
 
-    stops.sort((a, b) => {
-        if (a.routeID < b.routeID) return -1;
-        if (a.routeID > b.routeID) return 1;
+    //Sort by route number
+    clean.sort((a, b) => {
+        if (a.route < b.route) return -1;
+        if (a.route > b.route) return 1;
         return 0;
     })
 
-    return stops;
+    return clean;
 }
 
-//Renames bus substituting trams, called "X navetta" to "XN", as shown on the bus themselves
-function parseBusN(bus: string) {
-    if (!bus.includes('navetta')) return bus;
-
-    return bus.replace(' navetta', 'N');
-}
-
-
-const MAX_MINUTES = 5;  //Maximum difference to discriminate between a real time trip
-const RETURNED_ENTRIES = 4; //Maximum number of timestamps to be returned
-const PAST_THRESHOLD = 2;
-//Assemble an array of passes, either in real time or not, in an arrays of size RETURNED_ENTRIES
-function getPasses(programmed: string[], realTime: string[]) {
-
-    //If no real time passages are found return the programmed ones
-    if (realTime.length === 0)
-        return programmed
-            .map(pass => toDateTime(pass))  //Cast to DateTime
-            .filter(pass => isFuture(pass, PAST_THRESHOLD)) //Filter out ones in the past
-            .map(pass => { return { time: pass.toJSDate(), realTime: false } }) //Map to object
-            .slice(0, RETURNED_ENTRIES) satisfies passage[];    //Only take the first N
-
-    const rt = realTime.map(pass => toDateTime(pass))  //Cast to DateTime
-
-    //Create returned object from real time in the future
-    const res: passage[] = rt
-        .filter(pass => isFuture(pass, PAST_THRESHOLD))
-        .map(pass => { return { time: pass.toJSDate(), realTime: true } })
-        .slice(0, RETURNED_ENTRIES);
-
-    //If the programmed ones aren't duplicates of the real time ones, add them, mark them as not real time
-    for (const pass of programmed) {
-        if (res.length >= RETURNED_ENTRIES) {
-            return res.sort((a, b) => {
-                if (a.time < b.time) return -1;
-                if (a.time > b.time) return 1;
-                return 0;
-            });
-        }
-
-        const date = toDateTime(pass);  //Cast current programmed trip to DateTime
-        let isDup = false;
-
-        for (const passRt of rt) {
-            const diff = passRt.diff(date, 'minutes').as('minutes');    //Calculate difference in minutes4
-
-            if (Math.abs(diff) <= MAX_MINUTES) {
-                isDup = true;
-                break;
-            }
-        };
-
-        //If the current programmed date is not a duplicate, push it (only if it isn't in the future)
-        if (!isDup && isFuture(date, PAST_THRESHOLD))
-            res.push({ time: date.toJSDate(), realTime: false });
-
-    }
-
-    return res.sort((a, b) => {
-        if (a.time < b.time) return -1;
-        if (a.time > b.time) return 1;
-        return 0;
-    });
-
-
-    //Cast a string date to DateTime
-    function toDateTime(d: string) {
-        return DateTime.fromFormat(d, 'H:m', { locale: 'it', zone: 'Europe/Rome' });
-    }
-
-    //Returns true if a DateTime is in the future or in the past within a certain tolerance [minutes]
-    function isFuture(d: DateTime, tolerance: number) {
-        const difference = d.diffNow('minutes').as('minutes');
-
-        if (difference > (tolerance * -1)) return true;
-        return false;
+//Represents the data about a stop. As provided by the MATO GraphQL API
+interface GraphQL {
+    data: {
+        stop: {
+            stops: {
+                serviceDay: number
+                realtimeDeparture: number
+                realtime: boolean
+                trip: {
+                    tripHeadsign: string
+                    wheelchairAccessible: 'NO_INFORMATION' | 'POSSIBLE' | 'NOT_POSSIBLE'
+                    occupancyStatus: 'EMPTY' | 'MANY_SEATS_AVAILABLE' | 'FEW_SEATS_AVAILABLE' | 'STANDING_ROOM_ONLY' | 'CRUSHED_STANDING_ROOM_ONLY' | 'FULL' | 'NOT_ACCEPTING_PASSENGERS'
+                    pattern: { route: { shortName: string } }
+                }
+            }[]
+        } | null;
     }
 }
-
-//Represents a vehicle stopping by a stop. As provided by the GTT site
-export interface stopWeb {
-    Linea: string,
-    LineaAlias: string,
-    PassaggiRT: string[],
-    Passaggi: string,
-    Direzione: string,
-    DirezioneBreve: string,
-    Bacino: string,
-    Regol: string,
-    Avviso: boolean,
-    PassaggiPR: string[]
-};
 
 //Represents a vehicle stopping by a stop. Prettified for use in app
 export interface stop {
-    route: string,
-    routeID: string,
-    direction: string,
-    pass: passage[],
-}
-
-export interface passage {
-    time: Date,
-    realTime: boolean,
+    route: string;
+    // routeID: string;
+    direction: string;
+    pass: {
+        time: Date;
+        realTime: boolean;
+        full: boolean;
+        wheelchair: boolean;
+    }[];
 }
