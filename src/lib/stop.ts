@@ -1,4 +1,4 @@
-const RETURNED_ENTRIES = 5; //Maximum number of timestamps to be returned
+const RETURNED_ENTRIES = 4; //Maximum number of timestamps to be returned
 
 export async function pollStop(stop: number): Promise<stop[]> {
     const query = `
@@ -62,8 +62,18 @@ export async function pollStop(stop: number): Promise<stop[]> {
                 }],
             });
         } else if (clean[index].pass.length < RETURNED_ENTRIES) {   //Add to already existing stop, at most RETURNED_ENTRIES
+            const passes = clean[index].pass.length;
+            const currentPass = new Date((stop.serviceDay + stop.realtimeDeparture) * 1000);
+
+            if (passes > 0) {
+                const diff = currentPass.valueOf() - clean[index].pass[passes - 1].time.valueOf();  //Difference between the date of this pass and the previous one - sometimes there are duplicates
+                if (diff <= 30 * 1000) {
+                    continue;   //Skip iteration in case of duplicates
+                }
+            }
+
             clean[index].pass.push({
-                time: new Date((stop.serviceDay + stop.realtimeDeparture) * 1000),
+                time: currentPass,
                 realTime: stop.realtime,
                 full: stop.trip.occupancyStatus === 'FULL' || stop.trip.occupancyStatus === 'NOT_ACCEPTING_PASSENGERS',
                 wheelchair: stop.trip.wheelchairAccessible === 'POSSIBLE'
@@ -76,7 +86,7 @@ export async function pollStop(stop: number): Promise<stop[]> {
         if (a.route < b.route) return -1;
         if (a.route > b.route) return 1;
         return 0;
-    })
+    });
 
     return clean;
 }
