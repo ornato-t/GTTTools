@@ -1,7 +1,7 @@
 import type { stopDB } from '$lib/stopDB';
 import type { LayoutServerLoad } from './$types';
 import type { Collection } from "mongodb";
-import { pollStop } from '$lib/stop';
+import { pollStop } from '$lib/poll/stop';
 import { error } from '@sveltejs/kit';
 
 //DB data is returned first, passed to the client load page. This never changes, so it shouldn't expire

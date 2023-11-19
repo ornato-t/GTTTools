@@ -1,5 +1,5 @@
 import type { stopDB } from '$lib/stopDB';
-import { pollStop } from '$lib/stop';
+import { pollStop } from '$lib/poll/stop';
 import type { LayoutServerLoad } from './$types';
 import type { Collection } from "mongodb";
 import { error } from '@sveltejs/kit';
