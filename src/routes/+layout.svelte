@@ -2,21 +2,17 @@
 	import '../app.css';
 	import Footer from './footer.svelte';
 	import { onMount } from 'svelte';
-	import { invalidateAll } from '$app/navigation';
 	import { dev } from '$app/environment';
 	import { swipe } from 'svelte-gestures';
 	import { page } from '$app/stores';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
 	import { enhance } from '$app/forms';
+	import { DARK, theme, toggleTheme } from '$lib/theme';
 
 	export let data: LayoutData;
 
 	let drawerVisible = false;
-	let manualTheme = '';
-
-	const DARK = 'night';
-	const LIGHT = 'customLight';
 
 	let toggleStrikePopup = false;
 	let strike: strikeNotif;
@@ -28,11 +24,6 @@
 			const { inject } = await import('@vercel/analytics');
 			inject({ mode: dev ? 'development' : 'production' });
 		}
-
-		const stored = window.localStorage.getItem('theme'); //Save theme from local storage
-
-		if (stored != null) updateTheme(stored); //If a theme is saved switch to it
-		else if (window.matchMedia('(prefers-color-scheme: dark)').matches) updateTheme(DARK); //If the user prefers dark mode swap to dark (only if nothing is saved)
 
 		const strikes = await data.strike.promise; //Await promise passed by load function
 		const lastNotif = window.localStorage.getItem('lastNotifiedStrike'); //Get last notification sent from local storage
@@ -58,12 +49,6 @@
 	//Open or close the drawer (mobile)
 	function toggleDrawer() {
 		drawerVisible = !drawerVisible;
-	}
-
-	//Changee theme and save it to the local store
-	function updateTheme(val: string) {
-		manualTheme = val;
-		window.localStorage.setItem('theme', val);
 	}
 
 	//Send a popup if there's an imminent strike
@@ -130,7 +115,7 @@
 	<meta name="og:type" content="website" />
 </svelte:head>
 
-<div class="drawer" data-theme={manualTheme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: '' }} on:swipe={gestureHandler}>
+<div class="drawer" data-theme={$theme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: '' }} on:swipe={gestureHandler}>
 	<label for="drawer" class="h-0">Apri la barra laterale</label>
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content">
@@ -147,24 +132,14 @@
 				</a>
 			</div>
 			<div class="navbar-end">
-				{#if manualTheme === DARK}
+				{#if $theme === DARK}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div
-						class="btn btn-square btn-ghost"
-						on:click={() => {
-							updateTheme(LIGHT);
-						}}
-					>
+					<div class="btn btn-square btn-ghost" on:click={toggleTheme}>
 						<i class="bx bx-sun bx-sm" />
 					</div>
 				{:else}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div
-						class="btn btn-square btn-ghost"
-						on:click={() => {
-							updateTheme(DARK);
-						}}
-					>
+					<div class="btn btn-square btn-ghost" on:click={toggleTheme}>
 						<i class="bx bx-moon bx-sm" />
 					</div>
 				{/if}
