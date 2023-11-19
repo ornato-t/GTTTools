@@ -1,6 +1,5 @@
 # List of changes to be made in the 2.0 release
 - look for GraphQL vehicle API
-- test current route codes in stop API with GTT standard (10N, 72B, ST1, M1S)
 - change strike to server load, load everything in parent load, reuse in component, remove API
 - consider moving all pollers to separate library directory:
    - stop: DONE

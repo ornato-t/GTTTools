@@ -5,7 +5,9 @@ import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 
 const TIMEOUT = 500;   //If GTT query takes longer than this, switch to GTFS API
 
-export async function poll(code: string) {
+export async function poll(codeIn: string) {
+    const code = parseRouteCode(codeIn);
+
     try {
         return await pollRoute(code);
     } catch (_) {
@@ -15,6 +17,20 @@ export async function poll(code: string) {
             throw error(503, 'GTT API offline');
         }
     }
+}
+
+//Converts a GTTTools code to a GTT one. They are mostly the same, only different in a few cases
+function parseRouteCode(codeIn: string): string {
+    const starRegex = /STAR (\d)/;
+    const star = codeIn.match(starRegex);
+    
+    const barRegex = /(\d+)\//;
+    const bar = codeIn.match(barRegex);
+
+    if(star) return `ST${star[1]}`;
+    if(bar) return `${bar[1]}B`;
+
+    return codeIn;
 }
 
 //Polls a route on the GTT website API endpoint
