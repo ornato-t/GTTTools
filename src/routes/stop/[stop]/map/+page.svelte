@@ -7,6 +7,7 @@
     import type { stopDB } from "$lib/stopDB"
 	import { encodeRoute, type vehicleMap } from '$lib/vehicle';
     import Loading from './loading.svelte';
+	import { placeTiles } from '$lib/map';
 
     export let data: PageData;
 
@@ -29,11 +30,7 @@
         const { pinIcon, otherPinIcon } = getPinIcons(L);
 
         map = L.map(mapElement).setView(coords, 30);
-
-        //Place map tiles
-        L.tileLayer('https://map.gtt.to.it/blossom/{z}/{x}/{y}.png', {
-            attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+		placeTiles(L, map);
 
         //Place icon of queried stop
         L.marker(coords, {icon: pinIcon}).addTo(map).bindPopup(getPopup(data.db));

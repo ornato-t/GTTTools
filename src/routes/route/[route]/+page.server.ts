@@ -2,12 +2,13 @@ import type { routeDB } from '$lib/routeDB';
 import type { Collection } from "mongodb";
 import type { stopDB } from '$lib/stopDB.js';
 import type { trip, trip_stop } from '$lib/trip.js';
+import { poll } from '$lib/poll/route.js';
 
 export const load = (async ({ params, locals, depends }) => {
-    depends('vehicleDB');
+    depends('vehicle');
 
     const code = params.route;
-    const { stops, trips } = locals;
+    const { stops, trips, routes } = locals;
     const shapeColours = ['#fb3735', '#436cdc']
     const pinColours = ['#fb7c7b', '#859fe3']
 
@@ -15,20 +16,19 @@ export const load = (async ({ params, locals, depends }) => {
 
     return {
         code,
-        db: getDB(code, locals),
+        db: getDB(code, routes),
         routes: tripData.map((el, i) => ({
             shape: el.shape,
             shapeColour: shapeColours[i],
             stops: { promise: getStops(el.stops, stops) },
             pinColour: pinColours[i]
-        }))
+        })),
+        api: poll(code),
     }
 });
 
 
-async function getDB(code: string, locals: App.Locals) {
-    const { routes }: { routes: Collection<routeDB> } = locals;
-
+async function getDB(code: string, routes: Collection<routeDB>) {
     const route = routes.findOne({ code }, { projection: { _id: 0, provider: 0 } }) as Promise<routeDB>;
 
     return route;
@@ -36,7 +36,7 @@ async function getDB(code: string, locals: App.Locals) {
 
 //Return an appropriate trip info for a rotue
 async function getTrip(route: string, trips: Collection<trip>) {
-    if(route === 'METRO') route = 'M1';
+    if (route === 'METRO') route = 'M1';
 
     const aggr = [
         { $match: { route, "dates.startDate": { $lte: new Date() }, "dates.endDate": { $gte: new Date() }, [getDay()]: true } },

@@ -7,6 +7,7 @@
 	import type { stopDB } from '$lib/stopDB';
 	import type { vehicleSearched } from '$lib/vehicle';
 	import type { PageData } from './$types';
+	import { placeTiles } from '$lib/map';
 
 	export let data: PageData;
 
@@ -40,11 +41,7 @@
 
 		if(api !== null) {
 			map.setView([api.lat, api.lon], 20);
-
-			//Place map tiles
-			L.tileLayer('https://map.gtt.to.it/blossom/{z}/{x}/{y}.png', {
-				attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-			}).addTo(map);
+			placeTiles(L, map);
 
 			//Only place stop and shape icons if a matching trip is found
 			if(api.db !== null) {

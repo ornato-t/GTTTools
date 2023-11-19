@@ -3,16 +3,20 @@
 	import type { stopDB } from '$lib/stopDB';
 	import fetch from '$lib/proxyRequest';
 	import type { PageServerData } from './$types';
-	
+	import { invalidate, preloadData } from '$app/navigation';
+	import { onMount } from 'svelte';
+
 	export let data: PageServerData;
 
 	let value = '';
-	let stops = data.db;
+	$: stops = data.db;
+	onMount(preload);
 
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
 			const res = await fetch(`/api/search-stop/${stop}?filter=metro`);
 			stops = await res.json();
+			await preload();
 		}
 	}
 
@@ -24,11 +28,15 @@
 
 		return true;
 	}
+
+	function preload() {
+		if (stops.length > 0) return preloadData(`/metro/${stops[0].code}`);
+	}
 </script>
 
 <svelte:head>
 	<title>Ricerca stazioni metro</title>
-	<meta name="description" content="Pagina di ricerca per le stazioni della metropolitana di Torino. Possibilità di visualizzare i prossimi passaggi dei treni in tempo reale">
+	<meta name="description" content="Pagina di ricerca per le stazioni della metropolitana di Torino. Possibilità di visualizzare i prossimi passaggi dei treni in tempo reale" />
 </svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
@@ -42,6 +50,7 @@
 		autofocus
 		bind:value
 		on:type={() => searchDB(value)}
+		on:clear={() => invalidate('search').then(preload)}
 		class="input input-bordered w-full max-w-xs"
 	/>
 </div>
@@ -49,11 +58,7 @@
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
 	{#if stops != undefined}
 		{#each stops as stop}
-			<a
-				class="my-1 card card-compact bg-base-200 btn h-fit animate-none"
-				href="/metro/{stop.code}"
-				data-sveltekit-preload-data
-			>
+			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/metro/{stop.code}">
 				<div class="card-body w-full grid grid-cols-1">
 					<span class="text-primary card-title">{stop.name}</span>
 					{#if stop.description != undefined && stop.description != stop.name}

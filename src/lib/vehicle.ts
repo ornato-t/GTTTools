@@ -47,7 +47,7 @@ export function encodeRoute(code: string) {
     if (code.includes('/')) {
         const num = Number.parseInt(code);
 
-        return `${num}%2F`;
+        return `${num}%20%2F`;
     }
     return code;
 }

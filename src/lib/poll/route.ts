@@ -1,26 +1,36 @@
 import type { vehicle, vehicleWeb } from "$lib/vehicle";
-import type { RequestHandler } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { DateTime } from "luxon"
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 
 const TIMEOUT = 500;   //If GTT query takes longer than this, switch to GTFS API
 
-export const GET: RequestHandler = async ({ params }) => {
-    try {
-        const res = await pollRoute(params.route as string);
+export async function poll(codeIn: string) {
+    const code = parseRouteCode(codeIn);
 
-        return new Response(JSON.stringify(res));
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    try {
+        return await pollRoute(code);
     } catch (_) {
         try {
-            const res = await pollGTFS(params.route as string);
-
-            return new Response(JSON.stringify(res));
+            return await pollGTFS(code);
         } catch (_) {
-            return new Response(JSON.stringify({ error: 'GTT API offline' }), { status: 503, statusText: 'GTT API offline' });
-
+            throw error(503, 'GTT API offline');
         }
     }
+}
+
+//Converts a GTTTools code to a GTT one. They are mostly the same, only different in a few cases
+function parseRouteCode(codeIn: string): string {
+    const starRegex = /STAR (\d)/;
+    const star = codeIn.match(starRegex);
+    
+    const barRegex = /(\d+)\//;
+    const bar = codeIn.match(barRegex);
+
+    if(star) return `ST${star[1]}`;
+    if(bar) return `${bar[1]}B`;
+
+    return codeIn;
 }
 
 //Polls a route on the GTT website API endpoint

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
+	import { invalidate, preloadData } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import Loading from './loading.svelte';
@@ -13,6 +13,7 @@
 	//Refresh data every 5 seconds
 	onMount(async () => {
 		api = await data.api.promise	//First refresh the data
+		preloadData(`/sfm/${data.code}/map`);
 
 		setInterval(async () => {
 			await invalidate('sfm');		//Wait for page reload

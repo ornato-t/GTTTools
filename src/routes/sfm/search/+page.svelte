@@ -3,16 +3,20 @@
 	import type { stopDB } from '$lib/stopDB';
 	import fetch from '$lib/proxyRequest';
 	import type { PageServerData } from './$types';
+	import { invalidate, preloadData } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	export let data: PageServerData;
 
 	let value = '';
-	let stops = data.db;
+	$: stops = data.db;
+	onMount(preload);
 
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
 			const res = await fetch(`/api/search-stop/${stop}?filter=sfm`);
 			stops = await res.json();
+			await preload();
 		}
 	}
 
@@ -24,11 +28,18 @@
 
 		return true;
 	}
+
+	function preload() {
+		if (stops.length > 0) return preloadData(`/sfm/${stops[0].trainCode}`);
+	}
 </script>
 
 <svelte:head>
 	<title>Ricerca stazioni ferroviarie</title>
-	<meta name="description" content="Pagina di ricerca per le stazioni ferroviarie di Torino. Possibilità di visualizzare i prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano">
+	<meta
+		name="description"
+		content="Pagina di ricerca per le stazioni ferroviarie di Torino. Possibilità di visualizzare i prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano"
+	/>
 </svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
@@ -41,6 +52,7 @@
 		placeholder="Cerca"
 		bind:value
 		on:type={() => searchDB(value)}
+		on:clear={() => invalidate('search').then(preload)}
 		class="input input-bordered w-full max-w-xs"
 	/>
 </div>
@@ -48,13 +60,9 @@
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
 	{#if stops != undefined}
 		{#each stops as stop}
-			<a
-				class="my-1 card card-compact bg-base-200 btn h-fit animate-none"
-				href="/sfm/{stop.trainCode}"
-				data-sveltekit-preload-data
-			>
+			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/sfm/{stop.trainCode}">
 				<div class="card-body w-full grid">
-					<span class=" text-primary card-title">{stop.name}</span>
+					<span class="text-primary card-title">{stop.name}</span>
 					{#if stop.description != undefined && stop.description != stop.name}
 						<span class="text-xs italic place-self-start">{stop.description}</span>
 					{/if}

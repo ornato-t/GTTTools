@@ -2,7 +2,7 @@ import { getVehicle } from '$lib/vehicleImages';
 import { error } from '@sveltejs/kit';
 import type { vehicleSearched } from '$lib/vehicle';
 
-export async function load({ params, depends, fetch }) {
+export async function load({ params, depends, data }) {
     depends('vehicle');
 
     const code = params.vehicle;
@@ -23,17 +23,6 @@ export async function load({ params, depends, fetch }) {
         siteName: res.siteName,
         info: res.info ?? null,
         type: res.type,
-        route: { promise: findRoute(outId, fetch)}  
+        route: data.route
     };
-}
-
-async function findRoute(code: string, fetch: (arg0: string) => Promise<Response>) {
-    try {
-        const res = await fetch(`/api/find-vehicle/${code}`);
-        const json = await res.json() as vehicleSearched;
-
-        return json;
-    } catch (e) {
-        return null;
-    }
 }
