@@ -6,6 +6,7 @@
 	import type { Marker, LatLngTuple, Map } from 'leaflet';
 	import type { PageData } from './$types';
 	import type { stopDB } from '$lib/stopDB';
+	import {placeTiles} from '$lib/map';
 
 	export let data: PageData;
 
@@ -26,11 +27,7 @@
 		await import('leaflet-polylineoffset'); //This is not an error
 
 		map = L.map(mapElement);
-
-		//Place map tiles
-		L.tileLayer('https://map.gtt.to.it/blossom/{z}/{x}/{y}.png', {
-			attribution: 'GTT OpenData | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
+		placeTiles(L, map);
 
 		for (const route of data.routes) {
 			const pinIcon = getPinIcon(L, route.pinColour);
