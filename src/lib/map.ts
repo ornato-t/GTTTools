@@ -1,3 +1,4 @@
+import { isDarkTheme } from '$lib/theme';
 import type { Map } from 'leaflet';
 type LeafletTypeBase = typeof import('leaflet');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +52,7 @@ function getTiles(): Tiles {
         name: 'Thunderforest SpinalMap',
         url: 'https://{s}.tile.thunderforest.com/spinal-map/{z}/{x}/{y}.png?apikey={apikey}',
         config: {
-            attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', 
+            attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             subdomains: 'abc',
             maxZoom: 20,
             minZoom: 10,
@@ -59,7 +60,7 @@ function getTiles(): Tiles {
         }
     };
 
-    return light;
+    return isDarkTheme() ? dark2 : light;
 }
 
 interface Tiles {

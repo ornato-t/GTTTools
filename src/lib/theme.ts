@@ -41,3 +41,15 @@ export function toggleTheme(): void {
         return theme === themes.light ? themes.dark : themes.light;
     });
 }
+
+// Returns true if the theme is dark, false if the theme is light. Doesn't detect theme changes without a page refresh or route change
+export function isDarkTheme(): boolean {
+    let dark = false;
+
+    const unsubscribe = theme.subscribe(theme => {
+        if (theme === DARK) dark = true;
+    });
+    unsubscribe();
+
+    return dark;
+}
