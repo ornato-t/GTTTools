@@ -5,7 +5,8 @@ import { error } from "@sveltejs/kit";
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 import type { Collection } from "mongodb";
 
-export async function load({ params, locals }) {
+export async function load({ params, locals, depends }) {
+    depends('vehicle');
     return {
         route: { promise: searchVehicle(params.vehicle, locals) }
     };
@@ -13,7 +14,7 @@ export async function load({ params, locals }) {
 
 //Poll the GTFS-RT feed looking for the queried vehicle
 async function searchVehicle(id: string, locals: App.Locals) {
-    const url = 'http://percorsieorari.gtt.to.it/das_gtfsrt/vehicle_position.aspx';
+    const url = 'https://percorsieorari.gtt.to.it/das_gtfsrt/vehicle_position.aspx';
 
     const { stops, trips } = locals;
 
