@@ -11,8 +11,8 @@ const config = {
 
 	kit: {
 		adapter: vercel({
-			edge: false,
 			split: false,
+			memory: 128,
 			external: []		
 		})
 	}
