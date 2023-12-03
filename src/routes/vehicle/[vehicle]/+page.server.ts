@@ -1,14 +1,32 @@
 import type { stopDB } from "$lib/stopDB";
 import type { trip } from "$lib/trip";
 import type { vehicleSearched } from "$lib/vehicle";
-import { error } from "@sveltejs/kit";
-import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 import type { Collection } from "mongodb";
+import { error } from "@sveltejs/kit";
+import { getVehicle } from '$lib/vehicleImages';
+import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 
 export async function load({ params, locals, depends }) {
     depends('vehicle');
+    const code = params.vehicle;
+
+    const res = getVehicle(code);
+
+    if (res === null) throw error(404, 'No matching vehicle found');
+
+    let outId: string;
+    if (res?.modifier !== undefined) outId = res.modifier.replace('_', `${res.code}`);
+    else outId = `${res.code}`;
+
     return {
-        route: { promise: searchVehicle(params.vehicle, locals) }
+        code: outId,
+        url: res.url,
+        credits: res.credits,
+        link: res.link,
+        siteName: res.siteName,
+        info: res.info ?? null,
+        type: res.type,
+        route: {promise: searchVehicle(params.vehicle, locals)}
     };
 }
 
