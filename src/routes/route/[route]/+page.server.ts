@@ -23,7 +23,7 @@ export const load = (async ({ params, locals, depends }) => {
             stops: { promise: getStops(el.stops, stops) },
             pinColour: pinColours[i]
         })),
-        api: poll(code),
+        api: { promise: poll(code) },
     }
 });
 
