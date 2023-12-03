@@ -1,16 +1,19 @@
 <script lang="ts">
 	import 'leaflet/dist/leaflet.css';
 	import Counter from './counter.svelte';
+	import Loading from './loading.svelte';
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import type { Marker, LatLngTuple, Map } from 'leaflet';
 	import type { PageData } from './$types';
 	import type { stopDB } from '$lib/stopDB';
-	import {placeTiles} from '$lib/map';
+	import { placeTiles } from '$lib/map/map';
+	import type { vehicle } from '$lib/vehicle';
 
 	export let data: PageData;
 
-	$: numVehicles = data.api.length;
+	let numVehicles = -1;
+	let api = new Array<vehicle>();
 
 	let mapElement: HTMLElement;
 	let map: Map;
@@ -20,6 +23,9 @@
 	const REFRESH_TIME = 1000;
 
 	onMount(async () => {
+		api = await data.api.promise;
+		numVehicles = api.length;
+
 		if (data.routes.length === 0) return; //TODO: find a cleaner solution to handle this. Without routes (outdated trips DB) we can't draw the shape but we still can put the icons on the map
 		const L = await import('leaflet'); //Leaflet has to be imported here, it needs window to be defined
 		await import('leaflet-rotatedmarker');
@@ -48,7 +54,7 @@
 
 		//Place vehicle icons
 		const { busIcon, tramIcon, dropletIcon } = getVehicleIcons(L, vehicleColour);
-		for (const vehicle of data.api) {
+		for (const vehicle of api) {
 			const vehicleIcon = vehicle.vehicleType === 'Tram' ? tramIcon : busIcon;
 			const popup = `<a href="/vehicle/${vehicle.id}"><div>${vehicle.vehicleType} ${vehicle.id}</div></a>`;
 
@@ -72,8 +78,10 @@
 
 		//Refresh vehicles positions
 		setInterval(async () => {
-			invalidate('vehicle');
-			for (const vehicle of data.api) {
+			await invalidate('vehicle'); //Wait for page reload
+			api = await data.api.promise; //Then refresh the data
+			numVehicles = api.length;
+			for (const vehicle of api) {
 				for (const marker of markers) {
 					if (marker.code === vehicle.id) {
 						marker.droplet.setLatLng([vehicle.lat, vehicle.lon]);
@@ -149,11 +157,17 @@
 
 <!-- Desktop -->
 <div class="hidden lg:grid grid-cols-4 xl:grid-cols-5 min-[1900px]:grid-cols-6 gap-4 my-2 bg-base-300 p-3 rounded-xl">
-	<h4 class="font-mono col-span-full">Veicoli in servizio: {numVehicles}</h4>
+	{#if numVehicles > 0}
+		<h4 class="font-mono col-span-full">Veicoli in servizio: {numVehicles}</h4>
+	{:else if numVehicles === -1}
+		<h4 class="font-mono col-span-full">Caricamento in corso...</h4>
+	{:else}
+		<h4 class="font-mono col-span-full">Nessun veicolo in servizio</h4>
+	{/if}
 
-	{#if numVehicles !== 0}
-		{#key data.api}
-			{#each data.api as vehicle}
+	{#if numVehicles > 0}
+		{#key api}
+			{#each api as vehicle}
 				<a href="/vehicle/{vehicle.id}">
 					<div class="card card-compact h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
@@ -169,6 +183,11 @@
 				</a>
 			{/each}
 		{/key}
+	{:else if numVehicles === -1}
+		<Loading/>
+		<Loading/>
+		<Loading/>
+		<Loading/>
 	{:else}
 		<div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
 	{/if}
@@ -177,14 +196,18 @@
 <!-- Mobile -->
 <div class="lg:hidden mx-2 rounded-lg collapse collapse-arrow bg-base-300">
 	<input type="checkbox" />
-	<div class="collapse-title font-medium font-mono">
-		Veicoli in servizio: {numVehicles}
-	</div>
+	{#if numVehicles > 0}
+		<div class="collapse-title font-medium font-mono">Veicoli in servizio: {numVehicles}</div>
+	{:else if numVehicles === -1}
+		<div class="collapse-title font-medium font-mono">Caricamento in corso...</div>
+	{:else}
+		<div class="collapse-title font-medium font-mono">Nessun veicolo in servizio</div>
+	{/if}
 
 	<div class="collapse-content px-2 grid grid-cols-2 gap-2 place-items-center">
-		{#if numVehicles !== 0}
-			{#key data.api}
-				{#each data.api as vehicle}
+		{#if numVehicles > 0}
+			{#key api}
+				{#each api as vehicle}
 					<div class="card card-compact h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<a href="/vehicle/{vehicle.id}">
 							<div class="card-body p-6">
@@ -205,7 +228,7 @@
 	</div>
 </div>
 
-{#if data.routes.length !== 0}
+{#if data.routes.length > 0}
 	<main class="select-none my-3">
 		<div bind:this={mapElement} class="h-full" />
 	</main>

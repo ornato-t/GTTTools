@@ -2,12 +2,12 @@
 	import 'leaflet/dist/leaflet.css';
 	import Counter from './counter.svelte';
 	import { onMount } from 'svelte';
-	import { invalidate } from '$app/navigation';
+	import { invalidate, preloadData } from '$app/navigation';
 	import type { Marker, LatLngTuple, Map } from "leaflet";
 	import type { stopDB } from '$lib/stopDB';
 	import type { vehicleSearched } from '$lib/vehicle';
 	import type { PageData } from './$types';
-	import { placeTiles } from '$lib/map';
+	import { placeTiles } from '$lib/map/map';
 
 	export let data: PageData;
 
@@ -40,7 +40,7 @@
 		clearInterval(interval);
 
 		if(api !== null) {
-			map.setView([api.lat, api.lon], 20);
+			preloadData(`/route/${api.route}`);
 			placeTiles(L, map);
 
 			//Only place stop and shape icons if a matching trip is found
@@ -52,7 +52,7 @@
 				//Place icons of stops for the current trip
 				const pinIcon = getPinIcon(L, pinColour);
 				for(const stop of api.db.stops){
-					const res = L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
+					L.marker(stop.coordinates as LatLngTuple, {icon: pinIcon}).addTo(map).bindPopup(getPopup(stop));    
 				}
 			}
 
@@ -72,12 +72,15 @@
 				vehicle: vehicleMark,
 				code: api.id
 			};
+
+			map.setView([api.lat, api.lon], 16);	//Only toggle if "follow" is active, TODO: add follow button
 			
 			setInterval(async () => {
 				await invalidate('vehicle');		//Wait for page reload
 				api = await data.route.promise		//Then refresh the data
 				if(api !== null) {
-					// map.setView([api.lat, api.lon], 20);	//Only toggle if "follow" is active, TODO: add follow button
+					preloadData(`/route/${api.route}`);
+					map.setView([api.lat, api.lon], 16);	//Only toggle if "follow" is active, TODO: add follow button
 
 					if(marker.code === api.id){
 						marker.droplet.setLatLng([api.lat, api.lon]);
@@ -188,7 +191,7 @@
 			{#if api !== null}
 				<div class="grid grid-cols-2 md:w-1/3">
 					<div>In servizio sulla linea:</div>
-					<a class="font-mono link" href="/route/{api.route}">{api.route}</a>
+					<a class="font-mono link" href="/route/{api.route}" data-sveltekit-preload-data>{api.route}</a>
 					<div>Ultimo aggiornamento: </div>
 					<div class="font-mono"> <Counter time={api.updated}/></div>
 				</div>

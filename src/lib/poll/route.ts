@@ -3,16 +3,18 @@ import { error } from "@sveltejs/kit";
 import { DateTime } from "luxon"
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 
-const TIMEOUT = 500;   //If GTT query takes longer than this, switch to GTFS API
+const TIMEOUT = 1000;   //If GTT query takes longer than this, switch to GTT API
 
 export async function poll(codeIn: string) {
     const code = parseRouteCode(codeIn);
 
     try {
-        return await pollRoute(code);
+        const gtfsRes = await pollGTFS(code);
+        if (gtfsRes.length === 0) throw new Error();
+        return gtfsRes;
     } catch (_) {
         try {
-            return await pollGTFS(code);
+            return await pollRoute(code);
         } catch (_) {
             throw error(503, 'GTT API offline');
         }
@@ -23,12 +25,12 @@ export async function poll(codeIn: string) {
 function parseRouteCode(codeIn: string): string {
     const starRegex = /STAR (\d)/;
     const star = codeIn.match(starRegex);
-    
+
     const barRegex = /(\d+)\//;
     const bar = codeIn.match(barRegex);
 
-    if(star) return `ST${star[1]}`;
-    if(bar) return `${bar[1]}B`;
+    if (star) return `ST${star[1]}`;
+    if (bar) return `${bar[1]}B`;
 
     return codeIn;
 }
@@ -86,7 +88,7 @@ async function pollRoute(route: string) {
 
 //Polls a route on the GTFS API endpoint
 async function pollGTFS(route: string) {
-    const url = 'http://percorsieorari.gtt.to.it/das_gtfsrt/vehicle_position.aspx';
+    const url = 'https://percorsieorari.gtt.to.it/das_gtfsrt/vehicle_position.aspx';
 
     //Fetch and parse feed
     const res = await fetch(url);
