@@ -7,7 +7,7 @@
 	import type { Marker, LatLngTuple, Map } from 'leaflet';
 	import type { PageData } from './$types';
 	import type { stopDB } from '$lib/stopDB';
-	import { placeTiles } from '$lib/map';
+	import { placeTiles } from '$lib/map/map';
 	import type { vehicle } from '$lib/vehicle';
 
 	export let data: PageData;

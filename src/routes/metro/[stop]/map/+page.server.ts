@@ -1,7 +1,7 @@
 import type { stopDB } from '$lib/stopDB.js';
 import type { LatLngExpression } from 'leaflet';
 
-const STOP_NUM = 50;
+const STOP_NUM = 100;
 
 export async function load({ locals, parent }) {
     const parentData = await parent();

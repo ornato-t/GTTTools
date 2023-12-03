@@ -7,7 +7,7 @@
 	import type { stopDB } from '$lib/stopDB';
 	import type { vehicleSearched } from '$lib/vehicle';
 	import type { PageData } from './$types';
-	import { placeTiles } from '$lib/map';
+	import { placeTiles } from '$lib/map/map';
 
 	export let data: PageData;
 
