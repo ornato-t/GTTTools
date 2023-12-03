@@ -1,6 +1,7 @@
 <script lang="ts">
 	import 'leaflet/dist/leaflet.css';
 	import Counter from './counter.svelte';
+	import Loading from './loading.svelte';
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import type { Marker, LatLngTuple, Map } from 'leaflet';
@@ -11,7 +12,7 @@
 
 	export let data: PageData;
 
-	let numVehicles = 0;
+	let numVehicles = -1;
 	let api = new Array<vehicle>();
 
 	let mapElement: HTMLElement;
@@ -156,9 +157,15 @@
 
 <!-- Desktop -->
 <div class="hidden lg:grid grid-cols-4 xl:grid-cols-5 min-[1900px]:grid-cols-6 gap-4 my-2 bg-base-300 p-3 rounded-xl">
-	<h4 class="font-mono col-span-full">Veicoli in servizio: {numVehicles}</h4>
+	{#if numVehicles > 0}
+		<h4 class="font-mono col-span-full">Veicoli in servizio: {numVehicles}</h4>
+	{:else if numVehicles === -1}
+		<h4 class="font-mono col-span-full">Caricamento in corso...</h4>
+	{:else}
+		<h4 class="font-mono col-span-full">Nessun veicolo in servizio</h4>
+	{/if}
 
-	{#if numVehicles !== 0}
+	{#if numVehicles > 0}
 		{#key api}
 			{#each api as vehicle}
 				<a href="/vehicle/{vehicle.id}">
@@ -176,6 +183,11 @@
 				</a>
 			{/each}
 		{/key}
+	{:else if numVehicles === -1}
+		<Loading/>
+		<Loading/>
+		<Loading/>
+		<Loading/>
 	{:else}
 		<div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
 	{/if}
@@ -184,12 +196,16 @@
 <!-- Mobile -->
 <div class="lg:hidden mx-2 rounded-lg collapse collapse-arrow bg-base-300">
 	<input type="checkbox" />
-	<div class="collapse-title font-medium font-mono">
-		Veicoli in servizio: {numVehicles}
-	</div>
+	{#if numVehicles > 0}
+		<div class="collapse-title font-medium font-mono">Veicoli in servizio: {numVehicles}</div>
+	{:else if numVehicles === -1}
+		<div class="collapse-title font-medium font-mono">Caricamento in corso...</div>
+	{:else}
+		<div class="collapse-title font-medium font-mono">Nessun veicolo in servizio</div>
+	{/if}
 
 	<div class="collapse-content px-2 grid grid-cols-2 gap-2 place-items-center">
-		{#if numVehicles !== 0}
+		{#if numVehicles > 0}
 			{#key api}
 				{#each api as vehicle}
 					<div class="card card-compact h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
@@ -212,7 +228,7 @@
 	</div>
 </div>
 
-{#if data.routes.length !== 0}
+{#if data.routes.length > 0}
 	<main class="select-none my-3">
 		<div bind:this={mapElement} class="h-full" />
 	</main>
