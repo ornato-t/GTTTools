@@ -13,24 +13,36 @@
 	let map: Map;
 	let loaded = false;
 
-	const pinColour = '#1b8ae8';
-	const otherPinColour = '#909090';
+	const mainColour = '#1b8ae8';
+	const otherColour = '#909090';
+	const metroColour = '#d62828';
+	const trainColour = '#cea30c';
 
 	onMount(async () => {
 		const L = await import('leaflet'); //Leaflet has to be imported here, it needs window to be defined
-		const { pinIcon, otherPinIcon } = getPinIcons(L);
+		const { mainPin, otherPin, metroPin, trainPin } = getPinIcons(L);
 
-		map = L.map(mapElement).setView(coords, 30);
+		map = L.map(mapElement).setView(coords, 18);
 		placeTiles(L, map);
 
 		//Place icon of queried stop
-		L.marker(coords, { icon: pinIcon }).addTo(map).bindPopup(getPopup(db));
+		L.marker(coords, { icon: mainPin }).addTo(map).bindPopup(getPopup(db));
 
 		//Place icons of nearby stops
 		for (const stop of near) {
-			L.marker(stop.coordinates as LatLngTuple, { icon: otherPinIcon })
-				.addTo(map)
-				.bindPopup(getPopup(stop));
+			if (stop.metro)
+				L.marker(stop.coordinates as LatLngTuple, { icon: metroPin })
+					.addTo(map)
+					.bindPopup(getPopup(stop));
+			else if (stop.train) {
+				L.marker(stop.coordinates as LatLngTuple, { icon: trainPin })
+					.addTo(map)
+					.bindPopup(getPopup(stop));
+			} else {
+				L.marker(stop.coordinates as LatLngTuple, { icon: otherPin })
+					.addTo(map)
+					.bindPopup(getPopup(stop));
+			}
 		}
 
 		loaded = true;
@@ -49,19 +61,31 @@
 
 	//Returns a set of leaflet marker icons
 	function getPinIcons(L: any) {
-		const pinIcon = L.divIcon({
-			html: `<i class='bx bxs-map text-5xl' style='color: ${pinColour}'></i>`,
+		const mainPin = L.divIcon({
+			html: `<i class='bx bxs-map text-5xl' style='color: ${mainColour}'></i>`,
 			iconSize: [20, 20],
 			className: ''
 		});
 
-		const otherPinIcon = L.divIcon({
-			html: `<i class='bx bxs-map text-3xl' style='color: ${otherPinColour}'></i>`,
+		const otherPin = L.divIcon({
+			html: `<i class='bx bxs-map text-3xl' style='color: ${otherColour}'></i>`,
 			iconSize: [20, 20],
 			className: ''
 		});
 
-		return { pinIcon, otherPinIcon };
+		const metroPin = L.divIcon({
+			html: `<i class='bx bxs-map text-3xl' style='color: ${metroColour}'></i>`,
+			iconSize: [20, 20],
+			className: ''
+		});
+
+		const trainPin = L.divIcon({
+			html: `<i class='bx bxs-map text-3xl' style='color: ${trainColour}'></i>`,
+			iconSize: [20, 20],
+			className: ''
+		});
+
+		return { mainPin, otherPin, metroPin, trainPin };
 	}
 </script>
 
