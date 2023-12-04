@@ -1,4 +1,4 @@
-import vercel from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-vercel';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -10,10 +10,8 @@ const config = {
 	}),
 
 	kit: {
-		adapter: vercel({
-			split: false,
-			memory: 128,
-			external: []		
+		adapter: adapter({
+			runtime: 'nodejs18.x',
 		})
 	}
 };
