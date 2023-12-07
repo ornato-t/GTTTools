@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { writable, type Writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
 // Function to get the list of favourites from local storage
 function getInitialFavouriteList(): Set<number> {
@@ -7,31 +7,39 @@ function getInitialFavouriteList(): Set<number> {
 
     const stored = localStorage.getItem('favourites');
     if (!stored) return new Set();
-    
-    return new Set(...JSON.parse(stored));
+
+    return new Set(JSON.parse(stored));
 }
 
 // Create the store
-export const favourites: Writable<Set<number>> = writable(getInitialFavouriteList(), () => {
-    const unsubscribe: () => void = favourites.subscribe((value: Set<number>) => {
-        if (browser) localStorage.setItem('favourites', JSON.stringify([...value]));
-    });
+function createFavourites() {
+    const { subscribe, set, update } = writable(getInitialFavouriteList());
 
-    return unsubscribe;
+    return {
+        subscribe,
+        set,
+        update,
+        add: (item: number) => update(favs => {
+            if (!browser) return favs;
+
+            favs.add(item);
+            localStorage.setItem('favourites', JSON.stringify([...favs]));
+            return favs;
+        }),
+        delete: (item: number) => update(favs => {
+            if (!browser) return favs;
+
+            favs.delete(item);
+            localStorage.setItem('favourites', JSON.stringify([...favs]));
+            return favs;
+        })
+    };
+}
+
+export const favourites = createFavourites();
+
+// Subscribe to the store
+favourites.subscribe((value: Set<number>) => {
+    if (browser) localStorage.setItem('favourites', JSON.stringify([...value]));
 });
 
-// Function to toggle the theme
-export function addFavourite(newFavourite: number): void {
-    favourites.update((favourites: Set<number>) => {
-        favourites.add(newFavourite);
-        return favourites;
-    });
-}
-
-// Function to toggle the theme
-export function removeFavourite(newFavourite: number): void {
-    favourites.update((favourites: Set<number>) => {
-        favourites.delete(newFavourite);
-        return favourites;
-    });
-}
