@@ -23,7 +23,7 @@
 	const REFRESH_TIME = 1000;
 	let dots = '';
 	let dotsHandle = setInterval(() => {
-		if(dots.length > 3) dots = '';
+		if(dots.length >= 3) dots = '';
 		else dots += '.';
 	}, 300);
 
