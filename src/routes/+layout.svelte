@@ -133,15 +133,13 @@
 			</div>
 			<div class="navbar-end">
 				{#if $theme === DARK}
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div class="btn btn-square btn-ghost" on:click={toggleTheme}>
+					<button class="btn btn-square btn-ghost" on:click={toggleTheme}>
 						<i class="bx bx-sun bx-sm" />
-					</div>
+					</button>
 				{:else}
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div class="btn btn-square btn-ghost" on:click={toggleTheme}>
+					<button class="btn btn-square btn-ghost" on:click={toggleTheme}>
 						<i class="bx bx-moon bx-sm" />
-					</div>
+					</button>
 				{/if}
 			</div>
 		</nav>
@@ -249,7 +247,7 @@
 				<p class="mt-4 -mb-2">Maggiori informazioni alla <a class="link" href="/strikes" on:click={() => (toggleStrikePopup = false)}>pagina degli scioperi</a>.</p>
 				<div class="modal-action">
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div
+					<button
 						class="btn mx-auto btn-wide"
 						on:click={() => {
 							toggleStrikePopup = false;
@@ -257,7 +255,7 @@
 						}}
 					>
 						Capito
-					</div>
+					</button>
 				</div>
 			</div>
 		</div>
