@@ -37,9 +37,9 @@
 
 	function toggleFavourite() {
 		if (!favourite) {
-			favourites.add(data.code)
+			favourites.add(data.code);
 		} else {
-			favourites.delete(data.code)
+			favourites.delete(data.code);
 		}
 		favourite = !favourite;
 	}
@@ -54,20 +54,27 @@
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>
 	<h2 class="font-light order-3">{data.db.description ?? ''}</h2>
 
-	<!-- Map button desktop -->
-	<a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" href="/stop/{data.code}/map">
-		<i class="bx bx-map-alt bx-sm mr-2" />
-		Visualizza sulla mappa
-	</a>
+	<span class="place-self-end grid xl:grid-cols-2 gap-2">
+		<!-- Favourites button desktop -->
+		<button class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 flex-grow" on:click={toggleFavourite}>
+			<i class="bx {favourite ? 'bxs-star' : 'bx-star'} bx-sm mr-2" />
+			{#if !favourite}
+				Aggiungi ai preferiti
+			{:else}
+				Rimuovi dai preferiti
+			{/if}
+		</button>
 
-	<button class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 w-fit place-self-end" on:click={toggleFavourite}>
-		<i class="bx {favourite ? 'bxs-star' : 'bx-star'} bx-sm mr-2" />
-		Aggiungi ai preferiti
-	</button>
+		<!-- Map button desktop -->
+		<a class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 flex-grow" href="/stop/{data.code}/map">
+			<i class="bx bx-map-alt bx-sm mr-2" />
+			Visualizza sulla mappa
+		</a>
+	</span>
 </div>
 
 <!-- Desktop -->
-<div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 min-[1900px]:grid-cols-4 gap-4 mt-2">
+<div class="hidden lg:grid grid-cols-2 xl:grid-cols-3 min-[1900px]:grid-cols-4 gap-4 mt-2 mb-6">
 	{#if api.length === 0}
 		<Loading />
 		<Loading />
@@ -115,8 +122,18 @@
 
 <!-- Mobile -->
 <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 mx-auto place-items-center">
-	<!-- Map button mobile -->
-	<a class="btn btn-primary place-self-start ml-3 rounded-lg col-span-1 md:col-span-2" href="/stop/{data.code}/map"><i class="bx bx-map-alt bx-sm mr-2" /> Visualizza sulla mappa</a>
+	<span class="place-self-start mx-3 flex flex-row gap-2 col-span-1 md:col-span-2">
+		<!-- Favourites button desktop -->
+		<button class="btn btn-primary place-self-start rounded-lg px-2" on:click={toggleFavourite}>
+			<i class="bx {favourite ? 'bxs-star' : 'bx-star'} bx-sm" />
+		</button>
+
+		<!-- Map button mobile -->
+		<a class="btn btn-primary place-self-start rounded-lg" href="/stop/{data.code}/map">
+			<i class="bx bx-map-alt bx-sm" />
+			Visualizza sulla mappa
+		</a>
+	</span>
 
 	{#if api.length === 0}
 		<div class="mx-4 grid gap-y-4">
