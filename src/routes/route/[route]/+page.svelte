@@ -21,10 +21,16 @@
 
 	const vehicleColour = '#1cbb10';
 	const REFRESH_TIME = 1000;
+	let dots = '';
+	let dotsHandle = setInterval(() => {
+		if(dots.length > 3) dots = '';
+		else dots += '.';
+	}, 300);
 
 	onMount(async () => {
 		api = await data.api.promise;
 		numVehicles = api.length;
+		clearInterval(dotsHandle);
 
 		if (data.routes.length === 0) return; //TODO: find a cleaner solution to handle this. Without routes (outdated trips DB) we can't draw the shape but we still can put the icons on the map
 		const L = await import('leaflet'); //Leaflet has to be imported here, it needs window to be defined
@@ -160,7 +166,7 @@
 	{#if numVehicles > 0}
 		<h4 class="font-mono col-span-full">Veicoli in servizio: {numVehicles}</h4>
 	{:else if numVehicles === -1}
-		<h4 class="font-mono col-span-full">Caricamento in corso...</h4>
+		<h4 class="font-mono col-span-full">Caricamento in corso{dots}</h4>
 	{:else}
 		<h4 class="font-mono col-span-full">Nessun veicolo in servizio</h4>
 	{/if}
@@ -184,10 +190,10 @@
 			{/each}
 		{/key}
 	{:else if numVehicles === -1}
-		<Loading/>
-		<Loading/>
-		<Loading/>
-		<Loading/>
+		<Loading />
+		<Loading />
+		<Loading />
+		<Loading />
 	{:else}
 		<div class="font-light px-4">Nessuna informazione in tempo reale disponibile.</div>
 	{/if}

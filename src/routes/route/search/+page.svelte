@@ -17,7 +17,7 @@
 	}
 
 	function preload() {
-		if (routes.length > 0) return preloadData(`/metro/${routes[0].code}`);
+		if (routes.length > 0) return preloadData(`/route/${routes[0].code}`);
 	}
 </script>
 
