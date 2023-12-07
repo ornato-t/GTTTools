@@ -3,9 +3,20 @@
 	import type { stopDB } from '$lib/stopDB';
 	import fetch from '$lib/proxyRequest';
 	import { preloadData } from '$app/navigation';
+	import { favourites } from '$lib/favourites';
+	import { onMount } from 'svelte';
 
 	let value = '';
+	$: favouriteStops = new Array<stopDB>();
 	$: stops = new Array<stopDB>();
+
+	onMount(async () => {
+		const fav = Array.from($favourites);
+		if (fav.length === 0) return;
+
+		const res = await fetch(`/api/bulk-stop/${fav}`);
+		favouriteStops = await res.json();
+	});
 
 	async function searchDB(stop: string) {
 		if (stop.length > 0) {
@@ -39,14 +50,27 @@
 	<label class="label">
 		<span class="label-text">Inserisci il nome o il codice di una fermata</span>
 	</label>
-	<Search
-		label=""
-		placeholder="Cerca"
-		autofocus
-		bind:value
-		on:type={() => searchDB(value)}
-		class="input input-bordered w-full max-w-xs"
-	/>
+	<Search label="" placeholder="Cerca" autofocus bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
+</div>
+
+<div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
+	{#if favouriteStops.length > 0}
+		<span class="col-span-full text-sm">Fermate preferite:</span>
+		{#each favouriteStops as stop}
+			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/stop/{stop.code}">
+				<div class="card-body w-full grid grid-cols-4">
+					<span class=" text-primary col-span-3 card-title">{stop.name}</span>
+					<span class="text-secondary py-1"> {stop.code ?? ''}</span>
+					{#if stop.description != undefined && stop.description != stop.name}
+						<span class="col-span-4 text-xs italic place-self-start">{stop.description}</span>
+					{/if}
+					{#if checkCity(stop)}
+						<span class="col-span-4 text-xs italic place-self-start">{stop.city}</span>
+					{/if}
+				</div>
+			</a>
+		{/each}
+	{/if}
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
