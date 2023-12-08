@@ -6,7 +6,7 @@
 	import Timer from './timer.svelte';
 	import { encodeRoute } from '$lib/vehicle';
 	import type { stop } from '$lib/stop';
-	import { favourites } from '$lib/favourites';
+	import { favourites } from '$lib/favourites/favouriteStops';
 
 	export let data: PageData;
 
