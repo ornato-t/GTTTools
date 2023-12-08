@@ -9,11 +9,13 @@
 	import type { stopDB } from '$lib/stopDB';
 	import { placeTiles } from '$lib/map/map';
 	import type { vehicle } from '$lib/vehicle';
+	import { favourites } from '$lib/favourites/favouriteRoutes';
 
 	export let data: PageData;
 
 	let numVehicles = -1;
 	let api = new Array<vehicle>();
+	let favourite = $favourites.has(data.code);
 
 	let mapElement: HTMLElement;
 	let map: Map;
@@ -23,7 +25,7 @@
 	const REFRESH_TIME = 1000;
 	let dots = '';
 	let dotsHandle = setInterval(() => {
-		if(dots.length > 3) dots = '';
+		if (dots.length >= 3) dots = '';
 		else dots += '.';
 	}, 300);
 
@@ -145,6 +147,15 @@
 
 		return { busIcon, tramIcon, dropletIcon };
 	}
+
+	function toggleFavourite() {
+		if (!favourite) {
+			favourites.add(data.code);
+		} else {
+			favourites.delete(data.code);
+		}
+		favourite = !favourite;
+	}
 </script>
 
 <svelte:head>
@@ -152,13 +163,35 @@
 	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui {data.db.type.toLowerCase()} della linea {data.code}" />
 </svelte:head>
 
-<div class="p-4">
-	{#if data.code.toLowerCase() === data.db.type.toLowerCase()}
-		<h1 class="mb-4 text-xl font-semibold uppercase">{data.code}</h1>
-	{:else}
-		<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.type}</h1>
-	{/if}
-	<h2 class="font-light">{data.db.name}</h2>
+<div class="p-4 lg:grid lg:grid-cols-2">
+	<div class="flex flex-row justify-between w-full">
+		<span>
+			{#if data.code.toLowerCase() === data.db.type.toLowerCase()}
+				<h1 class="mb-4 text-xl font-semibold uppercase">
+					{data.code}
+				</h1>
+			{:else}
+				<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.type}</h1>
+			{/if}
+
+			<h2 class="font-light order-3">{data.db.name}</h2>
+		</span>
+
+		<!-- Favourites button mobile -->
+		<button class="lg:hidden btn btn-primary rounded-lg px-2 col-span-1 md:col-span-2" on:click={toggleFavourite}>
+			<i class="bx {favourite ? 'bxs-star' : 'bx-star'} bx-sm" />
+		</button>
+	</div>
+
+	<!-- Favourites button desktop -->
+	<button class="hidden lg:inline-flex btn btn-primary rounded-lg ml-3 flex-grow place-self-end" on:click={toggleFavourite}>
+		<i class="bx {favourite ? 'bxs-star' : 'bx-star'} bx-sm mr-2" />
+		{#if !favourite}
+			Aggiungi ai preferiti
+		{:else}
+			Rimuovi dai preferiti
+		{/if}
+	</button>
 </div>
 
 <!-- Desktop -->
