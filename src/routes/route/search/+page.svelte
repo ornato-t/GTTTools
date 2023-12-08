@@ -4,9 +4,20 @@
 	import { encodeRoute } from '$lib/vehicle';
 	import type { routeDB } from '$lib/routeDB';
 	import { preloadData } from '$app/navigation';
+	import { favourites } from '$lib/favourites/favouriteRoutes';
+	import { onMount } from 'svelte';
 
 	let value = '';
+	$: favouriteRoutes = new Array<routeDB>();
 	$: routes = new Array<routeDB>();
+
+	onMount(async () => {
+		const fav = Array.from($favourites);
+		if (fav.length === 0) return;
+
+		const res = await fetch(`/api/bulk-route/${fav}`);
+		favouriteRoutes = await res.json();
+	});
 
 	async function searchDB(route: string) {
 		if (route.length > 0) {
@@ -32,6 +43,21 @@
 		<span class="label-text">Inserisci il codice di una linea o la sua destinazione</span>
 	</label>
 	<Search label="" placeholder="Cerca" autofocus bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
+</div>
+
+<div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
+	{#if favouriteRoutes.length > 0}
+	<span class="col-span-full text-sm">Linee preferite:</span>
+		{#each favouriteRoutes as route}
+			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{encodeRoute(route.code)}">
+				<div class="card-body w-full grid grid-cols-4">
+					<span class=" text-primary card-title">{route.code}</span>
+					<span class="text-secondary col-span-3 py-1"> {route.type} • {route.provider.replace('GTT Servizio ', '')}</span>
+					<span class="col-span-4 text-xs italic place-self-start">{route.name}</span>
+				</div>
+			</a>
+		{/each}
+	{/if}
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">

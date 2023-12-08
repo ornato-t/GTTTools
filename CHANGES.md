@@ -7,6 +7,5 @@
 - investigate swipe error, ensure it works on Chrome (it doesn't right now)
 
 # Furter changes
-- add favourites routes
 - add settings page: map switcher, theme switcher (ship more or all themes)
 - add translations
