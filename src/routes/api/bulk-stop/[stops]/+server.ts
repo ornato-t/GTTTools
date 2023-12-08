@@ -1,10 +1,9 @@
 import type { stopDB } from "$lib/stopDB";
 import type { RequestHandler } from "@sveltejs/kit";
-import type { Collection } from "mongodb";
 
 //Fetch all info about a list of stops
 export const GET: RequestHandler = async ({ params, locals }) => {
-    const { stops }: { stops: Collection<stopDB> } = locals;
+    const { stops } = locals;
 
     const codes = params.stops ?? '';
     const stopCodes = codes.split(',').map(el => Number.parseInt(el));
