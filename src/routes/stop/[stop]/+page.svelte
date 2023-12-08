@@ -123,7 +123,7 @@
 <!-- Mobile -->
 <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 mx-auto place-items-center">
 	<span class="place-self-start mx-3 flex flex-row gap-2 col-span-1 md:col-span-2">
-		<!-- Favourites button desktop -->
+		<!-- Favourites button mobile -->
 		<button class="btn btn-primary place-self-start rounded-lg px-2" on:click={toggleFavourite}>
 			<i class="bx {favourite ? 'bxs-star' : 'bx-star'} bx-sm" />
 		</button>
