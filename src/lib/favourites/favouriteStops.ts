@@ -37,9 +37,3 @@ function createFavourites() {
 }
 
 export const favourites = createFavourites();
-
-// Subscribe to the store
-favourites.subscribe((value: Set<number>) => {
-    if (browser) localStorage.setItem('favourites', JSON.stringify([...value]));
-});
-
