@@ -42,11 +42,11 @@
 	<label class="label">
 		<span class="label-text">Inserisci il codice di una linea o la sua destinazione</span>
 	</label>
-	<Search label="" placeholder="Cerca" autofocus bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
+	<Search label="" placeholder="Cerca" bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
-	{#if favouriteRoutes.length > 0}
+	{#if favouriteRoutes.length > 0 && value.length === 0}
 	<span class="col-span-full text-sm">Linee preferite:</span>
 		{#each favouriteRoutes as route}
 			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{encodeRoute(route.code)}">

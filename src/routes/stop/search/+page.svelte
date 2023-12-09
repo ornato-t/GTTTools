@@ -50,11 +50,11 @@
 	<label class="label">
 		<span class="label-text">Inserisci il nome o il codice di una fermata</span>
 	</label>
-	<Search label="" placeholder="Cerca" autofocus bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
+	<Search label="" placeholder="Cerca" bind:value on:type={() => searchDB(value)} class="input input-bordered w-full max-w-xs" />
 </div>
 
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
-	{#if favouriteStops.length > 0}
+	{#if favouriteStops.length > 0 && value.length === 0}
 		<span class="col-span-full text-sm">Fermate preferite:</span>
 		{#each favouriteStops as stop}
 			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/stop/{stop.code}">
