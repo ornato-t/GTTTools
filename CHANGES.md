@@ -5,10 +5,6 @@
 - switch to colourblind friendly line themes in map pages
 - make map pins and popups match dark theme
 - investigate swipe error, ensure it works on Chrome (it doesn't right now)
-- move strikes from API to lib function, call from server, don't invalidate
-  - add in layout: test
-  - add in strikes page: test
-  - remove api
 - move images from API to lib function, call from server
 
 # Furter changes
