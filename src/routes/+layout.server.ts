@@ -1,7 +1,7 @@
-import type { LayoutLoad } from "./$types";
-import type { strike, strikeNotif } from "$lib/strikes";
-import fetch from '$lib/proxyRequest';
+import type { LayoutServerLoad } from "./$types";
+import type { strikeNotif } from "$lib/strikes";
 import { DateTime } from "luxon";
+import { poll } from "$lib/poll/strikes";
 
 const DAYS = 7;
 
@@ -11,15 +11,14 @@ export const load = (async () => {
             promise: pollStrikes()
         }
     };
-}) satisfies LayoutLoad;
+}) satisfies LayoutServerLoad;
 
 async function pollStrikes() {
     try {
-        const res = await fetch('/api/strikes');
-        const json = await res.json() as strike[];
+        const raw = await poll();
 
         //Only return strikes that impact Turin (or the whole region), are in the future or today and aren't "general strikes"
-        const filtered = json.filter(strike => {
+        const filtered = raw.filter(strike => {
             if (strike.province !== 'Tutte' && strike.province !== 'Torino') return false;
 
             const strikeD = DateTime.fromISO(strike.dateEnd.toString());

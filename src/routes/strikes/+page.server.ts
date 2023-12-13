@@ -1,5 +1,4 @@
-import type { strike } from '$lib/strikes';
-import fetch from '$lib/proxyRequest';
+import { poll } from '$lib/poll/strikes';
 import { error } from '@sveltejs/kit';
 
 //Fetch strike data from the ministry's RSS feed
@@ -11,8 +10,7 @@ export async function load() {
 
 async function proxy() {
     try {
-        const res = await fetch('/api/strikes');
-        return await res.json() as strike[];
+        return await poll();
     } catch (e) {
         throw error(503, "Can't access Ministry's strike data");
     }

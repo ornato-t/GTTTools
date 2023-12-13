@@ -1,11 +1,10 @@
 import Parser from "rss-parser";
 import { DateTime } from "luxon";
-import type { RequestHandler } from "@sveltejs/kit";
 import type { strike, strikesFeed, strikeInfoFeed } from "$lib/strikes";
 
 const parser = new Parser();
 
-export const GET: RequestHandler = async () => {
+export async function poll() {
     const feed = await parser.parseURL('http://scioperi.mit.gov.it/mit2/public/scioperi/rss') as strikesFeed;   //Fetch strikes feed
 
     const out: Array<strike> = [];
@@ -37,5 +36,5 @@ export const GET: RequestHandler = async () => {
         }
     }
 
-    return new Response(JSON.stringify(out));
+    return out;
 }
