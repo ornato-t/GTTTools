@@ -5,7 +5,6 @@
 - switch to colourblind friendly line themes in map pages
 - make map pins and popups match dark theme
 - investigate swipe error, ensure it works on Chrome (it doesn't right now)
-- move images from API to lib function, call from server
 
 # Furter changes
 - add settings page: map switcher, theme switcher (ship more or all themes)
