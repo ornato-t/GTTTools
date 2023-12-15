@@ -11,6 +11,6 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
     const res = stops.find<stopDB>({ train: true }, { projection: { _id: 0 } }).sort({trainCode: 1}).toArray();
 
     return {
-        db: res
+        db: await res
     };
 }

@@ -4,9 +4,7 @@ import type { Collection } from 'mongodb';
 
 const STOP_NUM = 100;
 
-export async function load({ locals, parent, depends }) {
-    depends('stop_lines');
-
+export async function load({ locals, parent }) {
     const parentData = await parent();
 
     const { stops } = locals;
@@ -15,7 +13,7 @@ export async function load({ locals, parent, depends }) {
 
     return {
         coords,
-        near: getNear(stops, parentData.db, parentData.code),
+        near: await getNear(stops, parentData.db, parentData.code),
     };
 }
 

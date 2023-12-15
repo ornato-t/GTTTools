@@ -16,7 +16,7 @@ export const load = (async ({ params, locals, depends }) => {
 
     return {
         code,
-        db: getDB(code, routes),
+        db: await getDB(code, routes),
         routes: tripData.map((el, i) => ({
             shape: el.shape,
             shapeColour: shapeColours[i],

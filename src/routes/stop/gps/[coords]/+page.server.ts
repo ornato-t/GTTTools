@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     const cursor = stops.find(query).limit(STOP_NUM).project(projection).toArray() as Promise<stopDB[]>;
 
     return {
-        stops: cursor,
+        stops: await cursor,
         accuracy: acc
     };
 }
