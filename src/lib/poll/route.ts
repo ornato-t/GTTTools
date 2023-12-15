@@ -16,7 +16,7 @@ export async function poll(codeIn: string) {
         try {
             return await pollRoute(code);
         } catch (_) {
-            throw error(503, 'GTT API offline');
+            error(503, 'GTT API offline');
         }
     }
 }

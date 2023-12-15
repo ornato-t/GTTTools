@@ -12,6 +12,6 @@ async function proxy() {
     try {
         return await poll();
     } catch (e) {
-        throw error(503, "Can't access Ministry's strike data");
+        error(503, "Can't access Ministry's strike data");
     }
 }

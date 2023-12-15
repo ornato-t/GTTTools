@@ -8,7 +8,7 @@ const RETURNED_ENTRIES = 4; //Maximum number of timestamps to be returned
 export async function poll(station: number) {
     const { code_vt, code_fr, name } = getByCode(station) ?? { code_vt: null, code_fr: null };
 
-    if (code_vt == null || code_fr == null) throw error(404, 'Undefined stop code');
+    if (code_vt == null || code_fr == null) error(404, 'Undefined stop code');
 
     const [stationInfo, toPN, toLing, toStu] = await Promise.all([
         pollVT(code_vt),

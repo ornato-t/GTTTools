@@ -26,9 +26,9 @@ async function getStop(code: number) {
         return await pollStop(code);
     } catch (e) {
         if (e === 'noInfo') {
-            throw error(404, { message: 'No information available' });
+            error(404, { message: 'No information available' });
         } else {
-            throw error(500, { message: 'GTT API is offline' });
+            error(500, { message: 'GTT API is offline' });
         }
     }
 }

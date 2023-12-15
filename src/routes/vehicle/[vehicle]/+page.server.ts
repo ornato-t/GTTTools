@@ -12,7 +12,7 @@ export async function load({ params, locals, depends }) {
 
     const res = getVehicle(code);
 
-    if (res === null) throw error(404, 'No matching vehicle found');
+    if (res === null) error(404, 'No matching vehicle found');
 
     let outId: string;
     if (res?.modifier !== undefined) outId = res.modifier.replace('_', `${res.code}`);
@@ -115,7 +115,7 @@ async function getTrip(route: string, trips: Collection<trip>) {
         res = await trips.aggregate<trip>(fallbackAggr).toArray();  //Then fallback to more lax query
     }
 
-    if (res.length === 0) throw error(404, 'No matching route found');
+    if (res.length === 0) error(404, 'No matching route found');
 
     return res[0]
 

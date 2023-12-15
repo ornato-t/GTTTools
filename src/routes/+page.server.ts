@@ -9,6 +9,6 @@ export const actions = {
 
         if (stop.length === 0) return { failure: true };
 
-        throw redirect(303, `/stop/${stop}`);
+        redirect(303, `/stop/${stop}`);
     },
 } satisfies Actions;
