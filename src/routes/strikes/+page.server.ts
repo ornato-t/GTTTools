@@ -4,7 +4,7 @@ import { error } from '@sveltejs/kit';
 //Fetch strike data from the ministry's RSS feed
 export async function load() {
     return {
-        api: { promise: proxy() },   //Nested promise leverages the streaming API. It's awaited on the client side
+        api: proxy(),
     };
 }
 

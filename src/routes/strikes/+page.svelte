@@ -21,7 +21,7 @@
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-2 mb-10 mx-2 lg:mx-0">
-    {#await data.api.promise}
+    {#await data.api}
 		<Loading />
 		<Loading />
 		<Loading />

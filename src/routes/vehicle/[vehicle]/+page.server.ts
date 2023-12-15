@@ -26,7 +26,7 @@ export async function load({ params, locals, depends }) {
         siteName: res.siteName,
         info: res.info ?? null,
         type: res.type,
-        route: { promise: searchVehicle(params.vehicle, locals) }
+        route: searchVehicle(params.vehicle, locals),
     };
 }
 

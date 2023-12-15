@@ -12,12 +12,12 @@
 
 	//Refresh data every 5 seconds
 	onMount(async () => {
-		api = await data.api.promise; //First refresh the data
+		api = await data.api; //First refresh the data
 		preloadData(`/metro/${data.code}/map`);
 
 		setInterval(async () => {
 			await invalidate('metro'); //Wait for page reload
-			api = await data.api.promise; //Then refresh the data
+			api = await data.api; //Then refresh the data
 		}, 5000);
 	});
 

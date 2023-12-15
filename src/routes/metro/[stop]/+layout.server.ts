@@ -16,7 +16,7 @@ export const load: LayoutServerLoad = async ({ params, locals, depends }) => {
     return {
         code,
         db: await res,
-        api: { promise: getStop(code) }
+        api: getStop(code),
     };
 }
 

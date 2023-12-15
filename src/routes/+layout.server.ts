@@ -7,9 +7,7 @@ const DAYS = 7;
 
 export const load = (async () => {
     return {
-        strike: {
-            promise: pollStrikes()
-        }
+        strike: pollStrikes()
     };
 }) satisfies LayoutServerLoad;
 

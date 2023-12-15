@@ -20,10 +20,10 @@ export const load = (async ({ params, locals, depends }) => {
         routes: tripData.map((el, i) => ({
             shape: el.shape,
             shapeColour: shapeColours[i],
-            stops: { promise: getStops(el.stops, stops) },
+            stops: getStops(el.stops, stops),
             pinColour: pinColours[i]
         })),
-        api: { promise: poll(code) },
+        api: poll(code),
     }
 });
 

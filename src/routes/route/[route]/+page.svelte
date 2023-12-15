@@ -30,7 +30,7 @@
 	}, 300);
 
 	onMount(async () => {
-		api = await data.api.promise;
+		api = await data.api;
 		numVehicles = api.length;
 		clearInterval(dotsHandle);
 
@@ -51,7 +51,7 @@
 			map.fitBounds(shape.getBounds());
 
 			//Wait for stops data, then place icons of nearby stops
-			route.stops.promise.then((stops) => {
+			route.stops.then((stops) => {
 				for (const stop of stops) {
 					L.marker(stop.coordinates as LatLngTuple, { icon: pinIcon })
 						.addTo(map)
@@ -87,7 +87,7 @@
 		//Refresh vehicles positions
 		setInterval(async () => {
 			await invalidate('vehicle'); //Wait for page reload
-			api = await data.api.promise; //Then refresh the data
+			api = await data.api; //Then refresh the data
 			numVehicles = api.length;
 			for (const vehicle of api) {
 				for (const marker of markers) {

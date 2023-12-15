@@ -25,7 +25,7 @@
 			inject({ mode: dev ? 'development' : 'production' });
 		}
 
-		const strikes = await data.strike.promise; //Await promise passed by load function
+		const strikes = await data.strike; //Await promise passed by load function
 		const lastNotif = window.localStorage.getItem('lastNotifiedStrike'); //Get last notification sent from local storage
 
 		if (strikes !== null) {
