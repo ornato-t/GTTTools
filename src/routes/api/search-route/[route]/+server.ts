@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({ params, locals }) => {
     const route = params.route as string;
     const aggr = [{
         $search: {
-            index: 'routes_search_migration',
+            index: 'autocomplete_routes',
             compound: {
                 should: [
                     { autocomplete: { query: route, path: 'code.displayed', score: { boost: { value: 3 } } } },
