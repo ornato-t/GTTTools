@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Search from 'svelte-search';
 	import fetch from '$lib/proxyRequest';
-	import { encodeRoute } from '$lib/vehicle';
-	import type { routeDB } from '$lib/routeDB';
+	import { getVehicleType, type routeDB } from '$lib/routeDB';
 	import { preloadData } from '$app/navigation';
 	import { favourites } from '$lib/favourites/favouriteRoutes';
 	import { onMount } from 'svelte';
@@ -49,10 +48,10 @@
 	{#if favouriteRoutes.length > 0 && value.length === 0}
 	<span class="col-span-full text-sm">Linee preferite:</span>
 		{#each favouriteRoutes as route}
-			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{encodeRoute(route.code)}">
+			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{route.code.internal}">
 				<div class="card-body w-full grid grid-cols-4">
-					<span class=" text-primary card-title">{route.code}</span>
-					<span class="text-secondary col-span-3 py-1"> {route.type} • {route.provider.replace('GTT Servizio ', '')}</span>
+					<span class=" text-primary card-title">{route.code.displayed}</span>
+					<span class="text-secondary col-span-3 py-1"> {getVehicleType(route.type.code)} • {route.provider.replace('GTT Servizio ', '')}</span>
 					<span class="col-span-4 text-xs italic place-self-start">{route.name}</span>
 				</div>
 			</a>
@@ -63,10 +62,10 @@
 <div class="mx-4 lg:mx-auto py-2 lg:grid lg:grid-cols-2 lg:gap-x-4">
 	{#if routes != undefined && value.length > 0}
 		{#each routes as route}
-			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{encodeRoute(route.code)}">
+			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{route.code.internal}">
 				<div class="card-body w-full grid grid-cols-4">
-					<span class=" text-primary card-title">{route.code}</span>
-					<span class="text-secondary col-span-3 py-1"> {route.type} • {route.provider.replace('GTT Servizio ', '')}</span>
+					<span class=" text-primary card-title">{route.code.displayed}</span>
+					<span class="text-secondary col-span-3 py-1"> {getVehicleType(route.type.code)} • {route.provider.replace('GTT Servizio ', '')}</span>
 					<span class="col-span-4 text-xs italic place-self-start">{route.name}</span>
 				</div>
 			</a>

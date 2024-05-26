@@ -12,16 +12,18 @@ export const GET: RequestHandler = async ({ params, locals }) => {
             index: 'autocomplete_routes',
             compound: {
                 should: [
-                    { autocomplete: { query: route, path: 'code' } },
+                    { autocomplete: { query: route, path: 'code.displayed', score: { boost: { value: 3 } } } },
                     { autocomplete: { query: route, path: 'name' } },
-                    { text: { query: route, path: 'type' } },
+                    { autocomplete: { query: route, path: 'type.plain' } },
+                    { text: { query: route, path: 'type.plain' } },
+                    { text: { query: route, path: 'code.displayed', score: { boost: { value: 5 } } } },
                     { range: { path: 'codeInt', gte: Number.parseInt(route), lte: Number.parseInt(route) } },
                     { text: { query: 'GTT Servizio Urbano', path: 'provider' } }
                 ]
             }
         }
     }, {
-        $project: { _id: 0, codeInt: 0 }
+        $project: { _id: 0 }
     }, {
         $limit: STOP_NUM
     }];

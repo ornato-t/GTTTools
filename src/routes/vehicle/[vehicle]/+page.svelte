@@ -40,7 +40,7 @@
 		clearInterval(interval);
 
 		if(api !== null) {
-			preloadData(`/route/${api.route}`);
+			preloadData(`/route/${api.db.route.code.internal}`);
 			placeTiles(L, map);
 
 			//Only place stop and shape icons if a matching trip is found
@@ -79,7 +79,7 @@
 				await invalidate('vehicle');		//Wait for page reload
 				api = await data.route.promise		//Then refresh the data
 				if(api !== null) {
-					preloadData(`/route/${api.route}`);
+					preloadData(`/route/${api.db.route.code.internal}`);
 					map.setView([api.lat, api.lon], 16);	//Only toggle if "follow" is active, TODO: add follow button
 
 					if(marker.code === api.id){
@@ -191,7 +191,7 @@
 			{#if api !== null}
 				<div class="grid grid-cols-2 md:w-1/3">
 					<div>In servizio sulla linea:</div>
-					<a class="font-mono link" href="/route/{api.route}" data-sveltekit-preload-data>{api.route}</a>
+					<a class="font-mono link" href="/route/{api.db.route.code.internal}" data-sveltekit-preload-data>{api.db.route.code.displayed}</a>
 					<div>Ultimo aggiornamento: </div>
 					<div class="font-mono"> <Counter time={api.updated}/></div>
 				</div>

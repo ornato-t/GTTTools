@@ -9,3 +9,11 @@
 # Furter changes
 - add settings page: map switcher, theme switcher (ship more or all themes)
 - add translations
+- rewrite vehicle page to only poll database once (not easy, cause we need the trip id (which comes from the API) to fetch the database)
+- change vehicle designation: 9000s are buses, not trams
+- Fix titles:
+  The title for /routes/search should be corrected.
+  The general title should only be displayed on the home page. Custom titles should be used otherwise. If possible the general title should still be used as a fallback, but only when a custom one isn't available.
+- avoid 404s
+  Route and stop endpoints should redirect to the respective searches.
+  Right now /route returns a 404. It should redirect to /route/search instead.

@@ -25,7 +25,6 @@ export interface vehicle {
 };
 
 export interface vehicleSearched extends vehicle {
-    route: string,  //Route on which the vehicle is in service
     trip_id: string //GTFS trip the vehicle is in service on
     db: dbData  //Data fetched from the trips and stops database collections
 }
@@ -34,6 +33,7 @@ interface dbData {
     destination: string,
     shape: number[][],
     stops: stopDB[],
+    route: { code: { internal: string, displayed: string }, name: string }
 }
 
 export interface vehicleMap {
@@ -41,13 +41,4 @@ export interface vehicleMap {
     routeID: string,
     vehicles: vehicle[],
     colour: string,
-}
-
-export function encodeRoute(code: string) {
-    if (code.includes('/')) {
-        const num = Number.parseInt(code);
-
-        return `${num}%20%2F`;
-    }
-    return code;
 }

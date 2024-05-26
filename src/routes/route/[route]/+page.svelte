@@ -10,8 +10,11 @@
 	import { placeTiles } from '$lib/map/map';
 	import type { vehicle } from '$lib/vehicle';
 	import { favourites } from '$lib/favourites/favouriteRoutes';
+	import { getVehicleType } from '$lib/routeDB';
 
 	export let data: PageData;
+
+	const vehicleType = getVehicleType(data.db.type.code);
 
 	let numVehicles = -1;
 	let api = new Array<vehicle>();
@@ -159,20 +162,14 @@
 </script>
 
 <svelte:head>
-	<title>Linea {data.db.type.toLowerCase()} {data.code}: informazioni in tempo reale</title>
-	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui {data.db.type.toLowerCase()} della linea {data.code}" />
+	<title>Linea {vehicleType.toLowerCase()} {data.code}: informazioni in tempo reale</title>
+	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui mezzi della linea {data.code}" />
 </svelte:head>
 
 <div class="p-4 lg:grid lg:grid-cols-2">
 	<div class="flex flex-row justify-between w-full">
 		<span>
-			{#if data.code.toLowerCase() === data.db.type.toLowerCase()}
-				<h1 class="mb-4 text-xl font-semibold uppercase">
-					{data.code}
-				</h1>
-			{:else}
-				<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.type}</h1>
-			{/if}
+			<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.code.displayed} - {vehicleType}</h1>
 
 			<h2 class="font-light order-3">{data.db.name}</h2>
 		</span>

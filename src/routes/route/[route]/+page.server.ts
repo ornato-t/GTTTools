@@ -29,15 +29,13 @@ export const load = (async ({ params, locals, depends }) => {
 
 
 async function getDB(code: string, routes: Collection<routeDB>) {
-    const route = routes.findOne({ code }, { projection: { _id: 0, provider: 0 } }) as Promise<routeDB>;
+    const route = routes.findOne({ "code.internal": code }, { projection: { _id: 0 } }) as Promise<routeDB>;
 
     return route;
 }
 
 //Return an appropriate trip info for a rotue
 async function getTrip(route: string, trips: Collection<trip>) {
-    if (route === 'METRO') route = 'M1';
-
     const aggr = [
         { $match: { route, "dates.startDate": { $lte: new Date() }, "dates.endDate": { $gte: new Date() }, [getDay()]: true } },
         { $facet: { one: [{ $match: { direction: 1 } }, { $sample: { size: 1 } }], zero: [{ $match: { direction: 0 } }, { $sample: { size: 1 } }] } },

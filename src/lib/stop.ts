@@ -1,7 +1,9 @@
 //Represents a vehicle stopping by a stop. Prettified for use in app
 export interface stop {
-    route: string;
-    // routeID: string;
+    route: {
+        internal: string;
+        displayed: string;
+    }
     direction: string;
     pass: {
         time: Date;

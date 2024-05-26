@@ -64,12 +64,12 @@
 	{:else}
 		{#key api}
 			{#each api as pass}
-				<a href="/route/METRO">
+				<a href="/route/{pass.route.internal}">
 					<div class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
 							<h2 class="card-title mb-4 grid grid-cols-4">
 								<span class="text-2xl text-left col-span-3">{cleanDirection(pass.direction)}</span>
-								<span class="text-sm font-light text-right">{pass.route}</span>
+								<span class="text-sm font-light text-right">{pass.route.displayed}</span>
 							</h2>
 							<div class="justify-end">
 								{#if pass.pass.length > 0}
@@ -111,13 +111,13 @@
 		{#key api}
 			{#each api as pass}
 				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
-					<a href="/route/METRO">
+					<a href="/route/{pass.route.internal}">
 						<div class="card-body p-6">
 							{#if pass.pass.length > 0}
 								<h2 class="card-title mb-4 grid grid-cols-4">
 									<span class="text-2xl text-left col-span-3">{cleanDirection(pass.direction)}</span>
 									<span class="text-sm font-light text-right">
-										{pass.route}
+										{pass.route.displayed}
 									</span>
 								</h2>
 								<div class="justify-end">

@@ -5,6 +5,7 @@ import type { Collection } from "mongodb";
 import { error } from "@sveltejs/kit";
 import { getVehicle } from '$lib/vehicleImages';
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
+import type { routeDB } from "$lib/routeDB.js";
 
 export async function load({ params, locals, depends }) {
     depends('vehicle');
@@ -26,7 +27,7 @@ export async function load({ params, locals, depends }) {
         siteName: res.siteName,
         info: res.info ?? null,
         type: res.type,
-        route: {promise: searchVehicle(params.vehicle, locals)}
+        route: { promise: searchVehicle(params.vehicle, locals) }
     };
 }
 
@@ -34,7 +35,7 @@ export async function load({ params, locals, depends }) {
 async function searchVehicle(id: string, locals: App.Locals) {
     const url = 'https://percorsieorari.gtt.to.it/das_gtfsrt/vehicle_position.aspx';
 
-    const { stops, trips } = locals;
+    const { stops, trips, routes } = locals;
 
     //Fetch and parse feed
     const res = await fetch(url);
@@ -46,16 +47,15 @@ async function searchVehicle(id: string, locals: App.Locals) {
         if (vehicleId === id) {
             const idNum = Number.parseInt(id);
             const trip_id = doc.vehicle?.trip?.tripId as string;
-            const route = cleanRouteName(doc.vehicle?.trip?.routeId as string)
+            const routeGtfs = cleanRouteName(doc.vehicle?.trip?.routeId as string)
             return {
                 id: idNum,
-                route,
                 lat: doc.vehicle?.position?.latitude as number,
                 lon: doc.vehicle?.position?.longitude as number,
                 updated: updatedDate(doc.vehicle?.timestamp as number | null | undefined),
                 direction: doc.vehicle?.position?.bearing as number,
                 trip_id,
-                db: await getTripData(trip_id, route, stops, trips)
+                db: await getTripData(trip_id, routeGtfs, stops, trips, routes)
             } satisfies vehicleSearched;
         }
     }
@@ -64,15 +64,26 @@ async function searchVehicle(id: string, locals: App.Locals) {
 }
 
 
-async function getTripData(trip_id: string, route: string, stops: Collection<stopDB>, trips: Collection<trip>,) {
+async function getTripData(trip_id: string, route: string, stops: Collection<stopDB>, trips: Collection<trip>, routes: Collection<routeDB>) {
     let trip = await trips.findOne({ trip_id }, { projection: { _id: 0 } }) as trip;
     if (trip === null) {
         trip = await getTrip(route, trips);
     }
 
     const stopCodes = trip?.stops.map(el => el.code) ?? [];
-    const res = await stops.find({ code: { $in: stopCodes } }, { projection: { _id: 0, city: 0, } }).toArray();
-    const stopsArr = res.map(r => ({
+
+    const [routeDb, stopsDb] = await Promise.all([
+        routes.findOne(
+            { "code.internal": trip.route },
+            { projection: { _id: 0, "code.internal": 1, "code.displayed": 1, name: 1 } }
+        ) as Promise<{ code: { internal: string, displayed: string }, name: string }>,
+        stops.find(
+            { code: { $in: stopCodes } },
+            { projection: { _id: 0, city: 0, } }
+        ).toArray()
+    ]);
+
+    const stopsArr = stopsDb.map(r => ({
         code: r.code,
         name: r.name,
         description: r.description,
@@ -85,7 +96,8 @@ async function getTripData(trip_id: string, route: string, stops: Collection<sto
     return {
         destination: trip?.destination as string,
         shape: trip?.shape as number[][],
-        stops: stopsArr
+        stops: stopsArr,
+        route: routeDb
     };
 }
 
