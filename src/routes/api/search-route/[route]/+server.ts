@@ -9,12 +9,14 @@ export const GET: RequestHandler = async ({ params, locals }) => {
     const route = params.route as string;
     const aggr = [{
         $search: {
-            index: 'autocomplete_routes',
+            index: 'routes_search_migration',
             compound: {
                 should: [
-                    { autocomplete: { query: route, path: 'code' } },
+                    { autocomplete: { query: route, path: 'code.displayed', score: { boost: { value: 3 } } } },
                     { autocomplete: { query: route, path: 'name' } },
-                    { text: { query: route, path: 'type' } },
+                    { autocomplete: { query: route, path: 'type.plain' } },
+                    { text: { query: route, path: 'type.plain' } },
+                    { text: { query: route, path: 'code.displayed', score: { boost: { value: 5 } } } },
                     { range: { path: 'codeInt', gte: Number.parseInt(route), lte: Number.parseInt(route) } },
                     { text: { query: 'GTT Servizio Urbano', path: 'provider' } }
                 ]

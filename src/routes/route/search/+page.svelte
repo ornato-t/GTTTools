@@ -64,8 +64,8 @@
 		{#each routes as route}
 			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{route.code.internal}">
 				<div class="card-body w-full grid grid-cols-4">
-					<span class=" text-primary card-title">{route.code}</span>
-					<span class="text-secondary col-span-3 py-1"> {route.type} • {route.provider.replace('GTT Servizio ', '')}</span>
+					<span class=" text-primary card-title">{route.code.displayed}</span>
+					<span class="text-secondary col-span-3 py-1"> {route.type.plain} • {route.provider.replace('GTT Servizio ', '')}</span>
 					<span class="col-span-4 text-xs italic place-self-start">{route.name}</span>
 				</div>
 			</a>
