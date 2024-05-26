@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Search from 'svelte-search';
 	import fetch from '$lib/proxyRequest';
-	import type { routeDB } from '$lib/routeDB';
+	import { getVehicleType, type routeDB } from '$lib/routeDB';
 	import { preloadData } from '$app/navigation';
 	import { favourites } from '$lib/favourites/favouriteRoutes';
 	import { onMount } from 'svelte';
@@ -51,7 +51,7 @@
 			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{route.code.internal}">
 				<div class="card-body w-full grid grid-cols-4">
 					<span class=" text-primary card-title">{route.code.displayed}</span>
-					<span class="text-secondary col-span-3 py-1"> {route.type.plain} • {route.provider.replace('GTT Servizio ', '')}</span>
+					<span class="text-secondary col-span-3 py-1"> {getVehicleType(route.type.code)} • {route.provider.replace('GTT Servizio ', '')}</span>
 					<span class="col-span-4 text-xs italic place-self-start">{route.name}</span>
 				</div>
 			</a>
@@ -65,7 +65,7 @@
 			<a class="my-1 card card-compact bg-base-200 btn h-fit animate-none" href="/route/{route.code.internal}">
 				<div class="card-body w-full grid grid-cols-4">
 					<span class=" text-primary card-title">{route.code.displayed}</span>
-					<span class="text-secondary col-span-3 py-1"> {route.type.plain} • {route.provider.replace('GTT Servizio ', '')}</span>
+					<span class="text-secondary col-span-3 py-1"> {getVehicleType(route.type.code)} • {route.provider.replace('GTT Servizio ', '')}</span>
 					<span class="col-span-4 text-xs italic place-self-start">{route.name}</span>
 				</div>
 			</a>

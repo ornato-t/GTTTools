@@ -17,8 +17,3 @@
 - avoid 404s
   Route and stop endpoints should redirect to the respective searches.
   Right now /route returns a 404. It should redirect to /route/search instead.
-  
-# Database migration
-- add enum for gtfs vehicles
-- switch from using plain route type to enum
-- fix broken search for route index
