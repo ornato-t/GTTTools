@@ -159,20 +159,14 @@
 </script>
 
 <svelte:head>
-	<title>Linea {data.db.type.toLowerCase()} {data.code}: informazioni in tempo reale</title>
-	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui {data.db.type.toLowerCase()} della linea {data.code}" />
+	<title>Linea {data.db.type.plain.toLowerCase()} {data.code}: informazioni in tempo reale</title>
+	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui {data.db.type.plain.toLowerCase()} della linea {data.code}" />
 </svelte:head>
 
 <div class="p-4 lg:grid lg:grid-cols-2">
 	<div class="flex flex-row justify-between w-full">
 		<span>
-			{#if data.code.toLowerCase() === data.db.type.toLowerCase()}
-				<h1 class="mb-4 text-xl font-semibold uppercase">
-					{data.code}
-				</h1>
-			{:else}
-				<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.type}</h1>
-			{/if}
+			<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.code.displayed} - {data.db.type.plain}</h1>
 
 			<h2 class="font-light order-3">{data.db.name}</h2>
 		</span>

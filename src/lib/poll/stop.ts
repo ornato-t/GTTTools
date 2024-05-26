@@ -22,6 +22,7 @@ export async function pollStop(stop: number): Promise<stop[]> {
                             occupancyStatus
                             pattern {
                                 route {
+                                    gtfsId
                                     shortName
                                 }
                             }
@@ -50,11 +51,15 @@ export async function pollStop(stop: number): Promise<stop[]> {
 
     const clean = new Array<stop>();
     for (const stop of api.data.stop.stops) {
-        const index = clean.findIndex(s => s.route === stop.trip.pattern.route.shortName);
+        const gtfsRegx = /gtt:(.+)[U,E,T]/;     //MATO saves GTFS as "gtt:<ROUTE_ID>U". Extract the relevant information
+        const match = stop.trip.pattern.route.gtfsId.match(gtfsRegx);
+        const gtfsId = match && match[1] ? match[1] : "";     //Extract capturing group from regex or null if mismatch
+
+        const index = clean.findIndex(s => s.route.internal === gtfsId);    //Get array position (or -1 if not inserted yet); each route has multiple passes (stops)
 
         if (index === -1) { //Stop hasn't been added yet
             clean.push({
-                route: stop.trip.pattern.route.shortName,
+                route: { internal: gtfsId, displayed: stop.trip.pattern.route.shortName, },
                 direction: stop.trip.tripHeadsign,
                 pass: [{
                     time: new Date((stop.serviceDay + stop.realtimeDeparture) * 1000),
@@ -85,8 +90,8 @@ export async function pollStop(stop: number): Promise<stop[]> {
 
     //Sort by route number
     clean.sort((a, b) => {
-        if (a.route < b.route) return -1;
-        if (a.route > b.route) return 1;
+        if (a.route.internal < b.route.internal) return -1;
+        if (a.route.internal > b.route.internal) return 1;
         return 0;
     });
 
@@ -105,7 +110,7 @@ interface GraphQL {
                     tripHeadsign: string
                     wheelchairAccessible: 'NO_INFORMATION' | 'POSSIBLE' | 'NOT_POSSIBLE'
                     occupancyStatus: 'EMPTY' | 'MANY_SEATS_AVAILABLE' | 'FEW_SEATS_AVAILABLE' | 'STANDING_ROOM_ONLY' | 'CRUSHED_STANDING_ROOM_ONLY' | 'FULL' | 'NOT_ACCEPTING_PASSENGERS'
-                    pattern: { route: { shortName: string } }
+                    pattern: { route: { gtfsId: string, shortName: string } }
                 }
             }[]
         } | null;

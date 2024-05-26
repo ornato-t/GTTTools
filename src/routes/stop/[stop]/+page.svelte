@@ -4,7 +4,6 @@
 	import type { PageData } from './$types';
 	import Loading from './loading.svelte';
 	import Timer from './timer.svelte';
-	import { encodeRoute } from '$lib/vehicle';
 	import type { stop } from '$lib/stop';
 	import { favourites } from '$lib/favourites/favouriteStops';
 
@@ -87,11 +86,11 @@
 	{:else}
 		{#key api}
 			{#each api as pass}
-				<a href="/route/{encodeRoute(pass.route)}">
+				<a href="/route/{pass.route.internal}">
 					<div class="card w-96 h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
 						<div class="card-body p-6">
 							<h2 class="card-title mb-4 grid grid-cols-4">
-								<span class="text-2xl text-left">{pass.route}</span>
+								<span class="text-2xl text-left">{pass.route.displayed}</span>
 								<span class="text-sm font-light text-right col-span-3">
 									{pass.direction}
 								</span>
@@ -146,10 +145,10 @@
 		{#key api}
 			{#each api as pass}
 				<div class="card card-compact w-[22rem] h-full bg-neutral hover:bg-neutral-focus text-neutral-content shadow-xl">
-					<a href="/route/{encodeRoute(pass.route)}">
+					<a href="/route/{pass.route.internal}">
 						<div class="card-body p-6">
 							<h2 class="card-title mb-4 grid grid-cols-4">
-								<span class="text-2xl text-left">{pass.route}</span>
+								<span class="text-2xl text-left">{pass.route.displayed}</span>
 								<span class="text-sm font-light text-right col-span-3">
 									{pass.direction}
 								</span>

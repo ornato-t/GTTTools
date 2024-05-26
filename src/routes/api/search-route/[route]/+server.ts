@@ -21,7 +21,7 @@ export const GET: RequestHandler = async ({ params, locals }) => {
             }
         }
     }, {
-        $project: { _id: 0, codeInt: 0 }
+        $project: { _id: 0 }
     }, {
         $limit: STOP_NUM
     }];

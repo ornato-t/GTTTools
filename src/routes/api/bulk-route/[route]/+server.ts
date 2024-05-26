@@ -9,10 +9,10 @@ export const GET: RequestHandler = async ({ params, locals }) => {
     const routeCodes = codes.split(',');
     
     const aggr = [
-        { $match: { code: { $in: routeCodes } } },
+        { $match: { "code.internal": { $in: routeCodes } } },
         { $addFields: { weight: { $indexOfArray: [routeCodes, "$code"] } } },
         { $sort: { weight: 1 } },
-        { $project: { _id: 0, codeInt: 0 } },
+        { $project: { _id: 0 } },
     ];
 
     const res = await routes.aggregate(aggr).toArray() as routeDB[];
