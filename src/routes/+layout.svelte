@@ -25,7 +25,7 @@
 			posthog.init(
 				'phc_wUI6j9S2sqbCOEy9Y8uAtegUpt4beq6bOxrQcWoQesb',
 				{
-					api_host: 'https://eu.i.posthog.com',
+					api_host: '/ingest',
 					person_profiles: 'identified_only',
 				}
 			)
