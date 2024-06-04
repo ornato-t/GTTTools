@@ -2,13 +2,14 @@
 	import '../app.css';
 	import Footer from './footer.svelte';
 	import { onMount } from 'svelte';
-	import { dev } from '$app/environment';
+	import { dev, browser } from '$app/environment';
 	import { swipe } from 'svelte-gestures';
 	import { page } from '$app/stores';
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
 	import { enhance } from '$app/forms';
 	import { DARK, theme, toggleTheme } from '$lib/theme';
+	import posthog from 'posthog-js'
 
 	export let data: LayoutData;
 
@@ -20,9 +21,14 @@
 	let stopCodeSearch: string;
 
 	onMount(async () => {
-		if (!dev) {
-			const { inject } = await import('@vercel/analytics');
-			inject({ mode: dev ? 'development' : 'production' });
+		if (browser && !dev) {
+			posthog.init(
+				'phc_wUI6j9S2sqbCOEy9Y8uAtegUpt4beq6bOxrQcWoQesb',
+				{
+					api_host: 'https://eu.i.posthog.com',
+					person_profiles: 'identified_only',
+				}
+			)
 		}
 
 		const strikes = await data.strike.promise; //Await promise passed by load function
@@ -115,7 +121,8 @@
 	<meta name="og:type" content="website" />
 </svelte:head>
 
-<div class="drawer" data-theme={$theme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: '' }} on:swipe={gestureHandler}>
+<!-- <div class="drawer" data-theme={$theme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: '' }} on:swipe={gestureHandler}> -->
+<div class="drawer" data-theme={$theme}>
 	<label for="drawer" class="h-0">Apri la barra laterale</label>
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content">
