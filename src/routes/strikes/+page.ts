@@ -1,15 +1,15 @@
 import type { strike } from '$lib/strikes';
-import fetch from '$lib/proxyRequest';
+import type { Fetch_t } from '$lib/custom_types.js';
 import { error } from '@sveltejs/kit';
 
 //Fetch strike data from the ministry's RSS feed
-export async function load() {
+export async function load({ fetch }) {
     return {
-        api: { promise: proxy() },   //Nested promise leverages the streaming API. It's awaited on the client side
+        api: { promise: proxy(fetch) }
     };
 }
 
-async function proxy() {
+async function proxy(fetch: Fetch_t) {
     try {
         const res = await fetch('/api/strikes');
         return await res.json() as strike[];

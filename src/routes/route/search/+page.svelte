@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Search from 'svelte-search';
-	import fetch from '$lib/proxyRequest';
 	import { getVehicleType, type routeDB } from '$lib/routeDB';
 	import { preloadData } from '$app/navigation';
 	import { favourites } from '$lib/favourites/favouriteRoutes';
