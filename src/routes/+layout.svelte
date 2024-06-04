@@ -10,6 +10,7 @@
 	import { enhance } from '$app/forms';
 	import { DARK, theme, toggleTheme } from '$lib/theme';
 	import posthog from 'posthog-js'
+	import { env } from '$env/dynamic/public';
 
 	export let data: LayoutData;
 
@@ -23,7 +24,7 @@
 	onMount(async () => {
 		if (browser && !dev) {
 			posthog.init(
-				'phc_wUI6j9S2sqbCOEy9Y8uAtegUpt4beq6bOxrQcWoQesb',
+				env.PUBLIC_ANALYTICS_KEY,
 				{
 					api_host: '/ingest',
 					person_profiles: 'identified_only',
@@ -121,8 +122,7 @@
 	<meta name="og:type" content="website" />
 </svelte:head>
 
-<!-- <div class="drawer" data-theme={$theme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: '' }} on:swipe={gestureHandler}> -->
-<div class="drawer" data-theme={$theme}>
+<div class="drawer" data-theme={$theme} use:swipe={{ timeframe: 300, minSwipeDistance: 60, touchAction: '' }} on:swipe={gestureHandler}>
 	<label for="drawer" class="h-0">Apri la barra laterale</label>
 	<input id="drawer" type="checkbox" class="drawer-toggle" bind:checked={drawerVisible} />
 	<div class="drawer-content">
