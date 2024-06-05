@@ -118,7 +118,7 @@ async function pollGTFS(route: string) {
     function vehicleName(initial: number | null | undefined) {
         if (initial == null) return 'Sconosciuto';
 
-        if ((initial >= 2800 && initial < 2900) || initial >= 5000) return 'Tram';
+        if ((initial >= 2800 && initial < 2900) || (initial >= 5000 && initial < 9000)) return 'Tram';
         else return 'Bus';
     }
 
