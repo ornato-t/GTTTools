@@ -1,19 +1,19 @@
 import type { LayoutLoad } from "./$types";
 import type { strike, strikeNotif } from "$lib/strikes";
-import fetch from '$lib/proxyRequest';
+import type { Fetch_t } from "$lib/custom_types";
 import { DateTime } from "luxon";
 
 const DAYS = 7;
 
-export const load = (async () => {
+export const load = (async ({ fetch }) => {
     return {
         strike: {
-            promise: pollStrikes()
+            promise: pollStrikes(fetch)
         }
     };
 }) satisfies LayoutLoad;
 
-async function pollStrikes() {
+async function pollStrikes(fetch: Fetch_t) {
     try {
         const res = await fetch('/api/strikes');
         const json = await res.json() as strike[];

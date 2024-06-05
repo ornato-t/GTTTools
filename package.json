@@ -41,7 +41,6 @@
 	"type": "module",
 	"dependencies": {
 		"@types/leaflet-rotatedmarker": "^0.2.5",
-		"@vercel/analytics": "^1.1.1",
 		"daisyui": "^2.42.1",
 		"events": "^3.3.0",
 		"gtfs-realtime-bindings": "^1.1.1",
@@ -50,6 +49,7 @@
 		"leaflet-rotatedmarker": "^0.2.0",
 		"luxon": "^3.4.4",
 		"mongodb": "^6.3.0",
+		"posthog-js": "^1.136.6",
 		"rss-parser": "^3.13.0",
 		"svelte-gestures": "^1.5.2"
 	}

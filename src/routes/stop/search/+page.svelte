@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Search from 'svelte-search';
 	import type { stopDB } from '$lib/stopDB';
-	import fetch from '$lib/proxyRequest';
 	import { preloadData } from '$app/navigation';
 	import { favourites } from '$lib/favourites/favouriteStops';
 	import { onMount } from 'svelte';
