@@ -25,7 +25,7 @@
 	const markers = new Array<{ droplet: Marker; vehicle: Marker; code: number }>();
 
 	const vehicleColour = '#1cbb10';
-	const REFRESH_TIME = 1000;
+	const REFRESH_TIME = 5000;
 	let dots = '';
 	let dotsHandle = setInterval(() => {
 		if (dots.length >= 3) dots = '';
