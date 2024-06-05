@@ -80,7 +80,7 @@
 				api = await data.route.promise		//Then refresh the data
 				if(api !== null) {
 					preloadData(`/route/${api.db.route.code.internal}`);
-					map.setView([api.lat, api.lon], 16);	//Only toggle if "follow" is active, TODO: add follow button
+					map.setView([api.lat, api.lon]);	//Only toggle if "follow" is active, TODO: add follow button
 
 					if(marker.code === api.id){
 						marker.droplet.setLatLng([api.lat, api.lon]);
