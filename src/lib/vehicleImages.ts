@@ -155,6 +155,14 @@ const vehicles = [
         siteName: "tplitalia.it",
         type: 'autosnodato'
     }, {
+        idL: 1310,
+        idH: 1313,
+        url: "https://www.tplitalia.it/GTT/AutosnodUrbSub/1310-1313/1310-02-800.jpg",
+        credits: "Alessandro Flora",
+        link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
+        siteName: "tplitalia.it",
+        type: 'autosnodato'
+    }, {
         idL: 1350,
         idH: 1396,
         url: "http://www.tplitalia.it/GTT/AutosnodUrbSub/1350-1383/1362-02-800.jpg",
@@ -178,6 +186,14 @@ const vehicles = [
         link: "http://www.tplitalia.it/GTT/GTT-Autobus.php",
         siteName: "tplitalia.it",
         type: 'bus'
+    }, {
+        idL: 9300,
+        idH: 9318,
+        url: "https://www.tplitalia.it/GTT/AutosnodUrbSub/9300-9318/9304-01-800.jpg",
+        credits: "Giacomo Paz Cruz",
+        link: "http://www.tplitalia.it/GTT/GTT-Autosnodati.php",
+        siteName: "tplitalia.it",
+        type: 'autosnodato'
     }, {
         idL: 2800,
         idH: 2800,
