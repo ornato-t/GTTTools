@@ -17,8 +17,8 @@
 	
 	const vehicleType = getVehicleType(data.db.type.code);
 
-	$seo.title = `Linea ${data.code} - ${vehicleType.toLowerCase()}`;
-	$seo.description = `Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui mezzi della linea ${vehicleType.toLowerCase()} ${data.code}`;
+	$seo.title = `Linea ${data.db.code.displayed} - ${vehicleType.toLowerCase()}`;
+	$seo.description = `Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui mezzi della linea ${vehicleType.toLowerCase()} ${data.db.code.displayed}`;
 
 	let numVehicles = -1;
 	let api = new Array<vehicle>();
