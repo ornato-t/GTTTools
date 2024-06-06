@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Search from 'svelte-search';
+	import { seo } from "$lib/stores/seo";
+
+	$seo.title = "Ricerca veicoli";
+	$seo.description = "Cerca un mezzo pubblico nella città di Torino per visualizzarne la posizione in tempo reale, la linea su cui è in servizio, un'immagine e altre curiosità. Sono disponibili informazioni riguardo a bus, autosnodati, tram e treni";
 
 	let value = '';
 
@@ -8,11 +12,6 @@
 		setTimeout(() => goto(`/vehicle/${value}`), 0)
 	}
 </script>
-
-<svelte:head>
-	<title>Ricerca veicoli</title>
-	<meta name="description" content="Pagina di ricerca dei mezzi pubblici di Torino. Possibilità di visualizzarne la posizione in tempo reale, la linea su cui sono in servizio, un'immagine e altre curiosità. Sono disponibili informazioni riguardo a bus, autosnodati, tram e treni">
-</svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->

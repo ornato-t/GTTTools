@@ -8,9 +8,10 @@
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
 	import { enhance } from '$app/forms';
-	import { DARK, theme, toggleTheme } from '$lib/theme';
+	import { DARK, theme, toggleTheme } from '$lib/stores/theme';
 	import posthog from 'posthog-js'
 	import { env } from '$env/dynamic/public';
+	import { seo } from '$lib/stores/seo';
 
 	export let data: LayoutData;
 
@@ -20,6 +21,12 @@
 	let strike: strikeNotif;
 
 	let stopCodeSearch: string;
+
+	//Update title and description reactively using store
+	$: {
+		if($seo.title === '') $seo.title = 'GTTTools: infomobilità reinventata';
+		if($seo.description === '') $seo.description = "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari";
+	}
 
 	onMount(async () => {
 		if (browser && !dev) {
@@ -85,36 +92,28 @@
 </script>
 
 <svelte:head>
-	<!-- COMMON TAGS -->
+	<!-- Common tags -->
 	<meta charset="utf-8" />
-	<title>GTTTools: infomobilità reinventata</title>
+	<title>{$seo.title}</title>
+
 	<!-- Search Engine -->
-	<meta
-		name="description"
-		content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari"
-	/>
+	<meta name="description" content="{$seo.description}"/>
 	<meta name="image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
+	
 	<!-- Schema.org for Google -->
 	<meta itemprop="name" content="GTTTools" />
-	<meta
-		itemprop="description"
-		content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari"
-	/>
+	<meta itemprop="description" content="{$seo.description}"/>
 	<meta itemprop="image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
+
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary" />
 	<meta name="twitter:title" content="GTTTools" />
-	<meta
-		name="twitter:description"
-		content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari"
-	/>
+	<meta name="twitter:description" content="{$seo.description}"/>
 	<meta name="twitter:image:src" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
+	
 	<!-- Open Graph general (Facebook, Pinterest & Google+) -->
 	<meta name="og:title" content="GTTTools" />
-	<meta
-		name="og:description"
-		content="Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari"
-	/>
+	<meta name="og:description" content="{$seo.description}"/>
 	<meta name="og:image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
 	<meta name="og:url" content="https://tools.gtt.cx" />
 	<meta name="og:site_name" content="GTTTools" />

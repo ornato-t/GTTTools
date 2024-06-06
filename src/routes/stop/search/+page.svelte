@@ -2,8 +2,12 @@
 	import Search from 'svelte-search';
 	import type { stopDB } from '$lib/stopDB';
 	import { preloadData } from '$app/navigation';
-	import { favourites } from '$lib/favourites/favouriteStops';
+	import { favourites } from '$lib/stores/favourites/favouriteStops';
 	import { onMount } from 'svelte';
+	import { seo } from "$lib/stores/seo";
+
+	$seo.title = "Ricerca fermate mezzi pubblici";
+	$seo.description = "Cerca una fermata dei mezzi pubblici di Torino per visualizzare i passaggi dei prossimi bus e tram in tempo reale";
 
 	let value = '';
 	$: favouriteStops = new Array<stopDB>();
@@ -38,11 +42,6 @@
 		if (stops.length > 0) return preloadData(`/metro/${stops[0].code}`);
 	}
 </script>
-
-<svelte:head>
-	<title>Ricerca fermate mezzi pubblici</title>
-	<meta name="description" content="Pagina di ricerca per le fermate dei mezzi pubblici di Torino. Possibilità di visualizzare i prossimi passaggi delle linee in tempo reale" />
-</svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->

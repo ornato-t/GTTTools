@@ -1,6 +1,9 @@
 <script>
 	import Footer from "./footer.svelte";
+	import { seo } from '$lib/stores/seo';
 
+	$seo.title = 'GTTTools: infomobilità reinventata';
+	$seo.description = "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari";
 </script>
 <div class="grid w-full lg:min-h-screen bg-base-200 lg:pb-6 lg:grid-cols-2 gap-y-4 lg:gap-y-0 scrollable">
   <div class="hero-content flex-col lg:flex-row place-self-start lg:my-auto lg:h-fit w-full">

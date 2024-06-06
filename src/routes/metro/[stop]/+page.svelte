@@ -5,8 +5,12 @@
 	import Loading from './loading.svelte';
 	import Timer from './timer.svelte';
 	import type { stop } from '$lib/stop';
+	import { seo } from "$lib/stores/seo";
 
 	export let data: PageData;
+	
+	$seo.title = "Metro " + data.db.name;
+	$seo.description = "Elenco dei prossimi passaggi in tempo reale della metropolitana alla stazione " + data.db.name;
 
 	let api = new Array<stop>();
 
@@ -40,11 +44,6 @@
 		return match[1];
 	}
 </script>
-
-<svelte:head>
-	<title>Metro {data.db.name}</title>
-	<meta name="description" content="Prossimi passaggi in tempo reale alla fermata della metropolitana {data.db.name}" />
-</svelte:head>
 
 <div class="p-4 lg:grid lg:grid-cols-2">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.name}</h1>

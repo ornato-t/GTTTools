@@ -1,7 +1,9 @@
-<svelte:head>
-	<title>Informativa sulla privacy</title>
-	<meta name="description" content="Breve informativa sulla privacy e sui dati raccolti dal sito">
-</svelte:head>
+<script lang="ts">
+	import { seo } from "$lib/stores/seo";
+
+	$seo.title = "Informativa sulla privacy";
+	$seo.description = "Breve informativa sulla privacy e sui dati raccolti dal sito";
+</script>
 
 <div class="mx-4 mb-10">
 	<h1 class="font-bold text-xl mb-2">Privacy Policy riassunta</h1>

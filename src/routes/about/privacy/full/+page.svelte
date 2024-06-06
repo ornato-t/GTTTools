@@ -1,6 +1,11 @@
+<script lang="ts">
+	import { seo } from "$lib/stores/seo";
+
+	$seo.title = "Privacy policy";
+	$seo.description = "Full privacy policy of the website";
+</script>
+
 <svelte:head>
-	<title>Informativa sulla privacy</title>
-	<meta name="description" content="Breve informativa sulla privacy e sui dati raccolti dal sito">
 	<style>
 		.margin-children > * {
 			margin-top: 0.5rem;

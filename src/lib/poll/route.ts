@@ -3,8 +3,6 @@ import { error } from "@sveltejs/kit";
 import { DateTime } from "luxon"
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
 
-const TIMEOUT = 1000;   //If GTT query takes longer than this, switch to GTT API
-
 export async function poll(codeIn: string) {
     const code = parseRouteCode(codeIn);
 
@@ -37,19 +35,14 @@ function parseRouteCode(codeIn: string): string {
 
 //Polls a route on the GTT website API endpoint
 async function pollRoute(route: string) {
-    const controller = new AbortController()
-    const signal = controller.signal
     const url = `https://www.gtt.to.it/cms/components/com_gtt/views/percorsi/tmpl/proxydaslinea.php?serviceName=GetVeicoliPerLineaJson&linea=${route}`;
     const options = {
         method: 'GET',
         headers: {
             Referer: `https://www.gtt.to.it/cms/percorari/urbano`,
             mode: 'no-cors' as RequestMode,
-        },
-        signal
+        }
     };
-
-    setTimeout(() => controller.abort(), TIMEOUT);  //Abort after TIMEOUT ms
 
     const response = await fetch(url, options);
     const vehiclesWeb: vehicleWeb[] | null = await response.json();
@@ -118,7 +111,7 @@ async function pollGTFS(route: string) {
     function vehicleName(initial: number | null | undefined) {
         if (initial == null) return 'Sconosciuto';
 
-        if ((initial >= 2800 && initial < 2900) || initial >= 5000) return 'Tram';
+        if ((initial >= 2800 && initial < 2900) || (initial >= 5000 && initial < 9000)) return 'Tram';
         else return 'Bus';
     }
 

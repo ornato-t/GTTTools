@@ -8,8 +8,12 @@
 	import type { vehicleSearched } from '$lib/vehicle';
 	import type { PageData } from './$types';
 	import { placeTiles } from '$lib/map/map';
+	import { seo } from '$lib/stores/seo';
 
 	export let data: PageData;
+
+	$seo.title = "Informazioni sul veicolo " + data.code;
+	$seo.description = `Informazioni, immagine e posizione in tempo reale del veicolo numero ${data.code}. Possibilità di seguirlo e osservare la linea su cui è in servizio. Sono disponibili informazioni riguardo a bus, autosnodati, tram e treni`;
 
 	let dots = '...'
 	const interval = setInterval(() => {
@@ -80,7 +84,7 @@
 				api = await data.route.promise		//Then refresh the data
 				if(api !== null) {
 					preloadData(`/route/${api.db.route.code.internal}`);
-					map.setView([api.lat, api.lon], 16);	//Only toggle if "follow" is active, TODO: add follow button
+					map.setView([api.lat, api.lon]);	//Only toggle if "follow" is active, TODO: add follow button
 
 					if(marker.code === api.id){
 						marker.droplet.setLatLng([api.lat, api.lon]);
@@ -158,11 +162,6 @@
 		height: 80vh;
 	}
 </style>
-
-<svelte:head>
-	<title>Informazioni sul veicolo {data.code}</title>
-	<meta name="description" content="Informazioni, immagine e posizione in tempo reale del veicolo numero {data.code}. Possibilità di seguirlo e osservare la linea su cui è in servizio. Sono disponibili informazioni riguardo a bus, autosnodati, tram e treni">
-</svelte:head>		
 
 <div class="w-full mx-auto">
 	<h1 class="p-4 mb-4 text-xl font-semibold uppercase">{printType(data.type)} {data.code}</h1>

@@ -1,11 +1,12 @@
-import { isDarkTheme } from '$lib/theme';
+import { isDarkTheme } from '$lib/stores/theme';
+import { env } from '$env/dynamic/public';
 import type { Map } from 'leaflet';
+
 type LeafletTypeBase = typeof import('leaflet');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type LeafletType = LeafletTypeBase & { default: any };
 
-//NOTE: I can't put this in a .env. If you scrape it, please don't do anything bad with this. The API is free, make your own account
-const THUNDERSTORM_API_KEY = '2fb67f9012444a348a5b2abdb3e02643';
+const THUNDERSTORM_API_KEY = env.PUBLIC_THUNDERSTORM_MAP_KEY;
 
 export function placeTiles(L: LeafletType, map: Map) {
     const { url, config } = getTiles();

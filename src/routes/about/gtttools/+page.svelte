@@ -1,7 +1,9 @@
-<svelte:head>
-	<title>Perché GTTTools? Motivazioni e vantaggi</title>
-	<meta name="description" content="Elenco dei servizi che hanno ispirato la creazione di GTTTools e punti di forza">
-</svelte:head>
+<script lang="ts">
+	import { seo } from "$lib/stores/seo";
+
+	$seo.title = "Perché GTTTools? Motivazioni e vantaggi";
+	$seo.description = "Servizi che hanno ispirato la creazione di GTTTools e punti di forza";
+</script>
 
 <div class="mx-4 mb-10">
 	<h1 class="font-bold text-xl mb-2">Perché GTTTools?</h1>
