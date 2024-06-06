@@ -4,8 +4,12 @@
 	import type { PageServerData } from './$types';
 	import { invalidate, preloadData } from '$app/navigation';
 	import { onMount } from 'svelte';
-
+	import { seo } from "$lib/stores/seo";
+	
 	export let data: PageServerData;
+
+	$seo.title = "Ricerca stazioni ferroviarie";
+	$seo.description = "Cerca una stazione ferroviaria di Torino per visualizzare i passaggi dei prossimi treni treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano";
 
 	let value = '';
 	$: stops = data.db;
@@ -32,14 +36,6 @@
 		if (stops.length > 0) return preloadData(`/sfm/${stops[0].trainCode}`);
 	}
 </script>
-
-<svelte:head>
-	<title>Ricerca stazioni ferroviarie</title>
-	<meta
-		name="description"
-		content="Pagina di ricerca per le stazioni ferroviarie di Torino. Possibilità di visualizzare i prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano"
-	/>
-</svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->

@@ -4,7 +4,11 @@
 	import { preloadData } from '$app/navigation';
 	import { favourites } from '$lib/stores/favourites/favouriteRoutes';
 	import { onMount } from 'svelte';
-
+	import { seo } from "$lib/stores/seo";
+		
+	$seo.title = "Ricerca fermate mezzi";
+	$seo.description = "Cerca una fermata dei mezzi pubblici di Torino per visualizzare i passaggi dei prossimi mezzi in tempo reale";
+	
 	let value = '';
 	$: favouriteRoutes = new Array<routeDB>();
 	$: routes = new Array<routeDB>();
@@ -29,11 +33,6 @@
 		if (routes.length > 0) return preloadData(`/route/${routes[0].code}`);
 	}
 </script>
-
-<svelte:head>
-	<title>Ricerca fermate mezzi</title>
-	<meta name="description" content="Pagina di ricerca per le fermate dei mezzi di Torino. Possibilità di visualizzare i prossimi passaggi in tempo reale" />
-</svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->

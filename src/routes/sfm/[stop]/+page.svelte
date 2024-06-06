@@ -5,8 +5,12 @@
 	import Loading from './loading.svelte';
 	import Timer from './timer.svelte';
 	import type { trainStation } from '$lib/train';
-
+	import { seo } from "$lib/stores/seo";
+	
 	export let data: PageData;
+
+	$seo.title = "Stazione ferroviaria di TORINO " + data.db.name;
+	$seo.description = "Prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano, alla stazione ferroviaria di TORINO " + data.db.name;
 
 	let api: trainStation;
 	
@@ -32,11 +36,6 @@
 		return formatter.format(new Date(d));
 	}
 </script>
-
-<svelte:head>
-	<title>Stazione ferroviaria di TORINO {data.db.name}</title>
-	<meta name="description" content="Prossimi passaggi in tempo reale di treni Regionali, Regionali Veloci e del Servizio Ferroviario Metropolitano, alla stazione ferroviaria di TORINO {data.db.name}">
-</svelte:head>
 
 <div class="p-4 lg:grid lg:grid-cols-2">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.db.name}</h1>

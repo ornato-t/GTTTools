@@ -11,10 +11,14 @@
 	import type { vehicle } from '$lib/vehicle';
 	import { favourites } from '$lib/stores/favourites/favouriteRoutes';
 	import { getVehicleType } from '$lib/routeDB';
-
+	import { seo } from "$lib/stores/seo";
+	
 	export let data: PageData;
-
+	
 	const vehicleType = getVehicleType(data.db.type.code);
+
+	$seo.title = `Linea ${data.code} - ${vehicleType.toLowerCase()}`;
+	$seo.description = `Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui mezzi della linea ${vehicleType.toLowerCase()} ${data.code}`;
 
 	let numVehicles = -1;
 	let api = new Array<vehicle>();
@@ -160,11 +164,6 @@
 		favourite = !favourite;
 	}
 </script>
-
-<svelte:head>
-	<title>Linea {vehicleType.toLowerCase()} {data.code}: informazioni in tempo reale</title>
-	<meta name="description" content="Posizioni aggiornate in tempo reale e numero di veicoli in servizio sui mezzi della linea {data.code}" />
-</svelte:head>
 
 <div class="p-4 lg:grid lg:grid-cols-2">
 	<div class="flex flex-row justify-between w-full">

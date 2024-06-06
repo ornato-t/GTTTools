@@ -1,7 +1,8 @@
-<svelte:head>
-	<title>Ricerca fermate con GPS</title>
-	<meta name="description" content="Ricerca di fermate dei mezzi pubblici nei pressi dell'utente con GPS">
-</svelte:head>
-
+<script lang="ts">
+	import { seo } from "$lib/stores/seo";
+		
+	$seo.title = "Ricerca fermate con GPS";
+	$seo.description = "Ricerca di fermate dei mezzi pubblici nei pressi dell'utente con GPS";
+</script>
 
 <slot />

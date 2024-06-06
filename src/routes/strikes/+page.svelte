@@ -1,20 +1,17 @@
 <script lang="ts">
 	import type { PageData } from './$types';
     import Loading from './loading.svelte';
+    import { seo } from '$lib/stores/seo';
 
 	export let data: PageData;
+
+    $seo.title = "Scioperi in programma a Torino e in Piemonte";
+    $seo.description = "Elenco dei prossimi scioperi del trasporto pubblico in programma nella città di Torino e nella regione Piemonte. Aggiornato in tempo reale con dati del Ministero dei Trasporti e delle Infrastrutture";
 
     function printDate(d: Date){
         return new Date(d).toLocaleDateString()
     }
 </script>
-
-
-<svelte:head>
-	<title>Scioperi in programma a Torino e in Piemonte</title>
-	<meta name="description" content="Elenco dei prossimi scioperi del trasporto in programma nella città di Torino e nella regione Piemonte. Aggiornato in tempo reale con dati del Ministero dei Trasporti e delle Infrastrutture">
-</svelte:head>
-
 
 <div class="p-4">
 	<h1 class="mb-2 text-xl font-semibold">Scioperi programmati </h1>

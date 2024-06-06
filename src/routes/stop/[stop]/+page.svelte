@@ -6,8 +6,12 @@
 	import Timer from './timer.svelte';
 	import type { stop } from '$lib/stop';
 	import { favourites } from '$lib/stores/favourites/favouriteStops';
-
+	import { seo } from "$lib/stores/seo";
+	
 	export let data: PageData;
+	
+	$seo.title = `Fermata numero ${data.code} - ${data.db.name}`;
+	$seo.description = `Prossimi passaggi di mezzi pubblici in tempo reale alla fermata ${data.db.name} (${data.code}) di Torino`;
 
 	let api = new Array<stop>();
 	let favourite = $favourites.has(data.code);
@@ -43,11 +47,6 @@
 		favourite = !favourite;
 	}
 </script>
-
-<svelte:head>
-	<title>Fermata numero {data.code}: {data.db.name ?? ''}</title>
-	<meta name="description" content="Prossimi passaggi di mezzi pubblici in tempo reale alla fermata {data.db.name ?? ''} numero {data.code} di Torino" />
-</svelte:head>
 
 <div class="p-4 lg:grid lg:grid-cols-2" id="top">
 	<h1 class="mb-4 text-xl font-semibold uppercase">{data.code} - {data.db.name}</h1>

@@ -4,8 +4,12 @@
 	import type { PageServerData } from './$types';
 	import { invalidate, preloadData } from '$app/navigation';
 	import { onMount } from 'svelte';
-
+	import { seo } from "$lib/stores/seo";
+	
 	export let data: PageServerData;
+	
+	$seo.title = "Ricerca stazioni metro";
+	$seo.description = "Cerca una stazione della metropolitana di Torino per visualizzare i passaggi dei prossimi treni in tempo reale";
 
 	let value = '';
 	$: stops = data.db;
@@ -32,11 +36,6 @@
 		if (stops.length > 0) return preloadData(`/metro/${stops[0].code}`);
 	}
 </script>
-
-<svelte:head>
-	<title>Ricerca stazioni metro</title>
-	<meta name="description" content="Pagina di ricerca per le stazioni della metropolitana di Torino. Possibilità di visualizzare i prossimi passaggi dei treni in tempo reale" />
-</svelte:head>
 
 <div class="form-control w-full max-w-xs mx-auto lg:mx-0">
 	<!-- svelte-ignore a11y-label-has-associated-control -->

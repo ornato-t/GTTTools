@@ -1,7 +1,9 @@
-<svelte:head>
-	<title>L'autore</title>
-	<meta name="description" content="Breve presentazione dell'autore, necessità dietro alla realizzazione del sito" />
-</svelte:head>
+<script lang="ts">
+	import { seo } from "$lib/stores/seo";
+
+	$seo.title = "L'autore";
+	$seo.description = "Breve presentazione dell'autore, necessità dietro alla realizzazione del sito";
+</script>
 
 <div class="mx-4 mb-10">
 	<h1 class="font-bold text-xl mb-2">Chi sono?</h1>

@@ -1,7 +1,9 @@
-<svelte:head>
-	<title>Proprietà dei dati e crediti</title>
-	<meta name="description" content="Elenco delle API utilizzate e crediti per le immagini mostrate">
-</svelte:head>
+<script lang="ts">
+	import { seo } from "$lib/stores/seo";
+
+	$seo.title = "Proprietà dei dati e crediti";
+	$seo.description = "Elenco delle API utilizzate e crediti per le immagini mostrate";
+</script>
 
 <div class="mx-4 mb-10">
 	<h1 class="font-bold text-xl mb-2">Proprietà dei dati</h1>
