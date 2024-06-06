@@ -5,7 +5,7 @@
 	import Loading from './loading.svelte';
 	import Timer from './timer.svelte';
 	import type { stop } from '$lib/stop';
-	import { favourites } from '$lib/favourites/favouriteStops';
+	import { favourites } from '$lib/stores/favourites/favouriteStops';
 
 	export let data: PageData;
 

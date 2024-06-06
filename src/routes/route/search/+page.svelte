@@ -2,7 +2,7 @@
 	import Search from 'svelte-search';
 	import { getVehicleType, type routeDB } from '$lib/routeDB';
 	import { preloadData } from '$app/navigation';
-	import { favourites } from '$lib/favourites/favouriteRoutes';
+	import { favourites } from '$lib/stores/favourites/favouriteRoutes';
 	import { onMount } from 'svelte';
 
 	let value = '';

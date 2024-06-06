@@ -8,7 +8,7 @@
 	import type { strikeNotif } from '$lib/strikes';
 	import type { LayoutData } from './$types';
 	import { enhance } from '$app/forms';
-	import { DARK, theme, toggleTheme } from '$lib/theme';
+	import { DARK, theme, toggleTheme } from '$lib/stores/theme';
 	import posthog from 'posthog-js'
 	import { env } from '$env/dynamic/public';
 

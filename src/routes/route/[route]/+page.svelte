@@ -9,7 +9,7 @@
 	import type { stopDB } from '$lib/stopDB';
 	import { placeTiles } from '$lib/map/map';
 	import type { vehicle } from '$lib/vehicle';
-	import { favourites } from '$lib/favourites/favouriteRoutes';
+	import { favourites } from '$lib/stores/favourites/favouriteRoutes';
 	import { getVehicleType } from '$lib/routeDB';
 
 	export let data: PageData;

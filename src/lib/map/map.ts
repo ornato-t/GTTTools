@@ -1,4 +1,4 @@
-import { isDarkTheme } from '$lib/theme';
+import { isDarkTheme } from '$lib/stores/theme';
 import type { Map } from 'leaflet';
 type LeafletTypeBase = typeof import('leaflet');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -2,7 +2,7 @@
 	import Search from 'svelte-search';
 	import type { stopDB } from '$lib/stopDB';
 	import { preloadData } from '$app/navigation';
-	import { favourites } from '$lib/favourites/favouriteStops';
+	import { favourites } from '$lib/stores/favourites/favouriteStops';
 	import { onMount } from 'svelte';
 
 	let value = '';
