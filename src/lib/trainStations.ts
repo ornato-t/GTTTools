@@ -5,21 +5,21 @@ const stations = [
         code_fr: 830000219,
         id: 0,
     }, {
-        name: 'Dora',
-        code_vt: 'S00224',
-        code_fr: 0,
-        id: 6,
-    }, {
-        name: 'Dora GTT',
-        code_vt: '',
-        code_fr: 830082332,
-        id: 7
-    }, {
-        name: 'Madonna di Campagna',
-        code_vt: '',
-        code_fr: 830000083,
-        id: 8
-    }, {
+    //     name: 'Dora',
+    //     code_vt: 'S00224',
+    //     code_fr: 0,
+    //     id: 7,
+    // }, {
+    //     name: 'Dora GTT',
+    //     code_vt: '',
+    //     code_fr: 830082332,
+    //     id: 8
+    // }, {
+    //     name: 'Madonna di Campagna',
+    //     code_vt: '',
+    //     code_fr: 830000083,
+    //     id: 9
+    // }, {
         name: 'Lingotto',
         code_vt: 'S00452',
         code_fr: 830000452,
@@ -38,12 +38,17 @@ const stations = [
         name: 'San Paolo',
         code_vt: 'S00223',
         code_fr: 0,
-        id: 5,
+        id: 6,
     }, {
         name: 'Stura',
         code_vt: 'S00228',
         code_fr: 830000228,
         id: 4,
+    }, {
+        name: 'Grosseto',
+        code_vt: '',
+        code_fr: 830000097,
+        id: 5,
     },
 ] satisfies station[];
 
