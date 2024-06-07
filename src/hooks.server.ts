@@ -9,6 +9,7 @@ export const handle: Handle = (async ({ event, resolve }) => {
     event.locals.stops = client.db('GTTTools').collection('stops');
     event.locals.routes = client.db('GTTTools').collection('routes');
     event.locals.trips = client.db('GTTTools').collection('trips');
+    event.locals.vehicles = client.db('GTTTools').collection('vehicles');
 
     return resolve(event)
 });
