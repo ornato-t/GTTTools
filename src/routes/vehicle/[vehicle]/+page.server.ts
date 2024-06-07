@@ -16,12 +16,8 @@ export async function load({ params, locals, depends }) {
     const res = await getVehicle(vehicles, code);
     if (res === null) throw error(404, 'No matching vehicle found');
 
-    let outCode: string;
-    if (res.modifier !== null) outCode = code + res.modifier;
-    else outCode = code;
-
     return {
-        code: outCode,
+        code: res.code,
         image: res.image,
         info: res.info,
         type: res.type,
@@ -33,19 +29,27 @@ export async function load({ params, locals, depends }) {
 async function getVehicle(db: Collection<vehicleDB>, code: string) {
     let query: Filter<vehicleDB>;
 
-    if (code.toLowerCase() === 'metro') {
-        query = { type: 1 };
+    const match = code.match(/(\d+)(\w{0,1})/) ?? [];
+    const codeStr = match[1] as string | undefined ?? '-1';
+    const modifier = match[2];
+
+    const codeNum = Number.parseInt(codeStr);
+
+    if (codeNum === -1) {   //No numeric code, either "metro" or an error
+        if (code === 'metro') query = { type: 1 };
+        else return null;
     } else {
-        const codeNum = Number.parseInt(code);
-        query = { "id.high": { $gte: codeNum }, "id.low": { $lte: codeNum } };
+        if (modifier !== '') {
+            query = { "id.high": { $gte: codeNum }, "id.low": { $lte: codeNum }, modifier: modifier };
+        } else {
+            query = { "id.high": { $gte: codeNum }, "id.low": { $lte: codeNum }, modifier: null };
+        }
     }
 
-    //TODO: regex, extract numeric id and modifier, if any. If modifier further change query
-    //TODO: return vehicle code: perform modifier logic in here instead of parent, return as additional proprety called "code"
+    const res = await db.findOne(query, { projection: { _id: 0, id: 0 }, limit: 1 });
+    if (res === null) return null;
 
-    const res = await db.findOne(query, { projection: {_id: 0, id: 0 }, limit: 1 });
-
-    return res;
+    return { code: codeNum + (res.modifier ?? ''), ...res };
 }
 
 //Poll the GTFS-RT feed looking for the queried vehicle
