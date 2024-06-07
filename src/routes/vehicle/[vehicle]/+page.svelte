@@ -159,7 +159,7 @@
 </style>
 
 <div class="w-full mx-auto">
-	<h1 class="p-4 mb-4 text-xl font-semibold uppercase">{data.type} {data.code}</h1>
+	<h1 class="p-4 mb-4 text-xl font-semibold uppercase">{data.type} {data.code !== '-1' ? data.code : ''}</h1>
 
 	<div class="w-fit mx-auto">
 		<img src={getImage(data.image.url)} alt="Veicolo numero {data.code}" class="max-h-96"/>
