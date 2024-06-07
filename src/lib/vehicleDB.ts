@@ -12,7 +12,7 @@ interface vehicleBase {
         creditsLink: string,
         creditsPlatform: string
     },
-    modifier: "E" | null,
+    modifier: string | null,
     info: null,
     type: number
 }
