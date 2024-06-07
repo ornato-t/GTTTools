@@ -1,34 +1,51 @@
 import type { stopDB } from "$lib/stopDB";
 import type { trip } from "$lib/trip";
 import type { vehicleSearched } from "$lib/vehicle";
-import type { Collection } from "mongodb";
+import type { Collection, Filter } from "mongodb";
 import { error } from "@sveltejs/kit";
-import { getVehicle } from '$lib/vehicleImages';
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
-import type { routeDB } from "$lib/routeDB.js";
+import type { routeDB } from "$lib/routeDB";
+import type { vehicleDB } from "$lib/vehicleDB";
 
 export async function load({ params, locals, depends }) {
+    const { vehicles } = locals;
+
     depends('vehicle');
     const code = params.vehicle;
 
-    const res = getVehicle(code);
-
+    const res = await getVehicle(vehicles, code);
     if (res === null) throw error(404, 'No matching vehicle found');
 
-    let outId: string;
-    if (res?.modifier !== undefined) outId = res.modifier.replace('_', `${res.code}`);
-    else outId = `${res.code}`;
+    let outCode: string;
+    if (res.modifier !== null) outCode = code + res.modifier;
+    else outCode = code;
 
     return {
-        code: outId,
-        url: res.url,
-        credits: res.credits,
-        link: res.link,
-        siteName: res.siteName,
-        info: res.info ?? null,
+        code: outCode,
+        image: res.image,
+        info: res.info,
         type: res.type,
         route: { promise: searchVehicle(params.vehicle, locals) }
     };
+}
+
+//Fetches the vehicle's info and image from the database
+async function getVehicle(db: Collection<vehicleDB>, code: string) {
+    let query: Filter<vehicleDB>;
+
+    if (code.toLowerCase() === 'metro') {
+        query = { type: 1 };
+    } else {
+        const codeNum = Number.parseInt(code);
+        query = { "id.high": { $gte: codeNum }, "id.low": { $lte: codeNum } };
+    }
+
+    //TODO: regex, extract numeric id and modifier, if any. If modifier further change query
+    //TODO: return vehicle code: perform modifier logic in here instead of parent, return as additional proprety called "code"
+
+    const res = await db.findOne(query, { projection: {_id: 0, id: 0 }, limit: 1 });
+
+    return res;
 }
 
 //Poll the GTFS-RT feed looking for the queried vehicle

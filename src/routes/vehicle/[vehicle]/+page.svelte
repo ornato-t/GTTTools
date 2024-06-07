@@ -67,7 +67,7 @@
 				return busIcon;
 			})();
 
-			const popup = `<a href="/vehicle/${api.id}"><div>${printType(data.type)} ${api.id}</div></a>`;
+			const popup = `<a href="/vehicle/${api.id}"><div style="text-transform: capitalize;">${data.type} ${api.id}</div></a>`;
 			const dropletMark = L.marker([api.lat, api.lon], {icon: dropletIcon, zIndexOffset: 100, alt: api.vehicleType + ' ' + api.id, rotationAngle: api.direction}).addTo(map).bindPopup(popup);
 			const vehicleMark = L.marker([api.lat, api.lon], {icon: vehicleIcon, zIndexOffset: 101}).addTo(map).bindPopup(popup);
 
@@ -100,11 +100,6 @@
 	function getImage(uri: string){
 		if(!uri.includes('http')) return uri;
 		return `/api/image?url=${uri}`;
-	}
-
-	//Returns a string with the first string capitalized
-	function printType(str: string){
-		return str.charAt(0).toUpperCase() + str.slice(1)
 	}
 
 	//Return the appropriate popup link for a stop, depending on whether it's a regular stop, metro station or train station
@@ -164,12 +159,12 @@
 </style>
 
 <div class="w-full mx-auto">
-	<h1 class="p-4 mb-4 text-xl font-semibold uppercase">{printType(data.type)} {data.code}</h1>
+	<h1 class="p-4 mb-4 text-xl font-semibold uppercase">{data.type} {data.code}</h1>
 
 	<div class="w-fit mx-auto">
-		<img src={getImage(data.url)} alt="Veicolo numero {data.code}" class="max-h-96"/>
+		<img src={getImage(data.image.url)} alt="Veicolo numero {data.code}" class="max-h-96"/>
 		<span class="text-sm italic">
-			Foto a cura di {data.credits} tramite <a class="link" target="_blank" rel="noopener noreferrer" href={data.link}>{data.siteName}</a>
+			Foto a cura di {data.image.credits} tramite <a class="link" target="_blank" rel="noopener noreferrer" href={data.image.creditsLink}>{data.image.creditsPlatform}</a>
 		</span>
 	</div>
 
