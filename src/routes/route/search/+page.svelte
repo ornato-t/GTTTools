@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Search from 'svelte-search';
-	import { getVehicleType, type routeDB } from '$lib/routeDB';
+	import { getVehicleType } from '$lib/gtfs';
+	import type { routeDB } from '$lib/routeDB';
 	import { preloadData } from '$app/navigation';
 	import { favourites } from '$lib/stores/favourites/favouriteRoutes';
 	import { onMount } from 'svelte';

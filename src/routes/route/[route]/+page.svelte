@@ -10,7 +10,7 @@
 	import { placeTiles } from '$lib/map/map';
 	import type { vehicle } from '$lib/vehicle';
 	import { favourites } from '$lib/stores/favourites/favouriteRoutes';
-	import { getVehicleType } from '$lib/routeDB';
+	import { getVehicleType } from '$lib/gtfs';
 	import { seo } from "$lib/stores/seo";
 	
 	export let data: PageData;
