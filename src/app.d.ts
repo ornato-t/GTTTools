@@ -1,6 +1,7 @@
 import type { routeDB } from '$lib/routeDB';
 import type { stopDB } from '$lib/stopDB';
 import type { trip } from '$lib/trip';
+import type { vehicleDB } from '$lib/vehicleDB';
 import * as L from 'leaflet';
 import * as LP from 'leaflet-polylineoffset';
 import type { Collection } from 'mongodb';
@@ -14,6 +15,7 @@ declare global {
 			stops: Collection<stopDB>,
 			routes: Collection<routeDB>,
 			trips: Collection<trip>,
+			vehicles: Collection<vehicleDB>,
 		}
 		// interface PageData {}
 		// interface Error {}
