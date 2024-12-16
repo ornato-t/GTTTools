@@ -20,7 +20,7 @@ export async function load({ locals, parent, depends }) {
 }
 
 async function getNear(stops: Collection<stopDB>, db: stopDB, code: number) {
-    const query = { coordinates: { $nearSphere: { $geometry: { type: 'point', coordinates: db.coordinates } } }, code: { $ne: code } }
+    const query = { coordinates: { $nearSphere: { $geometry: { type: 'Point', coordinates: db.coordinates } } }, code: { $ne: code } }
     const projection = { _id: 0, city: 0 }
 
     const res = await stops.find(query).limit(STOP_NUM).project(projection).toArray() as stopDB[];

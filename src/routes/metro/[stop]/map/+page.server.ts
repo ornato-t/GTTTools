@@ -10,7 +10,7 @@ export async function load({ locals, parent }) {
 
     const coords = [parentData.db.coordinates[1], parentData.db.coordinates[0]] as LatLngExpression;    //Need to swap coords, mongo wants [lon, lat]; leaflet wants [lat, lon]
 
-    const query = { coordinates: { $nearSphere: { $geometry: { type: 'point', coordinates: parentData.db.coordinates } } }, code: { $ne: parentData.code } }
+    const query = { coordinates: { $nearSphere: { $geometry: { type: 'Point', coordinates: parentData.db.coordinates } } }, code: { $ne: parentData.code } }
     const projection = { _id: 0, city: 0 }
 
     const res = await stops.find(query).limit(STOP_NUM).project(projection).toArray() as stopDB[];

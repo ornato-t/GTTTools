@@ -7,7 +7,7 @@ export async function load({ locals, parent }) {
 
     const { stops } = locals;
 
-    const query = { coordinates: { $nearSphere: { $geometry: { type: 'point', coordinates: parentData.db.coordinates } } }, trainCode: { $ne: parentData.code } }
+    const query = { coordinates: { $nearSphere: { $geometry: { type: 'Point', coordinates: parentData.db.coordinates } } }, trainCode: { $ne: parentData.code } }
     const projection = { _id: 0, city: 0 }
 
     const res = await stops.find(query).limit(STOP_NUM).project(projection).toArray() as stopDB[];
