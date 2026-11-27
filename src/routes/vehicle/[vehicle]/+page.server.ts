@@ -93,14 +93,17 @@ async function getTripData(trip_id: string, route: string, stops: Collection<sto
 
     const stopCodes = trip?.stops.map(el => el.code) ?? [];
 
+    // Inside getTripData(...)
+    const routeInternal = trip?.route ?? route;
+
     const [routeDb, stopsDb] = await Promise.all([
         routes.findOne(
-            { "code.internal": trip.route },
+            { "code.internal": routeInternal },
             { projection: { _id: 0, "code.internal": 1, "code.displayed": 1, name: 1 } }
-        ) as Promise<{ code: { internal: string, displayed: string }, name: string }>,
+        ) as Promise<{ code: { internal: string, displayed: string }, name: string } | null>,
         stops.find(
             { code: { $in: stopCodes } },
-            { projection: { _id: 0, city: 0, } }
+            { projection: { _id: 0, city: 0 } }
         ).toArray()
     ]);
 
