@@ -1,0 +1,25 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+# PostHog asset proxy (must come before the general /ingest/* rule)
+[[redirects]]
+  from = "/ingest/static/*"
+  to = "https://eu-assets.i.posthog.com/static/:splat"
+  status = 200
+  force = true
+
+# PostHog ingestion proxy
+[[redirects]]
+  from = "/ingest/*"
+  to = "https://eu.i.posthog.com/:splat"
+  status = 200
+  force = true
+
+# Global CORS headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Credentials = "true"
+    Access-Control-Allow-Methods = "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+    Access-Control-Allow-Headers = "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
