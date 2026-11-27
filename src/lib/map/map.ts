@@ -7,6 +7,7 @@ type LeafletTypeBase = typeof import('leaflet');
 type LeafletType = LeafletTypeBase & { default: any };
 
 const THUNDERSTORM_API_KEY = env.PUBLIC_THUNDERSTORM_MAP_KEY;
+const CARTO_API_KEY = env.PUBLIC_CARTO_MAP_KEY;
 
 export function placeTiles(L: LeafletType, map: Map) {
     const { url, config } = getTiles();
@@ -19,7 +20,7 @@ export function placeTiles(L: LeafletType, map: Map) {
 function getTiles(): Tiles {
     const light = {
         name: 'CartoDB Voyager',
-        url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        url: `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_API_KEY}`,
         config: {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
@@ -29,7 +30,7 @@ function getTiles(): Tiles {
     };
     const dark1 = {
         name: 'CartoDB DarkMatter',
-        url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        url: `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_API_KEY}`,
         config: {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
