@@ -9,7 +9,7 @@
 	import type { LayoutData } from './$types';
 	import { enhance } from '$app/forms';
 	import { DARK, theme, toggleTheme } from '$lib/stores/theme';
-	import posthog from 'posthog-js'
+	import posthog from 'posthog-js';
 	import { env } from '$env/dynamic/public';
 	import { seo } from '$lib/stores/seo';
 
@@ -24,19 +24,18 @@
 
 	//Update title and description reactively using store
 	$: {
-		if($seo.title === '') $seo.title = 'GTTTools: infomobilità reinventata';
-		if($seo.description === '') $seo.description = "Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari";
+		if ($seo.title === '') $seo.title = 'GTTTools: infomobilità reinventata';
+		if ($seo.description === '')
+			$seo.description =
+				"Un nuovo modo per vivere i mezzi pubblici nella Città di Torino e in Piemonte. Una soluzione moderna per l'infomobilità: semplice, veloce e pensato per le esigenze dei pendolari";
 	}
 
 	onMount(async () => {
 		if (browser && !dev) {
-			posthog.init(
-				env.PUBLIC_ANALYTICS_KEY,
-				{
-					api_host: '/ingest',
-					person_profiles: 'identified_only',
-				}
-			)
+			posthog.init(env.PUBLIC_ANALYTICS_KEY, {
+				api_host: '/ingest',
+				person_profiles: 'identified_only'
+			});
 		}
 
 		const strikes = await data.strike.promise; //Await promise passed by load function
@@ -82,7 +81,7 @@
 		if (isDesktop) return;
 
 		//Ignore slide events on map pages (vehicle and maps). Allow it in vehicle search pages
-		const url = $page.url.toString();
+		const url = window.location.href;
 		if (url.includes('map') || (url.includes('vehicle') && !url.includes('search'))) return;
 
 		if (event.detail.direction === 'right' && drawerVisible === false) {
@@ -97,23 +96,23 @@
 	<title>{$seo.title}</title>
 
 	<!-- Search Engine -->
-	<meta name="description" content="{$seo.description}"/>
+	<meta name="description" content={$seo.description} />
 	<meta name="image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
-	
+
 	<!-- Schema.org for Google -->
 	<meta itemprop="name" content="GTTTools" />
-	<meta itemprop="description" content="{$seo.description}"/>
+	<meta itemprop="description" content={$seo.description} />
 	<meta itemprop="image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
 
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary" />
 	<meta name="twitter:title" content="GTTTools" />
-	<meta name="twitter:description" content="{$seo.description}"/>
+	<meta name="twitter:description" content={$seo.description} />
 	<meta name="twitter:image:src" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
-	
+
 	<!-- Open Graph general (Facebook, Pinterest & Google+) -->
 	<meta name="og:title" content="GTTTools" />
-	<meta name="og:description" content="{$seo.description}"/>
+	<meta name="og:description" content={$seo.description} />
 	<meta name="og:image" content="https://tools.gtt.cx/maskable_icon_x1065.png" />
 	<meta name="og:url" content="https://tools.gtt.cx" />
 	<meta name="og:site_name" content="GTTTools" />
